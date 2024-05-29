@@ -1,0 +1,12 @@
+{
+    "sections": {
+        "horizontal_accordions": {
+            "type": "horizontal_accordions"
+        }
+    },
+    "layout": "theme",
+    "wrapper": "",
+    "order": [
+        "horizontal_accordions"
+    ]
+}

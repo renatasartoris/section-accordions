@@ -1,0 +1,128 @@
+<a href="#" class="tabs_link w-inline-block">
+  <p class="tabs_heading">
+    {{ section.settings.text_tab_heading }}
+  </p>
+</a>
+<div class="tabs_content">
+  <div class="first_tab_wrap" data-ix="new-interaction">
+    <div class="first_tab_contain"><img
+        class="first_tab_inner-image"
+        src="{{ section.settings.image_image_url | image_url: width: 100 }}"
+        alt="{{ section.settings.image_image_url.alt }}"
+        loading="lazy">
+      <h2 id="w-node-aad52078-5385-5f57-ff2c-232320cd52ed-d470b57e" class="first_tab_inner-heading">
+        {{ section.settings.text_h2_heading }}
+      </h2>
+      <p id="w-node-fde3db9b-36e0-e78b-dd8c-21266774189e-d470b57e" class="first_tab_inner-paragraph">
+        {{ section.settings.text_paragraph }}
+      </p>
+    </div>
+  </div>
+</div>
+<a href="#" class="tabs_link active w-inline-block">
+  <p class="tabs_heading">
+    {{ section.settings.text_tab_heading }}
+  </p>
+</a>
+<div class="tabs_content">
+  <div class="first_tab_wrap">
+    <div class="first_tab_contain is-reversed"><img
+        class="first_tab_inner-image"
+        src="{{ section.settings.image_image_url | img_url: 'master' }}"
+        alt="{{ section.settings.image_image_url.alt }}"
+        loading="lazy">
+      <h2 id="w-node-_18ba1314-1a5f-c4ae-0c4a-105f971d00e1-d470b57e" class="first_tab_inner-heading">
+        {{ section.settings.text_h2_heading }}
+      </h2>
+      <p id="w-node-_1438aa9b-b940-c9f3-dfef-583d044dd1cf-d470b57e" class="first_tab_inner-paragraph">
+        {{ section.settings.text_paragraph }}
+      </p>
+    </div>
+  </div>
+</div>
+<a href="#" class="tabs_link active w-inline-block">
+  <p class="tabs_heading">
+    {{ section.settings.text_tab_heading }}
+  </p>
+</a>
+<div class="tabs_content">
+  <div class="first_tab_wrap">
+    <div class="first_tab_contain"><img
+        class="first_tab_inner-image"
+        src="{{ section.settings.image_image_url | img_url: 'master' }}"
+        alt="{{ section.settings.image_image_url.alt }}"
+        loading="lazy">
+      <h2 id="w-node-a3445067-ec39-9067-5b20-da711f681e27-d470b57e" class="first_tab_inner-heading">
+        {{ section.settings.text_h2_heading }}
+      </h2>
+      <div id="w-node-a3445067-ec39-9067-5b20-da711f681e29-d470b57e" class="first_tab_inner-paragraph">
+        {{ section.settings.richtext_paragraph }}
+      </div>
+    </div>
+  </div>
+</div>
+<a href="#" class="tabs_link active w-inline-block">
+  <p class="tabs_heading">
+    {{ section.settings.text_tab_heading }}
+  </p>
+</a>
+<div class="tabs_content active">
+  <div class="first_tab_wrap">
+    <div class="first_tab_contain"><img
+        class="first_tab_inner-image"
+        src="{{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE.jpeg' | asset_url }}"
+        width="171"
+        height="Auto"
+        alt="Vestido tomara que caia shefali verde."
+        sizes="(max-width: 479px) 25vw, (max-width: 767px) 130px, 150px"
+        id="w-node-_4b03ef14-9be6-c729-23b6-ceeee1bf4458-d470b57e"
+        loading="lazy"
+        srcset="{{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE-p-500.jpeg' | asset_url }} 500w, {{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE-p-800.jpeg' | asset_url }} 800w, {{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE-p-1080.jpeg' | asset_url }} 1080w, {{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE-p-1600.jpeg' | asset_url }} 1600w, {{ 'VESTIDO-TOMARA-QUE-CAIA-SHEFALI-VERDE.jpeg' | asset_url }} 2689w">
+      <h2 id="w-node-_30762e48-1b46-ae73-ab49-3bd45a096081-d470b57e" class="first_tab_inner-heading">EXCLUSIVIDADE</h2>
+      <p id="w-node-_30762e48-1b46-ae73-ab49-3bd45a096083-d470b57e" class="first_tab_inner-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere.</p>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "tag": "section",
+    "name": "horizontal_accordion",
+    "class": "tabs",
+    "settings": [
+      {
+        "id": "text_tab_heading",
+        "type": "text",
+        "label": "Tab-Heading",
+        "default": "Modelagem Perfeita"
+      },
+      {
+        "id": "image_image_url",
+        "type": "image_picker",
+        "label": "image_url"
+      },
+      {
+        "id": "text_h2_heading",
+        "type": "text",
+        "label": "h2-heading",
+        "default": "MODELAGEM PERFEITA"
+      },
+      {
+        "id": "text_paragraph",
+        "type": "text",
+        "label": "paragraph",
+        "default": "Através de um minucioso processo de modelagem, transformamos ideias em formas, tecidos em texturas, e criamos peças que se moldam perfeitamente ao seu estilo e à sua personalidade."
+      }, {
+        "id": "richtext_paragraph",
+        "type": "richtext",
+        "label": "paragraph",
+        "default": "<p>Através de um minucioso processo de modelagem, transformamos ideias em formas, tecidos em texturas, e criamos peças que se moldam perfeitamente ao seu estilo e à sua personalidade.<\/p>"
+      }
+    ],
+    "presets": [
+      {
+        "name": "horizontal_accordion",
+        "category": "Liquify"
+      }
+    ]
+  }
+{% endschema %}
