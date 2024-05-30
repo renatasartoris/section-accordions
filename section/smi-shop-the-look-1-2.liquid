@@ -1,0 +1,1908 @@
+{% style %}
+	.smi-product-card{text-align:var(--alignment)}.smi-product-card__thumbnail a.smi-image-inner{aspect-ratio:var(--media-ratio)}.smi-product-card__thumbnail a.smi-image-inner img,.smi-product-card__thumbnail a.smi-image-inner svg.smi-default-image{transition:all .2s}.smi-product-card__thumbnail a.smi-image-inner img:nth-child(2),.smi-product-card__thumbnail a.smi-image-inner svg.smi-default-image:nth-child(2){width:100%;height:100%;object-fit:cover}.smi-product-card__thumbnail .smi-labels{top:calc(12px + var(--image-padding));left:calc(12px + var(--image-padding))}.smi-product-card__thumbnail:hover .smi-button-cart{opacity:1;visibility:visible}.smi-product-card__thumbnail:hover a.smi-image-inner:not(.smi-shape-blob) img,.smi-product-card__thumbnail:hover a.smi-image-inner:not(.smi-shape-blob) svg{transform:scale(1.05)}.smi-product-card__thumbnail:hover a.smi-image-inner.smi-has-second-image img:nth-child(1){opacity:0}.smi-product-card__thumbnail:hover a.smi-image-inner.smi-has-second-image img:nth-child(2){opacity:1}.smi-product-card__thumbnail:hover a.smi-image-inner.smi-has-second-image:hover img:nth-child(2){clip-path:polygon(var(--shape-hover))}.smi-product-card__thumbnail:hover a.smi-image-inner:not(.smi-has-second-image):hover img{clip-path:polygon(var(--shape-hover))}.smi-product-card__thumbnail.shape-blob,.smi-product-card__thumbnail.round{background:rgba(0,0,0,0) !important}.smi-product-card__info .smi-variants__item{--item-padding: 4px;width:24px;height:24px;border:1px solid rgba(var(--color-foreground), 0.2);padding:var(--item-padding);border-radius:var(--border-radius);transition:all .2s;position:relative}.smi-product-card__info .smi-variants__item span{border-radius:calc(var(--border-radius) - 1px - var(--item-padding))}.smi-product-card__info .smi-variants__item--active{border-color:var(--color-foreground)}.smi-product-card__info .smi-variants__item--desktop-hidden{display:none}@media screen and (max-width: 767.98px){.smi-product-card__info .smi-variants__item--mobile-hidden{display:none}}.smi-product-card__info .smi-variants__item--more{padding:2px;min-width:24px;width:auto}.smi-product-card__info .smi-variants__item .smi-tooltip{font-size:14px !important;text-align:center;padding:2.5px 5px;margin-top:-35px;transition:opacity .3s;width:fit-content;background-color:#555;color:#fff;text-align:center;border-radius:6px;position:absolute;z-index:1;top:-3px;left:50%;transform:translateX(-50%);display:none}.smi-product-card__info .smi-variants__item .smi-tooltip:after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border-width:5px;border-style:solid;border-color:#555 rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,0,0,0)}.smi-product-card__info .smi-variants__item:hover .smi-tooltip{display:block}.smi-product-card__info .smi-variants:hover .smi-variants__item--desktop-hidden,.smi-product-card__info .smi-variants:hover .smi-variants__item--mobile-hidden{display:flex !important}.smi-product-card__info .smi-variants:hover .smi-variants__item--more{display:none !important}.smi-product-card__info .smi-price{justify-content:var(--alignment);flex-wrap:wrap}.smi-product-card__info .smi-button-cart{display:none}.smi-product-card .smi-button-cart{width:calc(100% - 20px);left:10px;bottom:10px}@media screen and (max-width: 767.98px){.smi-product-card .smi-button-cart{display:none}}.smi-product-card .smi-button-cart .smi-cart-text{display:inline-block;flex:none}.smi-product-card .smi-button-cart a{gap:4px;padding:calc(10px*var(--buttons-scale, 1)) calc(24px*var(--buttons-scale, 1))}.smi-product-card .smi-button-cart a .smi-loading{width:20px !important;height:20px !important;border:2px solid rgba(var(--color-button-text), 1);border-bottom-color:rgba(0,0,0,0);border-radius:50%;display:inline-block;box-sizing:border-box;animation:smi-rotation .7s linear infinite;max-width:20px;max-height:20px}.smi-product-card .smi-button-cart a.smi-cart-adding .smi-loading{display:block !important}.smi-product-card .smi-product-description{display:none}.smi-product-card.smi-card--card .smi-product-card__info{padding-left:24px;padding-right:24px}.smi-card--standard .smi-product-card__thumbnail{border-radius:var(--border-radius);padding:var(--image-padding)}.smi-card--standard .smi-product-card__thumbnail.smi-border{border:var(--border-width) solid rgba(var(--color-border-section), var(--border-opacity));box-shadow:var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius) rgba(var(--color-shadow-section), var(--shadow-opacity))}.smi-card--standard .smi-product-card__thumbnail:before{content:"";position:absolute;width:100%;height:100%;background:rgb(var(--color-background));z-index:-1;top:0;left:0}.smi-card--standard .smi-product-card__thumbnail.smi-round{overflow:visible}.smi-card--standard .smi-product-card__thumbnail.smi-round:before{border-radius:2000px}.smi-card--standard .smi-product-card__thumbnail .smi-image-inner{border:none !important;box-shadow:none !important;border-radius:calc(var(--border-radius) - var(--border-width) - var(--image-padding))}.smi-card--standard .smi-product-card__thumbnail .smi-button-cart{left:max(10px,var(--image-padding));width:calc(100% - max(20px,var(--image-padding)*2));bottom:max(10px,var(--image-padding))}.smi-card--standard.smi-product-card--left .smi-product-card__info{padding-right:16px}.smi-card--standard.smi-product-card--right .smi-product-card__info{padding-left:16px}.smi-card--standard.smi-product-card--center .smi-product-card__info{padding-left:16px;padding-right:16px}.smi-card--card{border-radius:var(--border-radius);position:relative;overflow:hidden;box-shadow:var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius) rgba(var(--color-shadow-section), var(--shadow-opacity));border:var(--border-width) solid rgba(var(--color-border-section), var(--border-opacity))}.smi-card--card:before{content:"";position:absolute;width:100%;height:100%;background:var(--gradient-background);z-index:-1;left:0}.smi-card--card .smi-product-card__thumbnail{padding:var(--image-padding) var(--image-padding) 0 var(--image-padding);border-radius:calc(var(--border-radius) - var(--border-width) - var(--image-padding)) calc(var(--border-radius) - var(--border-width) - var(--image-padding)) 0 0}.smi-card--card .smi-product-card__thumbnail .smi-image-inner{border:none !important;box-shadow:none !important;border-radius:0}.smi-card--card .smi-product-card__thumbnail .smi-labels{top:12px;left:12px}.smi-card--card .smi-product-card__info{padding:calc(24px*var(--spacing-elements)) 24px}@keyframes smi-rotation{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.smi-media-wrapper{aspect-ratio:var(--media-ratio)}.smi-media-wrapper:hover img,.smi-media-wrapper:hover svg,.smi-media-wrapper:hover video,.smi-media-wrapper:hover iframe,.smi-media-wrapper:hover div{clip-path:polygon(var(--shape-hover));transition:all .4s}.smi-blob-wrapper.smi-has-blob{border:none !important;box-shadow:none !important}.smi-section-shop-the-look-1{overflow:clip}.smi-section-shop-the-look-1 .smi-container,.smi-section-shop-the-look-1 .smi-container-fluid{position:relative}.smi-section-shop-the-look-1 .smi-swiper-controls{width:100%;display:flex;justify-content:center}@media screen and (max-width: 991.8px){.smi-section-shop-the-look-1 .smi-swiper-controls{display:none}}.smi-section-shop-the-look-1 .smi-swiper-navigation{position:absolute;z-index:2;top:50%;transform:translateY(-50%);width:100%;transition:visibility .3s ease,opacity .3s ease}.smi-section-shop-the-look-1 .smi-swiper-navigation .swiper-button-disabled{visibility:hidden;opacity:0}.smi-section-shop-the-look-1 .smi-component-arrow-slider{display:flex;width:min(100% + 128px,100vw - 60px);min-width:calc(100% + 46px);position:absolute;top:50%;left:50%;z-index:100;transform:translateX(-50%)}.smi-section-shop-the-look-1 .smi-component-arrow-slider .arrow-icon{cursor:pointer;position:absolute;top:50%;transform:translateY(-50%);z-index:9999;left:0}.smi-section-shop-the-look-1 .smi-component-arrow-slider .arrow-icon.arrow-slider-right{left:auto;right:0}.smi-section-shop-the-look-1 .smi-swiper-pagination{padding-bottom:1px;--swiper-pagination-bottom: 0}.smi-section-shop-the-look-1 .smi-swiper-parent{overflow:clip}@media screen and (max-width: 991.8px){.smi-section-shop-the-look-1 .smi-swiper-parent .swiper-slide{width:calc(100% - 30px)}.smi-section-shop-the-look-1 .smi-swiper-parent .swiper-slide:not(.swiper-slide-visible) .smi-hotspot{display:none}.smi-section-shop-the-look-1 .smi-swiper-parent .swiper-slide:only-child{width:100%}}.smi-section-shop-the-look-1 .smi-swiper{height:auto}@media screen and (max-width: 767.8px){.smi-section-shop-the-look-1 .smi-swiper .smi-swiper-navigation{display:none !important}}.smi-section-shop-the-look-1 .smi-swiper .swiper-slide{opacity:0;transition:opacity .3s ease-in-out}.smi-section-shop-the-look-1 .smi-swiper .swiper-slide-visible{opacity:1}@media screen and (min-width: 992px){.smi-section-shop-the-look-1 .smi-look{display:flex;align-items:stretch}.smi-section-shop-the-look-1 .smi-look .__smi-inner{position:relative}.smi-section-shop-the-look-1 .smi-look__media{flex:1 1 0%;line-height:0}.smi-section-shop-the-look-1 .smi-look__media .__smi-inner{overflow:clip;line-height:0}.smi-section-shop-the-look-1 .smi-look__media .smi-image,.smi-section-shop-the-look-1 .smi-look__media .smi-placeholder-svg{width:100%;height:auto}.smi-section-shop-the-look-1 .smi-look__products{width:30%}.smi-section-shop-the-look-1 .smi-look__products .__smi-inner{height:fit-content;position:sticky;top:-27px}.smi-section-shop-the-look-1 .smi-swiper-nested-controls .smi-swiper-navigation{display:none}}@media screen and (max-width: 991.8px){.smi-section-shop-the-look-1 .smi-look .__smi-inner{position:relative}.smi-section-shop-the-look-1 .smi-look__media{padding-left:0 !important;padding-right:0 !important}.smi-section-shop-the-look-1 .smi-look__media .__smi-inner{overflow:clip;line-height:0}.smi-section-shop-the-look-1 .smi-look__media .smi-image,.smi-section-shop-the-look-1 .smi-look__media .smi-placeholder-svg{width:100%;height:auto}}.smi-section-shop-the-look-1 .smi-hotspot{position:absolute;top:0;left:0;right:0;bottom:0;z-index:1}.smi-section-shop-the-look-1 .smi-point{position:relative;top:calc(var(--hot-spot-top) - var(--hot-spot-size)/2);left:calc(var(--hot-spot-left) - var(--hot-spot-size)/2);width:0;height:0;cursor:pointer;line-height:0;transition:transform .2s ease-in-out}.smi-section-shop-the-look-1 .smi-point:before{content:"";position:absolute;top:calc(var(--hot-spot-top) - var(--hot-spot-size)/2);left:calc(var(--hot-spot-left) - var(--hot-spot-size)/2);z-index:3;width:var(--hot-spot-size);height:var(--hot-spot-size);border-radius:100%;background-color:rgb(var(--hotspot-color));transition:transform .2s ease-in-out}.smi-section-shop-the-look-1 .smi-point:after{content:"";top:calc(50% - var(--hot-spot-after-size)/2);left:calc(50% - var(--hot-spot-after-size)/2);width:var(--hot-spot-after-size);height:var(--hot-spot-after-size);background:#fff;background:radial-gradient(50% 50% at 50% 50%, rgb(var(--hotspot-color)/0), rgba(var(--hotspot-color)/0.3));border-radius:100%;animation:2s ease-in-out infinite alternate smi-ping;position:absolute;z-index:3;line-height:0}.smi-section-shop-the-look-1 .smi-point.smi-point-style-1{--hot-spot-size: 20px;--hot-spot-after-size: 36px}.smi-section-shop-the-look-1 .smi-point.smi-point-style-1:hover,.smi-section-shop-the-look-1 .smi-point.smi-point-style-1.smi-point-active{transform:scale(1.6)}.smi-section-shop-the-look-1 .smi-point.smi-point-style-2{--hot-spot-size: 12px;--hot-spot-after-size: 36px}.smi-section-shop-the-look-1 .smi-point.smi-point-style-2:hover:after,.smi-section-shop-the-look-1 .smi-point.smi-point-style-2.smi-point-active:after{border:1px solid rgb(var(--hotspot-color))}.smi-section-shop-the-look-1 .smi-point.smi-point-style-2:hover:before,.smi-section-shop-the-look-1 .smi-point.smi-point-style-2.smi-point-active:before{transform:scale(1.25)}@keyframes smi-ping{from{transform:scale(1)}to{transform:scale(0.8)}}.smi-section-shop-the-look-1 .smi-component-button-without-link{width:100% !important}.smi-section-shop-the-look-1 .smi-component-button-without-link a{width:100%}.smi-section-shop-the-look-1,.smi-popup-shop-the-look-1{--color-border-section: var(--color-foreground)}.smi-section-shop-the-look-1 .smi-product-card .smi-border,.smi-popup-shop-the-look-1 .smi-product-card .smi-border{border-color:rgba(var(--color-border-section), var(--border-opacity))}.smi-section-shop-the-look-1 .smi-product-card .smi-shadow,.smi-popup-shop-the-look-1 .smi-product-card .smi-shadow{box-shadow:var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius) rgba(var(--color-shadow-section), var(--shadow-opacity))}.smi-section-shop-the-look-1 .smi-swiper-parent,.smi-popup-shop-the-look-1 .smi-swiper-parent{margin:-27px -43px -43px -27px;padding:27px 43px 43px 27px}.smi-section-shop-the-look-1 .smi-swiper-nested,.smi-popup-shop-the-look-1 .smi-swiper-nested{margin:-27px -43px -43px -27px;padding:27px 43px 43px 27px}.smi-popup-shop-the-look-1{box-shadow:0px 0px 20px 0px rgba(var(--color-shadow), var(--shadow-opacity));touch-action:pan-x;position:fixed;z-index:3;left:0;bottom:-100%;width:100%;height:auto;max-height:80%;transition:bottom .35s cubic-bezier(0.4, 0, 1, 1);background-color:var(--gradient-background);display:flex;justify-content:center;border-top-left-radius:10px;border-top-right-radius:10px}.smi-popup-shop-the-look-1 .swiper-wrapper,.smi-popup-shop-the-look-1 .swiper-slide{height:auto !important}.smi-popup-shop-the-look-1.smi-active{bottom:0}.smi-popup-shop-the-look-1 .smi-item{width:200px;position:relative;z-index:1}.smi-popup-shop-the-look-1 .smi-button-close{padding:12px;position:absolute;right:0;top:0;cursor:pointer}.smi-popup-shop-the-look-1 .smi-button-close .smi-svg-icon{width:28px;height:28px}.smi-popup-shop-the-look-1 .smi-swiper-pagination{display:none}.smi-popup-shop-the-look-1 .arrow-slider-content{display:flex;width:min(100% + 128px,100vw - 60px);min-width:calc(100% + 46px);position:absolute;top:50%;left:50%;z-index:1;transform:translate(-50%, -50%);height:0}.smi-popup-shop-the-look-1 .arrow-slider-content .arrow-icon{cursor:pointer;transform:translateY(-50%)}.smi-popup-shop-the-look-1 .arrow-slider-content .arrow-icon.arrow-slider-right{position:absolute;left:auto;right:0}.smi-popup-shop-the-look-1 .arrow-slider-content .swiper-button-disabled{visibility:hidden;opacity:0}.smi-popup-offset{display:block !important;transition:height .35s cubic-bezier(0.4, 0, 1, 1)}
+{% endstyle %}
+{% comment %}#component#["settings/heading","settings/product-card","settings/slider-arrows/without-none-option","settings/slider-dots","settings/section-padding","blocks/background","settings/media-settings-3","settings/design-mode","settings/animation-settings","settings/slider-arrows"]#endcomponent#{% endcomment %}
+{% comment %} swiper.js {% endcomment %}
+{{ 'smi-swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'smi-swiper-bundle.min.js' | asset_url }}" defer data-id="swiper"></script>
+{% liquid
+    assign custom_blocks = section.blocks | where: "type", "look"
+    assign block_color_length = section.blocks | where: 'type', 'color' | size
+    assign has_product = false
+    for block in custom_blocks
+        for i in (1..5)
+            assign product_field = 'product_' | append: i
+            if block.settings[product_field] != blank
+                assign has_product = true
+                break
+            endif
+        endfor
+    endfor
+%}
+<style>
+    {% assign block_color = section.blocks | where: 'type', 'color' | first %}
+{% if block_color %}
+    #shopify-section-{{ section.id }} .smi-color-{{ section.settings.color_scheme }}{
+        --color-background: {{ block_color.settings.background_color.red }}, {{ block_color.settings.background_color.green }},{{ block_color.settings.background_color.blue }};
+        {% if block_color.settings.background_gradient_color == blank %}
+            --gradient-background: {{ block_color.settings.background_color }};
+        {% else %}
+            --gradient-background: {{ block_color.settings.background_gradient_color }};
+        {% endif %}
+        --color-foreground: {{ block_color.settings.text_color.red }}, {{ block_color.settings.text_color.green }},{{ block_color.settings.text_color.blue }};
+        --color-subtext: {{ block_color.settings.subtext_color.red }},{{ block_color.settings.subtext_color.green }},{{ block_color.settings.subtext_color.blue }};
+        --color-button: {{ block_color.settings.solid_background_button_color.red }}, {{ block_color.settings.solid_background_button_color.green }},{{ block_color.settings.solid_background_button_color.blue }};
+        --color-button-text: {{ block_color.settings.solid_button_label_color.red }}, {{ block_color.settings.solid_button_label_color.green }},{{ block_color.settings.solid_button_label_color.blue }};
+        --color-shadow: {{ block_color.settings.shadow_color.red }}, {{ block_color.settings.shadow_color.green }},{{ block_color.settings.shadow_color.blue }};
+    }
+    #shopify-section-{{ section.id }} .smi-content-color {
+        --color-background: {{ block_color.settings.content_background_color.red }}, {{ block_color.settings.content_background_color.green }},{{ block_color.settings.content_background_color.blue }};
+        {% if block_color.settings.content_background_gradient_color == blank %}
+            --gradient-background: {{ block_color.settings.content_background_color }};
+        {% else %}
+            --gradient-background: {{ block_color.settings.content_background_gradient_color }};
+        {% endif %}
+        --color-foreground: {{ block_color.settings.content_text_color.red }}, {{ block_color.settings.content_text_color.green }},{{ block_color.settings.content_text_color.blue }};
+        --color-subtext: {{ block_color.settings.content_subtext_color.red }},{{ block_color.settings.content_subtext_color.green }},{{ block_color.settings.content_subtext_color.blue }};
+        --color-button: {{ block_color.settings.content_solid_background_button_color.red }}, {{ block_color.settings.content_solid_background_button_color.green }},{{ block_color.settings.content_solid_background_button_color.blue }};
+        --color-button-text: {{ block_color.settings.content_solid_button_label_color.red }}, {{ block_color.settings.content_solid_button_label_color.green }},{{ block_color.settings.content_solid_button_label_color.blue }};
+        --color-secondary-button-text: {{ block_color.settings.content_outline_button_color.red }}, {{ block_color.settings.content_outline_button_color.green }},{{ block_color.settings.content_outline_button_color.blue }};
+        --color-shadow: {{ block_color.settings.content_shadow_color.red }}, {{ block_color.settings.content_shadow_color.green }},{{ block_color.settings.content_shadow_color.blue }};
+    }
+{% endif %} 
+    #shopify-section-{{ section.id }}{
+        --section-padding-top: {{ section.settings.padding_top }}px;
+--section-padding-bottom: {{ section.settings.padding_bottom }}px;
+{% if section.settings.padding_top_section != blank or section.settings.padding_bottom_section != blank %}
+    --section-margin-top: {{ section.settings.padding_top_section }}px;
+    --section-margin-bottom: {{ section.settings.padding_bottom_section }}px;
+{% endif %}
+        --heading-alignment: {{ section.settings.heading_alignment }};
+        --hotspot-color: {{ section.settings.hotspot.rgb }};
+    }
+</style>
+<div id="smi-{{ section.id }}" class="smi-{{ section.id }} smi-section__inner smi-gradient smi-section-shop-the-look-1 smi-color-{{ section.settings.color_scheme }}" data-section="shop-the-look-1" data-name="✧Shop the look 1">
+     
+    {% render 'smi-background' %}
+    <div class="smi-container">
+        {%-liquid
+    if settings.smi_animations_reveal_on_scroll != nil
+        assign animation_scroll = settings.smi_animations_reveal_on_scroll
+    else
+        assign global_settings = shop.metafields.smind.settings.value
+        assign animation_scroll = global_settings.revealOnScroll
+    endif
+-%}
+<div class="smi-heading-component smi-heading-component--align-{{section.settings.heading_alignment}} smi-link-wrapper" {{- block.shopify_attributes -}}    >
+  {% liquid
+    assign heading = section.settings.heading | strip
+    assign sub_heading = section.settings.sub_heading | strip
+    assign description = section.settings.description | strip
+  %}
+  <div class="smi-heading-inner
+    {%- if animation_scroll %} smi-scroll-trigger smi-animate--slide-in{% endif -%}
+    {%- if heading != blank or sub_heading != blank or description != blank %} smi-mb-xxl{% endif -%}
+    ">
+        {%- assign sub_heading = section.settings.sub_heading | strip -%}
+{% if sub_heading != blank %}
+    <p class="smi-text-sub smi-mb-xxs smi-heading-component__subheading" data-type="subheading" data-key="s.subheading">{{- sub_heading -}}</p>
+{% endif %} 
+        {%- assign description = section.settings.description | strip -%}
+{%- assign heading = section.settings.heading | strip -%}
+{% if heading != blank %}
+    <h2 class="{{ section.settings.heading_size }} {% if description != blank %}smi-mb-sm{% endif %} smi-heading-component__heading" data-type="heading" data-key="s.heading">{{- heading -}}</h2>
+{% endif %} 
+        {%- assign description = section.settings.description | strip -%}
+{% if description != blank %}
+    <div class="smi-text-md smi-heading-component__description" data-type="description" data-key="s.description">{{ description }}</div>
+{% endif %}
+    </div>
+</div>
+    </div>
+    {%-liquid
+    if settings.smi_animations_reveal_on_scroll != nil
+        assign animation_scroll = settings.smi_animations_reveal_on_scroll
+    else
+        assign global_settings = shop.metafields.smind.settings.value
+        assign animation_scroll = global_settings.revealOnScroll
+    endif
+-%}
+    <div class="smi-container
+        {%- liquid
+            if section.settings.image_style == 'style_as_product_card'
+                echo ' smi-product-card-wrapper'
+            else
+                echo ' smi-media-wrapper'
+            endif
+        -%}
+        {%- if animation_scroll %} smi-scroll-trigger smi-animate--slide-in smi-animate-order-1 {% endif -%}">
+        <div class="swiper smi-swiper smi-swiper-parent" data-swiper-options='{"pageDotStyle":"{{- section.settings.sticky_page_dot_style -}}"}'>
+            <div class="swiper-wrapper">
+                {% for block in custom_blocks %}
+                    <div class="swiper-slide" data-swiper-slide-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+                        {% liquid
+	assign placeholder_image_index = forloop.index0 | modulo: 4 | plus: 1
+	assign placeholder_image = 'collection-apparel-' | append: placeholder_image_index
+%}
+<div class="smi-look">
+	<div class="smi-look__media
+		{%- liquid
+		if section.settings.image_position == 'left'
+			echo ' smi-pr-xxxxl smi-pr-lg-xxxl smi-pr-md-xxl'
+		else
+			echo ' smi-pl-xxxxl smi-pl-lg-xxxl smi-pl-md-xxl smi-order-lg-last'
+		endif
+	-%}">
+		<div class="__smi-inner smi-border smi-shadow">
+			{% if block.settings.image != blank %}
+				{{- block.settings.image | image_url: width: 600 | image_tag: class: "smi-image" -}}
+			{% else %}
+				{{ placeholder_image | placeholder_svg_tag: 'smi-placeholder-svg' }}
+			{% endif %}
+			<div class="smi-hotspot">
+				{% for i in (1..5) %}
+					{% assign product_field = 'product_' | append: i %}
+					{% assign horizontal_position_field = 'horizontal_position_' | append: i %}
+					{% assign vertical_position_field = 'vertical_position_' | append: i %}
+					{% if block.settings[product_field] != blank %}
+						<div
+							class="smi-point smi-point-style-{{ section.settings.hotspot_style }} smi-point--{{ i }} {% if forloop.index < 2 %}smi-point-active{% endif %}"
+							data-product-id="{{ block.settings[product_field].id }}"
+							{% if request.design_mode %}title="{{ product_field | capitalize | replace: '_', ' ' }}"{% endif %}
+							style="--hot-spot-left: {{ block.settings[horizontal_position_field] }}%; --hot-spot-top: {{ block.settings[vertical_position_field] }}%">
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="smi-look__products smi-d-none smi-d-lg-block smi-product-card-wrapper smi-blob-wrapper"
+		 data-swiper-slide-index="{{ forloop.index0 }}"
+		 style="--border-color-section: var(--color-foreground);--color-shadow-section: var(--color-shadow);">
+		<div class="__smi-inner">
+			<div class="swiper smi-swiper-nested" data-swiper-options='{"pageDotStyle":"{{- section.settings.sticky_page_dot_style -}}"}'>
+				<div class="swiper-wrapper">
+					{% assign has_product = false %}
+					{% for i in (1..5) %}
+						{% assign product_field = 'product_' | append: i %}
+						{% liquid
+							assign product_color_schema = ''
+							assign content_color = ''
+							if block_color_length == 1
+								assign content_color = "smi-content-color"
+							else
+								assign product_color_schema = section.settings.product_card_color_scheme
+								assign content_color = "smi-color-" | append: section.settings.product_card_color_scheme
+							endif
+						%}
+						{% if block.settings[product_field] != blank %}
+							{% assign product = block.settings[product_field] %}
+							{% if product != blank %}
+								<div class="swiper-slide {{ content_color }}"
+									 data-swiper-slide-index="{{ forloop.index0 }}"
+									 data-product-id="{{ block.settings[product_field].id }}">
+                                     {% assign shape_index = 1 %}
+									{%-liquid
+    assign media_ratio = section.settings.media_ratio
+    assign media_shape = section.settings.media_shape
+    assign media_classes = 'smi-w-100 smi-object-fit-cover '
+    if media_shape != 'default' and media_shape != 'round'
+        if shape_index > 6
+            assign shape_index = 1
+        endif
+        if shape_index < 6 
+            assign forloop_next = shape_index | plus: 1
+        else
+            assign forloop_next = 1
+        endif
+        assign media_classes = media_classes | append: ' smi-shape-blob-' | append: shape_index
+        assign shape_index = shape_index | plus: 1
+        assign shape_hover = '--shape-blob-' | append: forloop_next
+    endif
+    if media_ratio == 'auto' 
+        assign media_classes = media_classes | append: ' smi-h-auto'
+    else
+        assign media_classes = media_classes | append: ' smi-h-100 smi-p-absolute'
+    endif
+    assign media_wrapper_classes = 'smi-media-wrapper smi-border smi-shadow smi-lh-0 smi-overflow-hidden smi-p-relative smi-' | append: media_shape
+    if media_shape contains 'blob'
+        assign media_wrapper_classes = media_wrapper_classes | append: ' smi-blob-wrapper smi-has-blob'
+    endif
+-%}
+									{%- liquid  
+    assign show_vendor = section.settings.show_vendor
+    assign show_second_image = section.settings.show_second_image
+    assign media_ratio = section.settings.media_ratio
+    assign media_shape = section.settings.media_shape
+    assign show_swatch_color = section.settings.show_swatch_color
+    assign content_alignment = section.settings.content_alignment
+    if settings.smi_card_style
+        assign card_style = settings.smi_card_style
+    else
+        assign global_settings = shop.metafields.smind.settings.value
+        assign card_style = global_settings.productCardStyle | default: 'standard'
+    endif
+    assign target = product.selected_or_first_available_variant
+    assign compare_at_price = target.compare_at_price
+    assign price = target.price | default: 1999
+    assign available = target.available | default: false
+    if available == false and target.inventory_policy == 'continue' 
+        assign available = true
+    endif
+    assign thumbnail_class = 'smi-image-inner smi-d-block smi-lh-0 smi-overflow-hidden smi-p-relative'
+-%}
+  <div class="smi-product-card smi-card smi-card--{{card_style}} smi-product-card--{{media_ratio-}}
+    {%- if card_style == 'card' -%}
+            {{- ' smi-color-' | append: product_color_schema -}}
+            {{- ' smi-border smi-shadow' -}}
+    {%- endif -%}
+    {{ ' smi-product-card--' | append: content_alignment -}}
+    " style="--media-ratio: {{ media_ratio }}; --alignment: {{ content_alignment }}">
+    <div class="smi-product-card__thumbnail smi-p-relative smi-overflow-hidden
+        {%- if card_style == 'standard' -%}
+            {%- if media_shape != 'shape-blob' -%}
+            {{- ' smi-border smi-shadow ' -}}
+            smi-{{ media_shape -}}
+            {%- endif -%}
+            {{- ' smi-color-' | append: product_color_schema }}
+            {{- ' smi-mb-sm' -}}            
+        {%- endif -%}
+        ">
+        {%- if product.featured_media -%}
+            {%-liquid
+                assign has_second_image = false
+                if product.media[1] != null and show_second_image
+                    assign has_second_image = true
+                endif    
+                assign media_classes = media_classes | replace: 'smi-border', ''
+                assign media_classes = media_classes | replace: 'smi-shadow', ''
+                assign media_wrapper_classes = media_wrapper_classes | replace: 'smi-media-wrapper', ''
+            -%}
+            <a class="{{ thumbnail_class }} {%- if has_second_image %} smi-has-second-image {% endif -%} smi-{{media_shape}} {{ media_wrapper_classes }}" href="{{product.url}}" style="--media-ratio: {{ media_ratio }}; --shape-hover: var({{ shape_hover }})" data-type="item-image">
+                <img loading="lazy" class="smi-opacity-1 smi-w-100 {% if media_ratio == 'auto' %} smi-h-auto {% else %} smi-p-absolute smi-object-fit-cover smi-top-left-0  smi-h-100 {% endif %} {{ media_classes }}" src="{{ product.featured_media | image_url: width: 600 }}" alt="{{ product.featured_media.alt | escape }}">
+                {%- if has_second_image -%}
+                    <img loading="lazy" class="smi-wh-100 smi-p-absolute smi-object-fit-cover smi-top-left-0 smi-opacity-0 {{ media_classes }}" src="{{ product.media[1] | image_url: width: 600 }}" alt="" >
+                {%- endif -%}
+            </a>
+        {% else %}
+            {%-liquid
+                assign default_image_class = 'smi-default-image smi-opacity-1 smi-w-100 ' | append: media_classes
+                if media_ratio == 'auto'
+                    assign default_image_class = default_image_class | append: ' smi-h-auto'
+                else
+                    assign default_image_class = default_image_class | append: ' smi-p-absolute smi-object-fit-cover smi-top-left-0  smi-h-100'
+                endif
+            -%}
+        <a class="{{ thumbnail_class }} smi-{{media_shape}} {{ media_wrapper_classes }}" href="{{product.url}}" style="--media-ratio: {{ media_ratio }}; --shape-hover: var({{ shape_hover }})">           
+                {{ 'product-apparel-2' | placeholder_svg_tag: default_image_class }} 
+            </a>
+        {%- endif -%}
+        {%- if available == true %}
+        <div class="smi-button-cart {% if product.has_only_default_variant %} _cart_now {% endif %} smi-p-absolute smi-opacity-0 smi-visibility-hidden smi-button-wrapper">
+            {% assign cart_added_text = 'smind.product.cart_added' | t %}
+            {% assign add_cart_text = 'smind.product.add_to_cart' | t %}
+            {% assign add_cart_failed = 'smind.product.cart_failed' | t %}
+            {%- if product.has_only_default_variant -%}
+                <a href="{{ product.url }}?variant={{target.id}}" data-id="{{ target.id }}" data-text-added="{{cart_added_text}}" data-text-add-cart="{{add_cart_text}}" data-text-failed="{{ add_cart_failed }}" class="smi-w-100 smi-d-flex smi-align-items-center smi-justify-content-center smi-text-center smi-button smi-button--solid smi-text-button smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }} smi-border smi-shadow"><span class="smi-cart-text">{{ add_cart_text }}</span><span class="smi-loading smi-effect-loading smi-d-none"></span></a>
+            {%- else -%}
+                <a href="{{ product.url }}?variant={{target.id}}" class="smi-w-100 smi-d-flex smi-align-items-center smi-justify-content-center smi-text-center smi-button smi-button--solid smi-text-button smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }} smi-border smi-shadow">{{- 'smind.product.select_options' | t -}}</a>
+            {%- endif -%}
+        </div>
+        {% endif %}
+        {%-liquid
+            if settings.smi_enable_badges != nil
+                assign enable_badges = settings.smi_enable_badges
+            else
+                assign global_settings = shop.metafields.smind.settings.value
+                assign enable_badges = global_settings.enableBadges
+                if enable_badges == nil
+                    assign enable_badges = true
+                endif
+            endif
+        -%}
+      {% if enable_badges %}
+          <div class="smi-labels smi-p-absolute smi-d-flex smi-flex-column smi-align-items-start smi-row-gap-xs">
+            {%- if compare_at_price > price %}
+                {%-liquid
+                    assign sale_percent = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round | append: '%'
+                    assign sale_price = compare_at_price | minus: price | json | money    
+                -%}
+                <div class="smi-badges smi-text-badge smi-d-inline-block smi-text-transform-uppercase smi-px-sm smi-label smi-sale">
+                    {{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_price }}
+                </div>
+            {% endif -%}
+            {%- if available == false %}
+                <div class="smi-badges smi-badges--sold-out  smi-text-badge smi-d-inline-block smi-text-transform-uppercase smi-label smi-px-sm">{{ 'smind.product.sold_out' | t }}</div>
+            {% endif -%}
+          </div>
+      {% endif %}
+    </div>
+    <div class="smi-product-card__info">
+      {% if show_vendor %}
+        <div class="smi-product-vendor smi-text-sm smi-color-text-75 smi-lsmi-03">{{ product.vendor }}</div>
+      {% endif %}
+      <h3 class="smi-h5 smi-product-title" >
+        <a href="{{product.url}}" class="smi-color-text" data-type="item-heading">{{ product.title | escape }}</a>
+      </h3>
+      {% liquid
+        assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+        if currency_code_enabled
+          assign money_price = price | money_with_currency
+        else
+          assign money_price = price | money
+        endif
+        if target == product and product.price_varies
+          assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+        endif
+      %}
+      <div
+        class="smi-price smi-d-flex smi-column-gap-xs 
+          {%- if available == false %} smi-price--sold-out {% endif -%}
+          {%- if compare_at_price > price %} smi-price--on-sale {% endif -%}
+          {%- if product.price_varies == false and product.compare_at_price_varies %} smi-price--no-compare{% endif -%}
+        "
+      >
+        {%- unless product.price_varies == false and product.compare_at_price_varies %}
+            {%- if compare_at_price != blank -%}
+                <span class="smi-price__origin smi-text-price-md smi-color-text-55 smi-text-decoration-line-through">
+                {% if currency_code_enabled %}
+                    {{ compare_at_price | money_with_currency }}
+                {% else %}
+                    {{ compare_at_price | money }}
+                {% endif %}
+                </span>
+            {%- endif -%}
+          {%- endunless -%}
+        <span class="smi-price__sale smi-text-price-md smi-color-text">{{ money_price }}</span>
+      </div>
+      {%-liquid
+        if settings.smi_color_configuration
+            assign color_configuration_br = settings.smi_color_configuration |  newline_to_br |  split: '<br />'
+        else
+            assign global_settings = shop.metafields.smind.settings.value
+            assign color_configuration_br = global_settings.variantValue |  newline_to_br |  split: '<br />'
+        endif
+      -%}
+      <div class="smi-product-description">
+          {{- product.description | strip_html | truncatewords: 15, '...' -}}
+      </div>
+      {%- unless product.has_only_default_variant -%}
+        {% if show_swatch_color %}
+            {%-liquid
+                if settings.smi_color_variant_name
+                    assign smi_color_variant_name_dc = settings.smi_color_variant_name | strip | downcase
+                else
+                    assign global_settings = shop.metafields.smind.settings.value
+                    assign smi_color_variant_name_dc = global_settings.variantName | strip | downcase
+                endif    
+            -%}
+          <div class="smi-variant-wrapper smi-variants smi-mt-xs smi-d-inline-flex smi-column-gap-xs smi-row-gap-fix-xs smi-flex-wrap">
+          {%- for option in product.options_with_values -%}
+              {%- assign option_name = option.name | strip | downcase -%}
+              {%-liquid
+                assign matchOption = false
+                if smi_color_variant_name_dc != blank
+                    if option_name == smi_color_variant_name_dc
+                        assign matchOption = true
+                    endif
+                else
+                    if option_name == 'color' or option_name == 'colour' or option_name == 'colors' or option_name == 'colours'
+                        assign matchOption = true
+                    endif
+                endif
+              -%}
+              {% if matchOption == true %}
+                  {%- assign product_option_position_0index = option.position | minus: 1 -%}
+                  {%- assign number_options = option.values.size | times: 1 -%}
+                  {%- for product_option_value in option.values -%}
+                      {%- liquid
+                      assign option_value_variant = false
+                      for variant in product.variants
+                          if variant.options[product_option_position_0index] == product_option_value
+                          assign option_value_variant = variant
+                          break
+                          endif
+                      endfor
+                      assign is_unavailable = true
+                      for variant in product.variants
+                          if variant.available and variant.options[product_option_position_0index] == product_option_value
+                          assign is_unavailable = false
+                          break
+                          endif
+                      endfor
+                      assign img_url = option_value_variant.featured_media | img_url: '1x1' | replace: '_1x1.', '_500x.'
+                      assign color_name = product_option_value | escape | downcase
+                      assign class_desktop_hidden = ''
+                      assign class_mobile_hidden = ''
+                      if forloop.index > 4
+                        assign class_desktop_hidden = 'smi-variants__item--desktop-hidden'
+                      endif
+                      if forloop.index > 3
+                        assign class_mobile_hidden = 'smi-variants__item--mobile-hidden'
+                      endif
+                      -%}
+                      <div
+                      class="smi-variants__item smi-cursor-pointer {{ class_desktop_hidden }} {{ class_mobile_hidden }} {% if forloop.index == 1 %} smi-variants__item--active {% endif %}"
+                      {% if option_value_variant.featured_media %}
+                          data-media-url="{{ img_url }}"
+                      {% endif %}
+                      data-price="{{ option_value_variant.price | money }}"
+                      data-id="{{option_value_variant.id}}"
+                      >
+                      {%-liquid
+                        assign is_image = false
+                        for color_str in color_configuration_br
+                            assign color_temp = color_str | strip | split: ':'
+                            if color_temp.size == 2
+                                assign color_temp_0 = color_temp[0] | strip | downcase
+                                assign color_temp_1 = color_temp[1] | strip
+                                if color_name == color_temp_0
+                                    if color_temp_1 contains '.jpg' or color_temp_1 contains '.JPG' or color_temp_1 contains '.png' or color_temp_1 contains '.PNG' or color_temp_1 contains '.gif' or color_temp_1 contains '.GIF' or color_temp_1 contains '.jpeg'
+                                        assign is_image = true
+                                    endif
+                                    assign color_name = color_temp_1
+                                    break
+                                endif
+                            endif
+                        endfor
+                      -%}
+                        {%- if is_image -%}
+                            <span class="smi-d-block smi-wh-100 smi-p-relative smi-overflow-hidden">
+                                <img src="{{ color_name | file_img_url: 'thumb' }}" width="" height="" alt="" class="smi-wh-100 smi-object-fit-cover smi-p-absolute">
+                            </span>
+                        {%- else -%}
+                            <span class="smi-d-block smi-wh-100" style="background:{{ color_name }}"></span>
+                        {%- endif -%}
+                        <div class="smi-tooltip">{{ product_option_value }}</div>
+                      </div>
+                  {% endfor %}
+                  {% if number_options > 4 %}
+                    <div class="smi-variants__item smi-variants__item--more smi-cursor-pointer smi-align-items-center smi-justify-content-center smi-d-none smi-d-md-flex">
+                        <span class="smi-text-xs smi-color-text smi-lsmi-03">+{{ number_options | minus: 4 }}</span>
+                    </div>
+                  {% endif %}
+                  {% if number_options > 3 %}
+                    <div class="smi-variants__item smi-variants__item--more smi-cursor-pointer smi-align-items-center smi-justify-content-center smi-d-flex smi-d-md-none">
+                        <span class="smi-text-xs smi-color-text smi-lsmi-03">+{{ number_options | minus: 3 }}</span>
+                    </div>
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+          </div>
+      {% endif %}
+    {% endunless %}
+      {%- if available == true %}
+        <div class="smi-button-cart {% if product.has_only_default_variant %} _cart_now {% endif %} smi-p-absolute smi-opacity-0 smi-visibility-hidden smi-button-wrapper">
+            {% assign cart_added_text = 'smind.product.cart_added' | t %}
+            {% assign add_cart_text = 'smind.product.add_to_cart' | t %}
+            {% assign add_cart_failed = 'smind.product.cart_failed' | t %}
+            {%- if product.has_only_default_variant -%}
+                <a href="{{ product.url }}?variant={{target.id}}" data-id="{{ target.id }}" data-text-added="{{cart_added_text}}" data-text-add-cart="{{add_cart_text}}" data-text-failed="{{ add_cart_failed }}" class="smi-w-100 smi-d-flex smi-align-items-center smi-justify-content-center smi-text-center smi-button smi-button--solid smi-text-button smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }} smi-border smi-shadow"><span class="smi-cart-text">{{ add_cart_text }}</span><span class="smi-loading smi-effect-loading smi-d-none"></span></a>
+            {%- else -%}
+                <a href="{{ product.url }}?variant={{target.id}}" class="smi-w-100 smi-d-flex smi-align-items-center smi-justify-content-center smi-text-center smi-button smi-button--solid smi-text-button smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }} smi-border smi-shadow">{{- 'smind.product.select_options' | t -}}</a>
+            {%- endif -%}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+								</div>
+								{% assign has_product = true %}
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					{% if has_product == false %}
+						<div
+							class="swiper-slide {% if content_color != blank %}{{ content_color }}{% else %}{{ section.settings.product_card_color_scheme | prepend: 'smi-color-' }}{% endif %}">
+							<div class="smi-product-card smi-card smi-card--standard smi-product-card--3/4 smi-product-card--left"
+	 style="--media-ratio: 3/4; --alignment: left">
+	<div class="smi-product-card__thumbnail smi-p-relative smi-overflow-hidden smi-border smi-shadow smi-color- smi-gradient smi-default smi-mb-sm">
+		<a class="smi-image-inner smi-d-block smi-lh-0 smi-overflow-hidden smi-p-relative smi-default">
+			{{ 'product-apparel-1' | placeholder_svg_tag: 'smi-w-100' }}
+		</a>
+	</div>
+	<div class="smi-product-card__info">
+		<div class="smi-product-vendor smi-text-sm smi-color-text-75 smi-lsmi-03">Example Vendor</div>
+		<h3 class="smi-h5 smi-product-title >
+			<a href="/products/the-collection-snowboard-hydrogen" class="smi-color-text">The Example Product</a>
+		</h3>
+		<div class="smi-price smi-d-flex smi-column-gap-xs">
+			<span class="smi-price__sale smi-text-price-md smi-color-text">$268</span>
+		</div>
+	</div>
+</div>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="smi-swiper-nested-controls">
+				<div class="smi-swiper-navigation">
+					{% if section.settings.arrow_style != 'none' %}
+  <div class="smi-component-arrow-slider">
+    <div class="arrow-slider-content">
+      <div class="{{ section.settings.arrow_style }} arrow-icon arrow-slider-left smi-cursor-pointer">
+        {% if section.settings.arrow_style == 'arr-style-2' or 
+          section.settings.arrow_style == 'arr-square-style-4' or
+          section.settings.arrow_style == 'arr-square-style-5' or
+          section.settings.arrow_style == 'arr-square-style-6' or
+          section.settings.arrow_style == 'arr-circle-style-4' or
+          section.settings.arrow_style == 'arr-circle-style-5'
+        %}
+            {% render 'smi-icons', icon: 'arrow-left-2' %}
+        {% else %}
+            {% render 'smi-icons', icon: 'arrow-left' %}
+        {% endif %}
+      </div>
+      <div class="{{ section.settings.arrow_style }} arrow-icon arrow-slider-right smi-cursor-pointer">
+        {% if section.settings.arrow_style == 'arr-style-2' or 
+          section.settings.arrow_style == 'arr-square-style-4' or
+          section.settings.arrow_style == 'arr-square-style-5' or
+          section.settings.arrow_style == 'arr-square-style-6' or
+          section.settings.arrow_style == 'arr-circle-style-4' or
+          section.settings.arrow_style == 'arr-circle-style-5'
+        %}
+            {% render 'smi-icons', icon: 'arrow-right-2' %}
+        {% else %}
+            {% render 'smi-icons', icon: 'arrow-right' %}
+      {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+				</div>
+				<div class="smi-swiper-pagination smi-pt-xl">
+					{% if section.settings.sticky_page_dot_style != 'none' %}
+  <div class="smi-slider-dot-container">
+    {% if section.settings.sticky_page_dot_style == 'text-style-1'
+      or section.settings.sticky_page_dot_style == 'text-style-2'
+      or section.settings.sticky_page_dot_style == 'text-style-3'
+    %}
+      <div class="smi-component-sticky-page-dot">
+        <div class="smi-slider-action">
+          <div class="smi-arrows {{ section.settings.sticky_page_dot_style }}">
+            <div data-control="textPrevSlide" class="smi-arrow dot-arrow-slider smi-text-sm">{% render 'smi-icons', icon: 'arrow-left' %}</div>
+            {% comment %} <div class="smi-slider-pagination smi-text-sm">1/3</div> {% endcomment %}
+            <div class="text-pagination smi-pagination smi-slider-pagination smi-text-sm smi-arrow"></div>
+            <div data-control="textNextSlide" class="smi-arrow dot-arrow-slider smi-text-sm">{% render 'smi-icons', icon: 'arrow-right' %}</div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="dot-container {{ section.settings.sticky_page_dot_style }}">
+        <div
+          class="swiper-pagination smi-pagination"
+          {% if section.settings.sticky_page_dot_style == 'dot-style-4' %}
+            style="display: flex;"
+          {% endif %}
+        ></div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="smi-button-close smi-d-none">
+		{% render 'smi-icons', icon: 'close' %}
+	</div>
+</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if custom_blocks.size > 1 %}
+            <div class="smi-swiper-controls">
+                <div class="smi-swiper-navigation">
+                    {% if section.settings.arrow_style != 'none' %}
+  <div class="smi-component-arrow-slider">
+    <div class="arrow-slider-content">
+      <div class="{{ section.settings.arrow_style }} arrow-icon arrow-slider-left smi-cursor-pointer">
+        {% if section.settings.arrow_style == 'arr-style-2' or 
+          section.settings.arrow_style == 'arr-square-style-4' or
+          section.settings.arrow_style == 'arr-square-style-5' or
+          section.settings.arrow_style == 'arr-square-style-6' or
+          section.settings.arrow_style == 'arr-circle-style-4' or
+          section.settings.arrow_style == 'arr-circle-style-5'
+        %}
+            {% render 'smi-icons', icon: 'arrow-left-2' %}
+        {% else %}
+            {% render 'smi-icons', icon: 'arrow-left' %}
+        {% endif %}
+      </div>
+      <div class="{{ section.settings.arrow_style }} arrow-icon arrow-slider-right smi-cursor-pointer">
+        {% if section.settings.arrow_style == 'arr-style-2' or 
+          section.settings.arrow_style == 'arr-square-style-4' or
+          section.settings.arrow_style == 'arr-square-style-5' or
+          section.settings.arrow_style == 'arr-square-style-6' or
+          section.settings.arrow_style == 'arr-circle-style-4' or
+          section.settings.arrow_style == 'arr-circle-style-5'
+        %}
+            {% render 'smi-icons', icon: 'arrow-right-2' %}
+        {% else %}
+            {% render 'smi-icons', icon: 'arrow-right' %}
+      {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+                </div>
+            </div>
+        {% endif %}
+        {% if has_product %}
+            <div id="smi_button_view_product_{{ section.id }}" class="smi-component-button-without-link smi-button-wrapper smi-d-block smi-d-lg-none smi-pt-xl">
+                <a role="button" class="smi-button smi-button--solid
+                    {{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' | prepend: ' smi-hover-' -}}
+            {{- ' smi-border smi-shadow' -}}">
+                    <span>{{ 'smind.general.view_product' | t | upcase }}</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% schema %}
+{
+	"name": "✧Shop the look 1-2",
+	"tag": "section",
+	"class": "smi-section smi-shop-the-look-1",
+	"settings": [
+		{
+			"type": "inline_richtext",
+			"id": "sub_heading",
+			"label": "Subheading",
+			"default": "URNA CRAS MAURIS"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Happy Customers Say"
+		},
+		{
+			"type": "select",
+			"id": "heading_size",
+			"label": "Heading size",
+			"options": [
+				{
+					"value": "smi-h4",
+					"label": "XS"
+				},
+				{
+					"value": "smi-h3",
+					"label": "S"
+				},
+				{
+					"value": "smi-h2",
+					"label": "M"
+				},
+				{
+					"value": "smi-h1",
+					"label": "L"
+				}
+			],
+			"default": "smi-h2"
+		},
+		{
+			"type": "richtext",
+			"id": "description",
+			"label": "Description",
+			"default": "<p>Commodo lorem morbi aliquam dui turpis. Iaculis pretium posuere nulla tincidunt blandit. A at elementum faucibus integer.</p>"
+		},
+		{
+			"type": "text_alignment",
+			"id": "heading_alignment",
+			"label": "Heading alignment",
+			"default": "center"
+		},
+		{
+			"type": "header",
+			"content": "Hotspot settings"
+		},
+		{
+			"type": "select",
+			"id": "image_position",
+			"label": "Image position",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			],
+			"default": "left"
+		},
+		{
+			"type": "select",
+			"id": "image_style",
+			"label": "Image style",
+			"options": [
+				{
+					"value": "style_as_product_card",
+					"label": "Style as product card"
+				},
+				{
+					"value": "style_as_media",
+					"label": "Style as media"
+				}
+			],
+			"default": "style_as_product_card"
+		},
+		{
+			"type": "select",
+			"id": "hotspot_style",
+			"label": "Hotspot style",
+			"options": [
+				{
+					"value": "1",
+					"label": "1"
+				},
+				{
+					"value": "2",
+					"label": "2"
+				}
+			],
+			"default": "1"
+		},
+		{
+			"type": "header",
+			"content": "Product card"
+		},
+		{
+			"type": "paragraph",
+			"content": "To edit the style of the product card, go to your [theme settings.](/editor?context=theme&category=✧Product cards)"
+		},
+		{
+			"type": "select",
+			"id": "media_ratio",
+			"label": "Media ratio",
+			"options": [
+				{
+					"value": "auto",
+					"label": "Adapt"
+				},
+				{
+					"value": "3/2",
+					"label": "Landscape"
+				},
+				{
+					"value": "1/1",
+					"label": "Square"
+				},
+				{
+					"value": "3/4",
+					"label": "Portrait"
+				}
+			],
+			"default": "3/4"
+		},
+		{
+			"type": "select",
+			"id": "media_shape",
+			"label": "Media shape",
+			"options": [
+				{
+					"value": "default",
+					"label": "Default"
+				},
+				{
+					"value": "round",
+					"label": "Round"
+				},
+				{
+					"value": "shape-blob",
+					"label": "Blob"
+				}
+			],
+			"default": "default",
+			"info": "Media theme settings don't apply to the \"Blob\" shape."
+		},
+		{
+			"type": "text_alignment",
+			"id": "content_alignment",
+			"label": "Content alignment",
+			"default": "left"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_second_image",
+			"label": "Show second image on hover",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_vendor",
+			"label": "Show vendor"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_swatch_color",
+			"label": "Show color swatch",
+			"info": "If no color swatches are visible, upload your own. [Learn more](https://docs.smind.io/guides/configuring-color-swatches)"
+		},
+		{
+			"type": "header",
+			"content": "Navigation"
+		},
+		{
+			"type": "select",
+			"id": "arrow_style",
+			"label": "Arrow",
+			"options": [
+				{
+					"value": "arr-style-1",
+					"label": "Style 1"
+				},
+				{
+					"value": "arr-style-2",
+					"label": "Style 2"
+				},
+				{
+					"value": "arr-square-style-1",
+					"label": "Square style 1"
+				},
+				{
+					"value": "arr-square-style-2",
+					"label": "Square style 2"
+				},
+				{
+					"value": "arr-square-style-3",
+					"label": "Square style 3"
+				},
+				{
+					"value": "arr-square-style-4",
+					"label": "Square style 4 (bg)"
+				},
+				{
+					"value": "arr-square-style-5",
+					"label": "Square style 5 (bg)"
+				},
+				{
+					"value": "arr-square-style-6",
+					"label": "Square style 6"
+				},
+				{
+					"value": "arr-circle-style-1",
+					"label": "Circle style 1 (bg)"
+				},
+				{
+					"value": "arr-circle-style-2",
+					"label": "Circle style 2"
+				},
+				{
+					"value": "arr-circle-style-3",
+					"label": "Circle style 3"
+				},
+				{
+					"value": "arr-circle-style-4",
+					"label": "Circle style 4"
+				},
+				{
+					"value": "arr-circle-style-5",
+					"label": "Circle style 5 (bg)"
+				}
+			],
+			"default": "arr-style-1"
+		},
+		{
+			"type": "select",
+			"id": "sticky_page_dot_style",
+			"label": "Pagination",
+			"options": [
+				{
+					"value": "none",
+					"label": "None"
+				},
+				{
+					"value": "dot-style-1",
+					"label": "Dot style 1"
+				},
+				{
+					"value": "dot-style-2",
+					"label": "Dot style 2"
+				},
+				{
+					"value": "dot-style-3",
+					"label": "Dot style 3"
+				},
+				{
+					"value": "dot-style-4",
+					"label": "Dot style 4"
+				},
+				{
+					"value": "line-dot",
+					"label": "Line dot"
+				},
+				{
+					"value": "line-style-1",
+					"label": "Line style 1"
+				},
+				{
+					"value": "line-style-2",
+					"label": "Line style 2"
+				},
+				{
+					"value": "line-style-3",
+					"label": "Line style 3"
+				},
+				{
+					"value": "line-style-4",
+					"label": "Line style 4"
+				},
+				{
+					"value": "text-style-1",
+					"label": "Text style 1"
+				},
+				{
+					"value": "text-style-2",
+					"label": "Text style 2"
+				},
+				{
+					"value": "text-style-3",
+					"label": "Text style 3"
+				}
+			],
+			"default": "dot-style-1"
+		},
+		{
+			"type": "select",
+            "options": [
+                {
+                    "value": "scheme_1",
+                    "label": "Scheme 1"
+                },
+                {
+                    "value": "scheme_2",
+                    "label": "Scheme 2"
+                },
+                {
+                    "value": "scheme_3",
+                    "label": "Scheme 3"
+                },
+                {
+                    "value": "scheme_4",
+                    "label": "Scheme 4"
+                },
+                {
+                    "value": "scheme_5",
+                    "label": "Scheme 5"
+                },
+                {
+                    "value": "scheme_6",
+                    "label": "Scheme 6"
+                },
+                {
+                    "value": "scheme_7",
+                    "label": "Scheme 7"
+                },
+                {
+                    "value": "scheme_8",
+                    "label": "Scheme 8"
+                },
+                {
+                    "value": "scheme_9",
+                    "label": "Scheme 9"
+                },
+                {
+                    "value": "scheme_10",
+                    "label": "Scheme 10"
+                }
+            ],
+			"id": "color_scheme",
+			"label": "Section color scheme",
+			"info": "This color scheme applies to the border and shadow of cards. [Learn more](https://docs.smind.io/guides/color-block-and-color-scheme#how-to-configure-border-and-shadow-colors-in-sections-with-two-color-schemes)"
+		},
+		{
+			"type": "select",
+            "options": [
+                {
+                    "value": "scheme_1",
+                    "label": "Scheme 1"
+                },
+                {
+                    "value": "scheme_2",
+                    "label": "Scheme 2"
+                },
+                {
+                    "value": "scheme_3",
+                    "label": "Scheme 3"
+                },
+                {
+                    "value": "scheme_4",
+                    "label": "Scheme 4"
+                },
+                {
+                    "value": "scheme_5",
+                    "label": "Scheme 5"
+                },
+                {
+                    "value": "scheme_6",
+                    "label": "Scheme 6"
+                },
+                {
+                    "value": "scheme_7",
+                    "label": "Scheme 7"
+                },
+                {
+                    "value": "scheme_8",
+                    "label": "Scheme 8"
+                },
+                {
+                    "value": "scheme_9",
+                    "label": "Scheme 9"
+                },
+                {
+                    "value": "scheme_10",
+                    "label": "Scheme 10"
+                }
+            ],
+			"id": "product_card_color_scheme",
+			"label": "Product card color scheme",
+			"info": "To use color scheme: Step 1: Hide color block in section. Step 2: Customize colors in color block of “✧Styles” section in global area. [Learn more](https://docs.smind.io/guides/color-block-and-color-scheme)"
+		},
+		{
+			"type": "color",
+			"id": "hotspot",
+			"label": "Hotspot",
+			"default": "#ffffff"
+		},
+		{
+			"type": "header",
+			"content": "Section padding"
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"min": 0,
+			"max": 200,
+			"step": 2,
+			"unit": "px",
+			"label": "Top padding",
+			"default": 50
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"min": 0,
+			"max": 200,
+			"step": 2,
+			"unit": "px",
+			"label": "Bottom padding",
+			"default": 50
+		}
+	],
+	"blocks": [
+		{
+			"name": "Look",
+			"type": "look",
+			"limit": 5,
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "header",
+					"content": "Product 1"
+				},
+				{
+					"type": "product",
+					"id": "product_1",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_1",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Horizontal position",
+					"default": 20,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_1",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Vertical position",
+					"default": 30,
+					"unit": "%"
+				},
+				{
+					"type": "header",
+					"content": "Product 2"
+				},
+				{
+					"type": "product",
+					"id": "product_2",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_2",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Horizontal position",
+					"default": 30,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_2",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Vertical position",
+					"default": 40,
+					"unit": "%"
+				},
+				{
+					"type": "header",
+					"content": "Product 3"
+				},
+				{
+					"type": "product",
+					"id": "product_3",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_3",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Horizontal position",
+					"default": 50,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_3",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Vertical position",
+					"default": 50,
+					"unit": "%"
+				},
+				{
+					"type": "header",
+					"content": "Product 4"
+				},
+				{
+					"type": "product",
+					"id": "product_4",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_4",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Horizontal position",
+					"default": 70,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_4",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Vertical position",
+					"default": 70,
+					"unit": "%"
+				},
+				{
+					"type": "header",
+					"content": "Product 5"
+				},
+				{
+					"type": "product",
+					"id": "product_5",
+					"label": "Product"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_5",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Horizontal position",
+					"default": 80,
+					"unit": "%"
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_5",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"label": "Vertical position",
+					"default": 40,
+					"unit": "%"
+				}
+			]
+		},
+		{
+			"name": "Color",
+			"limit": 1,
+			"type": "color",
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "How to use “Color block” and “Color scheme” [learn more](https://docs.smind.io/guides/color-block-and-color-scheme)"
+				},
+				{
+					"type": "header",
+					"content": "Section"
+				},
+				{
+					"type": "color",
+					"id": "background_color",
+					"default": "#F3F3F3",
+					"label": "Background"
+				},
+				{
+					"type": "color_background",
+					"id": "background_gradient_color",
+					"label": "Background gradient",
+					"info": "Background gradient replaces background where possible."
+				},
+				{
+					"type": "color",
+					"id": "text_color",
+					"default": "#121212",
+					"label": "Text"
+				},
+				{
+					"type": "color",
+					"id": "subtext_color",
+					"default": "#121212",
+					"label": "Subtext"
+				},
+				{
+					"type": "color",
+					"id": "solid_background_button_color",
+					"default": "#121212",
+					"label": "Solid button background"
+				},
+				{
+					"type": "color",
+					"id": "solid_button_label_color",
+					"default": "#FFFFFF",
+					"label": "Solid button label"
+				},
+				{
+					"type": "color",
+					"id": "shadow_color",
+					"default": "#121212",
+					"label": "Shadow"
+				},
+				{
+					"type": "paragraph",
+					"content": "This color scheme applies to the border and shadow of cards. [learn more](https://docs.smind.io/guides/color-block-and-color-scheme#how-to-configure-border-and-shadow-colors-in-sections-with-two-color-schemes)"
+				},
+				{
+					"type": "header",
+					"content": "Product card"
+				},
+				{
+					"type": "color",
+					"id": "content_background_color",
+					"default": "#F3F3F3",
+					"label": "Background"
+				},
+				{
+					"type": "color_background",
+					"id": "content_background_gradient_color",
+					"label": "Background gradient",
+					"info": "Background gradient replaces background where possible."
+				},
+				{
+					"type": "color",
+					"id": "content_text_color",
+					"default": "#121212",
+					"label": "Text"
+				},
+				{
+					"type": "color",
+					"id": "content_solid_background_button_color",
+					"default": "#121212",
+					"label": "Solid button background"
+				},
+				{
+					"type": "color",
+					"id": "content_solid_button_label_color",
+					"default": "#FFFFFF",
+					"label": "Solid button label"
+				},
+				{
+					"type": "color",
+					"id": "content_shadow_color",
+					"default": "#121212",
+					"label": "Shadow"
+				}
+			]
+		},
+		{
+			"name": "Background",
+			"limit": 1,
+			"type": "background",
+			"settings": [
+				{
+					"type": "color",
+					"id": "background_simple",
+					"label": "Background section"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image_mobile",
+					"label": "Mobile image (optional)"
+				},
+				{
+					"type": "select",
+					"id": "animation",
+					"label": "Image animation",
+					"options": [
+						{
+							"label": "None",
+							"value": "none"
+						},
+						{
+							"label": "Ambient movement",
+							"value": "ambient_movement"
+						},
+						{
+							"label": "Parallax",
+							"value": "parallax"
+						}
+					],
+					"default": "none"
+				},
+				{
+					"type": "header",
+					"content": "Video background"
+				},
+				{
+					"type": "video",
+					"id": "video",
+					"label": "Upload video"
+				},
+				{
+					"type": "video_url",
+					"id": "video_url",
+					"label": "Video URL",
+					"accept": [
+						"youtube",
+						"vimeo"
+					]
+				},
+				{
+					"type": "color_background",
+					"id": "background_overlay",
+					"label": "Overlay background"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "✧Shop the look 1-2",
+			"settings": {
+				"sub_heading": "BE UNIQUE, BE AUTHENTIC",
+				"heading": "Unlocking your style potential",
+				"heading_size": "smi-h2",
+				"description": "",
+				"heading_alignment": "center",
+				"image_position": "left",
+				"image_style": "style_as_product_card",
+				"hotspot_style": "2",
+				"media_ratio": "3/4",
+				"media_shape": "default",
+				"content_alignment": "left",
+				"show_second_image": true,
+				"show_vendor": true,
+				"show_swatch_color": true,
+				"arrow_style": "arr-square-style-3",
+				"sticky_page_dot_style": "line-style-2",
+				"hotspot": "#2e2e2e",
+				"padding_top": 50,
+				"padding_bottom": 50,
+				"color_scheme": "scheme_2",
+				"product_card_color_scheme": "scheme_1"
+			},
+			"blocks": [
+				{
+					"type": "look",
+					"settings": {
+						"image": "shopify://shop_images/smi-review_clothing-55.jpg",
+						"product_1": "cozy-cloud-puffer-jacket",
+						"horizontal_position_1": 65,
+						"vertical_position_1": 35,
+						"product_2": "aubre-open-back-essential-maxi",
+						"horizontal_position_2": 54,
+						"vertical_position_2": 65,
+						"product_3": "",
+						"horizontal_position_3": 50,
+						"vertical_position_3": 50,
+						"product_4": "",
+						"horizontal_position_4": 70,
+						"vertical_position_4": 70,
+						"product_5": "",
+						"horizontal_position_5": 80,
+						"vertical_position_5": 40
+					}
+				},
+				{
+					"type": "look",
+					"settings": {
+						"image": "shopify://shop_images/smi-review_clothing-22.jpg",
+						"product_1": "we-the-free-night-moves-shirt",
+						"horizontal_position_1": 57,
+						"vertical_position_1": 40,
+						"product_2": "closed-nikka-mid-rise-wide-leg-jeans",
+						"horizontal_position_2": 46,
+						"vertical_position_2": 66,
+						"product_3": "",
+						"horizontal_position_3": 50,
+						"vertical_position_3": 65,
+						"product_4": "",
+						"horizontal_position_4": 70,
+						"vertical_position_4": 70,
+						"product_5": "",
+						"horizontal_position_5": 80,
+						"vertical_position_5": 40
+					}
+				},
+				{
+					"type": "look",
+					"settings": {
+						"image": "shopify://shop_images/smi-review_clothing-42.jpg",
+						"product_1": "bodhi-fisher-sneakers",
+						"horizontal_position_1": 49,
+						"vertical_position_1": 56,
+						"product_2": "",
+						"horizontal_position_2": 30,
+						"vertical_position_2": 40,
+						"product_3": "",
+						"horizontal_position_3": 50,
+						"vertical_position_3": 50,
+						"product_4": "",
+						"horizontal_position_4": 70,
+						"vertical_position_4": 70,
+						"product_5": "",
+						"horizontal_position_5": 80,
+						"vertical_position_5": 40
+					}
+				},
+				{
+					"type": "color",
+					"settings": {
+						"background_color": "#fcf8f5",
+						"background_gradient_color": "",
+						"text_color": "#000000",
+						"subtext_color": "#000000",
+						"solid_background_button_color": "#000000",
+						"solid_button_label_color": "#fcf8f5",
+						"shadow_color": "#000000",
+						"content_background_color": "#ffffff",
+						"content_background_gradient_color": "",
+						"content_text_color": "#000000",
+						"content_solid_background_button_color": "#000000",
+						"content_solid_button_label_color": "#ffffff",
+						"content_shadow_color": "#000000"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+<script defer>
+var SMI_ProductCard=function(){"use strict";class SMI_ProductCard{options={card:".smi-product-card",thumbnail:".smi-product-card__thumbnail",variants:{wrapper:".smi-variants",item:".smi-variants__item"}};constructor(_options={}){this.options={...this.options,..._options};this.handleVariantClick();this.handleAddToCart()}handleVariantClick(){const variants=document.querySelectorAll(this.options.variants.wrapper);const activeClass=this.options.variants.item.replace(".","")+"--active";variants.forEach((variant=>{const items=variant.querySelectorAll(this.options.variants.item);items.forEach((item=>{item.addEventListener("click",(e=>{const activedItem=variant.querySelector(`${this.options.variants.item}.${activeClass}`);if(activedItem){activedItem.classList.remove(activeClass)}item.classList.add(activeClass);const mediaUrl=item.dataset.mediaUrl;if(mediaUrl){const parent=variant.closest(this.options.card);const firstImage=parent.querySelector(`${this.options.thumbnail} img:nth-child(1)`);if(firstImage){firstImage.setAttribute("src",mediaUrl)}}const dataId=item.getAttribute("data-id");if(dataId){const cartParent=item.closest(".smi-product-card");const aItems=cartParent.querySelectorAll("a");if(aItems.length){aItems.forEach((aItem=>{const _hrefFull=aItem.getAttribute("href");const _href=_hrefFull.split("?")[0];aItem.setAttribute("href",`${_href}?variant=${dataId}`)}))}}}))}))}))}handleAddToCart(){const buttons=document.querySelectorAll(".smi-button-cart._cart_now a");if(buttons.length){buttons.forEach((item=>{item.addEventListener("click",(e=>{e.preventDefault();const cartObj=document.querySelector("cart-notification")||document.querySelector("cart-drawer");const variantId=item.getAttribute("data-id");item.classList.add("smi-cart-adding");const textOrigin=item.getAttribute("data-text-add-cart");const textAdded=item.getAttribute("data-text-added");const textFailed=item.getAttribute("data-text-failed");const textEl=item.querySelector(".smi-cart-text");const cartType=window.smiObject?window.smiObject.cartType:"page";let sectionsPayload=this.getSectionsToRender().map((section=>section.section));if(cartObj){let _sectionsPayload=cartObj.getSectionsToRender().map((section=>section.id));sectionsPayload=[...sectionsPayload,..._sectionsPayload]}console.log(sectionsPayload);let formData={quantity:1,id:parseInt(variantId),sections:sectionsPayload,sections_url:window.location.pathname};fetch("/cart/add.js",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(formData)}).then((response=>response.json())).then((data=>{let isError=false;if(data?.status==422||data?.message==="Cart Error"){isError=true;textEl.innerText=textFailed}else{textEl.innerText=textAdded}const textTimer=setTimeout((()=>{textEl.innerText=textOrigin;clearTimeout(textTimer)}),2e3);if(!isError){const sectionRender=this.getSectionsToRender();sectionRender.forEach((section=>{const _sectionEl=document.getElementById(section.id);if(_sectionEl){const _elementToReplace=_sectionEl.querySelector(section.selector);let elementToReplace=null;if(_elementToReplace){elementToReplace=_elementToReplace}else{elementToReplace=_sectionEl}if(elementToReplace){elementToReplace.innerHTML=this.getSectionInnerHTML(data.sections[section.section],section.selector);if(typeof SMI_CartDrawer==="function"&&cartType==="drawer"){setTimeout((()=>{const drawerObj=new SMI_CartDrawer(".smi-cart-drawer-1");drawerObj.handleToggle();drawerObj.openDrawer()}),150)}else{window.location.href=window.smiObject.routes.cart_url}}}}));if(cartObj){if(typeof cartObj["renderContents"]==="function"){cartObj.renderContents(data)}}else{if(typeof SMI_CartDrawer!=="function"&&window.smiObject){window.location.href=window.smiObject.routes.cart_url}}}})).finally((()=>{item.classList.remove("smi-cart-adding");if(cartObj&&cartObj.classList.contains("is-empty"))cartObj.classList.remove("is-empty")}))}))}))}}getSectionsToRender(){const drawerCart=document.getElementById("smi-drawer-items");const res=[{id:"smi-cart-button",section:"smi-cart-icon-bubble",selector:".shopify-section"}];if(drawerCart){res.push({id:"shopify-section-"+drawerCart.dataset.id,section:drawerCart.dataset.id,selector:".smi-drawer-items_w"})}return res}getSectionInnerHTML(html,selector){return(new DOMParser).parseFromString(html,"text/html").querySelector(selector).innerHTML}}return SMI_ProductCard}();(function(){if(Shopify.designMode){new SMI_ProductCard}else{window.addEventListener("DOMContentLoaded",(event=>{new SMI_ProductCard}))}})();
+
+
+(function (){
+    class SMI_ShopTheLook{
+        swiper = null;
+        swiperNested = null;
+        sectionId = null;
+        sectionEl = null;
+        isSlideTo = false;
+        popupId = null;
+        offsetPopupId = null;
+        constructor(sectionId) {
+            this.sectionId = sectionId.replace('smi-','');
+            this.sectionEl = document.querySelector(`#${sectionId}`);
+            this.popupId = `smi-popup-` + this.sectionId;
+            this.offsetPopupId = `smi-popup-offset-` + this.sectionId;
+            this._handleResponsive();
+        }
+        _swiper(){
+            if (typeof Swiper === "undefined") return null;
+            const self = this;
+            const swiperEl = this.sectionEl.querySelector('.smi-swiper');
+            const nextEl = this.sectionEl.querySelector('.smi-swiper-controls .arrow-slider-right');
+            const prevEl = this.sectionEl.querySelector('.smi-swiper-controls .arrow-slider-left');
+            let swiperParams = {
+                slidesPerView: 'auto',
+                loop: true,
+                spaceBetween: 15,
+                autoHeight: true,
+                watchSlidesProgress: true,
+                simulateTouch: true,
+                navigation: {
+                    enabled: false,
+                    nextEl: nextEl,
+                    prevEl: prevEl,
+                },
+                on:{
+                    afterInit(){
+                        self._handlePagination(swiperEl);
+                    }
+                },
+                breakpoints: {
+                    992: {
+                        slidesPerView: 1,
+                        navigation: {
+                            enabled: true,
+                        },
+                        simulateTouch: true,
+                    }
+                }
+            }
+
+            try {
+                const swiperOptions = JSON.parse(swiperEl.getAttribute("data-swiper-options"));
+                swiperParams = {...swiperParams, ...swiperOptions}
+
+                if(swiperParams.pageDotStyle.includes('text-style')){
+                    swiperParams.pagination.type = "fraction";
+                    delete swiperParams.pageDotStyle;
+                }
+
+            }catch (e) {
+                console.log("Attribute data-swiper-options invalid JSON!")
+            }
+
+            this.swiper = new Swiper(swiperEl, swiperParams);
+
+        }
+
+        _initAllSwiperNested(){
+            this.sectionEl.querySelectorAll('.smi-look__products').forEach( el => {
+                this._initSwiperNested(el);
+            })
+        }
+        _initSwiperNested(swiperWrapper, options){
+            if (typeof Swiper === "undefined") return null;
+            const self = this;
+            const swiperNestedEl = swiperWrapper.querySelector('.swiper');
+            const controlsEl = swiperWrapper.querySelector('.smi-swiper-nested-controls');
+            const paginationEl = controlsEl.querySelector('.smi-pagination');
+            const nextEl = controlsEl.querySelector('.arrow-slider-right');
+            const prevEl = controlsEl.querySelector('.arrow-slider-left');
+            let swiperParams = {
+                slidesPerView: 1,
+                loop: false,
+                spaceBetween: 100,
+                watchSlidesProgress: true,
+                autoHeight: true,
+                simulateTouch: true,
+                pagination: {
+                    el: paginationEl,
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: nextEl,
+                    prevEl: prevEl,
+                },
+                breakpoints: {
+                    992: {
+                        navigation: {
+                            enabled: true,
+                        }
+                    }
+                },
+                on:{
+                    afterInit(){
+                        self._handlePagination(swiperWrapper);
+                    },
+                    slideChange(swiper){
+                        if (self.isSlideTo === false) {
+                            self._onChangeSlide(swiper, swiperWrapper);
+                        }else {
+                            self.isSlideTo = false
+                        }
+                    }
+                }
+            }
+
+            try {
+                const swiperOptions = JSON.parse(swiperNestedEl.getAttribute("data-swiper-options"));
+                swiperParams = {...swiperParams, ...swiperOptions}
+
+                if(swiperParams.pageDotStyle.includes('text-style')){
+                    swiperParams.pagination.type = "fraction";
+                    delete swiperParams.pageDotStyle;
+                }
+
+            }catch (e) {
+                console.log("Attribute data-swiper-options invalid JSON!")
+            }
+
+            new Swiper(swiperNestedEl, {...swiperParams,...options});
+        }
+
+        _handlePagination(el){
+            if (el.querySelector('.swiper-pagination-lock')){
+                el.querySelector('.smi-swiper-pagination')?.classList.add('smi-d-none')
+            }
+        }
+
+        _handleResponsive(){
+            const screenResize = (mediaQuery) => {
+                if (mediaQuery.matches) {
+                    
+                    this._swiper();
+                    this._initPopupSwiper();
+                    this._handlePointClickOnMobile();
+                    this._onClickButtonClose();
+                    this._handleScrollClosePopup();
+                    this._handleButtonViewProductOnClick();
+                } else {
+                    
+                    document.querySelector(`#smi-popup-` + this.sectionId)?.remove();
+                    
+
+                    
+                    this._swiper();
+                    this._initAllSwiperNested();
+                    this._handlePointClickOnDesktop();
+                }
+            }
+            const mediaQuery = window.matchMedia("(max-width: 991.98px)")
+            screenResize(mediaQuery)
+            mediaQuery.addListener(screenResize)
+        }
+
+        _initPopupSwiper(){
+            
+            const popupOld = document.querySelector('#' + this.popupId);
+            if (popupOld) popupOld.remove();
+
+            
+            const popup = document.createElement('div');
+            popup.id = `smi-popup-` + this.sectionId;
+            popup.classList.add('smi-popup-shop-the-look-1', 'smi-dropdown-popup-wrapper', 'smi-section', 'smi-d-none', 'smi-py-lg');
+            this.sectionEl.querySelectorAll('.smi-look__products').forEach(el => {
+                const clonedElement = el.cloneNode(true);
+                clonedElement.classList.remove('smi-look__products', 'smi-d-lg-block')
+                clonedElement.classList.add('smi-item')
+                popup.appendChild(clonedElement);
+            })
+            const closeBtn =  this.sectionEl.querySelector('.smi-button-close').cloneNode(true);
+            closeBtn.classList.remove('smi-d-none');
+            popup.appendChild(closeBtn);
+            document.body.appendChild(popup);
+            popup.querySelectorAll('.smi-item').forEach(el => {
+                this._initSwiperNested(el, {autoHeight: false})
+            })
+            
+            const offsetEl = document.createElement('div');
+            offsetEl.id = this.offsetPopupId;
+            offsetEl.classList.add('smi-popup-offset');
+            popup.insertAdjacentElement('afterend', offsetEl);
+
+            new SMI_ProductCard()
+        }
+
+        _closePopup(){
+            const popup =  document.querySelector(`#smi-popup-` + this.sectionId);
+            if (!popup) return;
+            popup.classList.remove('smi-active', 'smi-popup-visible');
+            setTimeout(()=> {
+                popup.classList.add('smi-d-none');
+                popup.querySelector('.smi-item:not(.smi-d-none)')?.classList.add('smi-d-none');
+            }, 550)
+
+            const offsetEl = document.querySelector(`#` + this.offsetPopupId);
+            offsetEl.style.height = 0;
+            
+
+            this._enableSwiper();
+        }
+
+        _enableSwiper(){
+            this.sectionEl.querySelector('.smi-swiper')?.swiper.enable();
+        }
+        _disableSwiper(){
+            this.sectionEl.querySelector('.smi-swiper')?.swiper.disable();
+        }
+        _onClickButtonClose(){
+            const popup =  document.querySelector(`#smi-popup-` + this.sectionId);
+            const btn = popup.querySelector('.smi-button-close');
+            if (!btn) return;
+            btn.addEventListener('click', e => this._closePopup());
+        }
+        _handleScrollClosePopup(){
+            const popup = document.querySelector('#' + this.popupId);
+            if (!popup) return;
+            document.addEventListener('scroll', e => {
+                const isOpen = popup.classList.contains('smi-popup-visible');
+                if (!isOpen) return null;
+                const mediaSlide = this.sectionEl.querySelector('.swiper-slide-active');
+                let spaceHeight =  window.innerHeight - popup.offsetHeight;
+                
+                if (mediaSlide.getBoundingClientRect().top > popup.getBoundingClientRect().top - spaceHeight / 2){
+                    this._closePopup();
+                    return null;
+                }
+                
+                if (mediaSlide.getBoundingClientRect().top + mediaSlide.offsetHeight - spaceHeight / 2 < 0){
+                    this._closePopup();
+                    return null;
+                }
+
+            })
+        }
+        _handlePointClickOnMobile(){
+            const points = this.sectionEl.querySelectorAll('.smi-point');
+            for (const point of points){
+                point.addEventListener('click',(e) => {
+                    const dataId = e.currentTarget.getAttribute('data-product-id');
+                    const currentSlideEl = e.currentTarget.closest('.swiper-slide');
+                    const indexSlide = currentSlideEl.getAttribute('data-swiper-slide-index');
+
+                    this._disableSwiper();
+
+                    
+                    const popup =  document.querySelector(`#smi-popup-` + this.sectionId);
+                    popup.classList.remove('smi-d-none');
+                    const sliderTarget = popup.querySelector(`.smi-item[data-swiper-slide-index='${indexSlide}']`);
+                    sliderTarget.classList.remove('smi-d-none');
+                    setTimeout(()=>popup.classList.add('smi-active'),10)
+                    setTimeout(()=>popup.classList.add('smi-popup-visible'),1500)
+
+                    
+                    const swiperProductEl = popup.querySelector('.smi-item:not(.smi-d-none) .swiper');
+                    const swiper = swiperProductEl?.swiper;
+                    if (!swiper) return;
+                    const slideTarget = swiperProductEl.querySelector(`[data-product-id='${dataId}']`).getAttribute('data-swiper-slide-index');
+                    if (slideTarget !== undefined){
+                        this.isSlideTo = true;
+                        swiper.slideTo(slideTarget, 0 , false)
+                        currentSlideEl.querySelector('.smi-point-active')?.classList.remove('smi-point-active')
+                        e.currentTarget.classList.add('smi-point-active');
+                    }
+
+                    
+                    this._handleScroll(popup, currentSlideEl);
+
+                })
+            }
+        }
+        _handleButtonViewProductOnClick(){
+            const b = this.sectionEl.querySelector('#smi_button_view_product_' + this.sectionId);
+            if (!b) return;
+            b.addEventListener('click', e => {
+                let s = this.sectionEl.querySelector('.smi-swiper-parent .swiper-slide-active');
+                if (!s){
+                    s = this.sectionEl.querySelector('.smi-swiper-parent .swiper-slide-fully-visible');
+                }
+                if (!s) return;
+                s.querySelector('.smi-point')?.click();
+            })
+        }
+        _handleScroll(popup, mediaSlide){
+            let viewportHeight = window.innerHeight;
+            let pageHeight = document.documentElement.scrollHeight;
+            let popupHeight = popup.offsetHeight;
+            let mediaRect = mediaSlide.getBoundingClientRect();
+            let mediaHeight = mediaSlide.offsetHeight;
+            let spaceHeight =  viewportHeight - popupHeight;
+            let point = mediaSlide.querySelector('.smi-point-active');
+            let pointRect = point.getBoundingClientRect();
+            let delay = false;
+            const scrollTo = (y) => {
+                if (delay === true){
+                    setTimeout(()=> {
+                        window.scroll({top: y, behavior: "smooth"})
+                    },500)
+                }else {
+                    window.scroll({top: y, behavior: "smooth"})
+                }
+            }
+            
+            if (pageHeight - (mediaRect.top + window.scrollY + mediaHeight) < popupHeight){
+                const offsetEl = document.querySelector(`#` + this.offsetPopupId);
+                offsetEl.style.height = popupHeight + "px";
+                
+                delay = true;
+            }
+
+            
+            if (mediaHeight < spaceHeight){
+                scrollTo(mediaRect.top + window.scrollY - (spaceHeight - mediaHeight))
+                return null;
+            }
+
+            
+            if( mediaHeight - point.offsetTop < spaceHeight / 2){
+                scrollTo(mediaRect.top + window.scrollY + (mediaHeight - spaceHeight))
+                return null;
+            }
+
+            
+            if( point.offsetTop < spaceHeight / 2){
+                scrollTo(mediaRect.top + window.scrollY)
+                return null;
+            }else {
+                scrollTo(pointRect.top + window.scrollY - (spaceHeight/2))
+                return null;
+            }
+        }
+        _handlePointClickOnDesktop(){
+            const points = this.sectionEl.querySelectorAll('.smi-point');
+            for (const point of points){
+                point.addEventListener('click',(e) => {
+                    const dataId = e.currentTarget.getAttribute('data-product-id');
+                    const slideParentEl = e.currentTarget.closest('.swiper-slide');
+                    const swiperNestedEl = slideParentEl.querySelector('.swiper');
+                    const swiper = swiperNestedEl?.swiper;
+                    if (!swiper) return;
+                    const slideTarget = swiperNestedEl.querySelector(`[data-product-id='${dataId}']`).getAttribute('data-swiper-slide-index');
+                    if (slideTarget !== undefined){
+                        this.isSlideTo = true;
+                        swiper.slideTo(slideTarget,0,false);
+                        slideParentEl.querySelector('.smi-point-active')?.classList.remove('smi-point-active')
+                        e.currentTarget.classList.add('smi-point-active');
+                    }
+                })
+            }
+        }
+
+        _onChangeSlide(swiper, swiperWrapper){
+            
+            const dataId = swiperWrapper.querySelector(`.swiper-slide[data-swiper-slide-index='${swiper.activeIndex}']`).getAttribute('data-product-id');
+            if (typeof dataId === undefined) return;
+            const indexSlideParent = swiperWrapper.getAttribute('data-swiper-slide-index');
+            const slideParent = this.sectionEl.querySelector(`.smi-swiper > .swiper-wrapper > .swiper-slide[data-swiper-slide-index="${indexSlideParent}"]`);
+            slideParent.querySelector('.smi-point-active')?.classList.remove('smi-point-active');
+            slideParent.querySelector(`[data-product-id='${dataId}']`).classList.add('smi-point-active');
+        }
+    }
+
+
+
+    if (Shopify.designMode){
+        let count = 0;
+        const timer = setInterval(() => {
+            count++;
+            if(typeof Swiper !== "undefined" || count > 200) {
+                clearInterval(timer)
+                new SMI_ShopTheLook('smi-{{ section.id }}')
+            }
+        }, 10)
+    }else {
+        document.addEventListener('DOMContentLoaded',() => {
+            new SMI_ShopTheLook('smi-{{ section.id }}')
+        })
+    }
+
+})();
+;
+
+</script>
