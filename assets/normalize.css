@@ -5,8 +5,7 @@
  * 1. Set default font family to sans-serif.
  * 2. Prevent iOS and IE text size adjust after device orientation change,
  *    without disabling user zoom.
- */
-html {
+ */html {
   font-family: sans-serif;
   /* 1 */
   -ms-text-size-adjust: 100%;
@@ -96,8 +95,7 @@ template {
 
 /**
  * Remove the gray background color from active links in IE 10.
- */
-a {
+ */a {
   background-color: transparent;
 }
 
@@ -120,8 +118,7 @@ a:hover {
 
 /**
  * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
- */
-abbr[title] {
+ */abbr[title] {
   border-bottom: 1px dotted;
 }
 
@@ -198,8 +195,7 @@ sub {
 
 /**
  * Remove border when inside `a` element in IE 8/9/10.
- */
-img {
+ */img {
   border: 0;
 }
 
@@ -220,8 +216,7 @@ svg:not(:root) {
 
 /**
  * Address margin not present in IE 8/9 and Safari.
- */
-figure {
+ */figure {
   margin: 1em 40px;
 }
 
@@ -250,7 +245,8 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace
+  , monospace;
   font-size: 1em;
 }
 
@@ -322,6 +318,7 @@ input[type="reset"]::webkit-appearance {
   cursor: pointer;
 }
 
+
 /**
  * Re-set default cursor for disabled elements.
  */
@@ -375,8 +372,6 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   height: auto;
 }
-
-
 
 
 /**
@@ -437,8 +432,7 @@ optgroup {
 
 /**
  * Remove most spacing between table cells.
- */
-table {
+ */table {
   border-collapse: collapse;
   border-spacing: 0;
 }

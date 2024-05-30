@@ -8,15 +8,18 @@
     <link
       href="{{ 'normalize.css' | asset_url }}"
       rel="stylesheet"
-      type="text/css">
+      type="text/css"
+    >
     <link
       href="{{ 'webflow.css' | asset_url }}"
       rel="stylesheet"
-      type="text/css">
+      type="text/css"
+    >
     <link
       href="{{ 'horizontal-accordions.css' | asset_url }}"
       rel="stylesheet"
-      type="text/css">
+      type="text/css"
+    >
     <script type="text/javascript">
       !(function (o, c) {
         var n = c.documentElement,
@@ -28,7 +31,8 @@
     <script
       src="{{ '_helper.js' | asset_url }}"
       type="text/javascript"
-      defer></script>
+      defer
+    ></script>
     {{ content_for_header }}
   </head>
   <body>
@@ -37,41 +41,44 @@
         <div class="html w-embed">
           <style>
             /* ALL PAGES CSS */
-            /* Desktop Only CSS (i.e. hover states) */@media only screen and (min-width: 992px) {}
-          /* Main Variables */
-          :root {
-            --main-dark: black;
-            --main-light: white;
-          }
-          /* Global Styles */
-          ::selection {
-            background: var(--main-dark);
-            color: var(--main-light);
-            text-shadow: none;
-          }
-          img::selection,
-          svg::selection {
-            background: transparent;
-          }
-          /* Link color inherits from parent font color  */
-          a {
-            color: inherit;
-          }
-          /* Disable / enable clicking on an element and its children  */
-          .no-click {
-            pointer-events: none;
-          }
-          .can-click {
-            pointer-events: auto;
-          }
-          /* Target any element with a certain "word" in the class name  */
-          [class*='spacer'] {}
-        @media screen and (min-width: 768px) {
-          .tabs_heading {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-          }
-        }
+            /* Desktop Only CSS (i.e. hover states) */
+            @media only screen and (min-width: 992px) {
+            }
+            /* Main Variables */
+            :root {
+              --main-dark: black;
+              --main-light: white;
+            }
+            /* Global Styles */
+            ::selection {
+              background: var(--main-dark);
+              color: var(--main-light);
+              text-shadow: none;
+            }
+            img::selection,
+            svg::selection {
+              background: transparent;
+            }
+            /* Link color inherits from parent font color  */
+            a {
+              color: inherit;
+            }
+            /* Disable / enable clicking on an element and its children  */
+            .no-click {
+              pointer-events: none;
+            }
+            .can-click {
+              pointer-events: auto;
+            }
+            /* Target any element with a certain "word" in the class name  */
+            [class*='spacer'] {
+            }
+            @media screen and (min-width: 768px) {
+              .tabs_heading {
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+              }
+            }
           </style>
         </div>
       </div>
@@ -82,11 +89,13 @@
       type="text/javascript"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
-      defer></script>
+      defer
+    ></script>
     <script
       src="{{ 'webflow.js' | asset_url }}"
       type="text/javascript"
-      defer></script>
+      defer
+    ></script>
     <script>
       $('.tabs_link').on('click', function () {
         $('.tabs_link, .tabs_content').removeClass('active');
