@@ -6,12 +6,13 @@
 <div class="tabs_content">
   <div class="first_tab_wrap" data-ix="new-interaction">
     <div class="first_tab_contain"><img
-        class="first_tab_inner-image"
+        class="first_tab_inner-image" 
         src="{{ section.settings.image_image_url | image_url: width: 100 }}"
         alt="{{ section.settings.image_image_url.alt }}"
         loading="lazy">
       <h2 id="w-node-aad52078-5385-5f57-ff2c-232320cd52ed-d470b57e" class="first_tab_inner-heading">
-        {{ section.settings.text_h2_heading }}
+        {{% section 'setting' %}}
+        {{ .settings.text_h2_heading }}
       </h2>
       <p id="w-node-fde3db9b-36e0-e78b-dd8c-21266774189e-d470b57e" class="first_tab_inner-paragraph">
         {{ section.settings.text_paragraph }}
@@ -48,7 +49,7 @@
 <div class="tabs_content">
   <div class="first_tab_wrap">
     <div class="first_tab_contain"><img
-        class="first_tab_inner-image"
+        class="first_tab_inner-image" src="image_url: "
         src="{{ section.settings.image_image_url | img_url: 'master' }}"
         alt="{{ section.settings.image_image_url.alt }}"
         loading="lazy">
