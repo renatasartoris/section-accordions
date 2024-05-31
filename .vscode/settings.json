@@ -1,2 +1,43 @@
 {
+    "outline.showFunctions": true,
+    "[cpp_embedded_latex]": {
+        "editor.guides.indentation": true,
+        "editor.links": true,
+        "editor.snippetSuggestions": "inline",
+        "editor.suggest.insertMode": "insert",
+        "editor.tabCompletion": "on",
+        "editor.suggest.showFields": true
+    },
+    "liquid.completion.filters": true,
+    "liquid.completion.objects": true,
+    "liquid.files.shopify": {
+        "schema": [],
+        "settings": "",
+        "sections": [],
+        "snippets": [],
+    },
+    "liquid.completion.properties": true,
+    "liquid.hover.schema": true,
+    "liquid.completion.schema": true,
+    "liquid.completion.sections": true,
+    "liquid.completion.variables": true,
+    "liquid.completion.tags": true,
+    "liquid.validate.schema": true,
+    "liquid.config.method": "workspace",
+    "liquid.engine": "shopify",
+    "liquid.completion.operators": true,
+    "liquid.config.baseDir": "",
+    "liquid.format.validate": true,
+    "liquid.hover.filters": true,
+    "liquid.hover.tags": true,
+    "liquid.format.rules": {
+        "json": {
+            "braceAllman": true
+        }
+    },
+    "[liquid]": {
+        "editor.formatOnType": true,
+        "editor.foldingStrategy": "indentation",
+        "editor.formatOnSave": true
+    }
 }
