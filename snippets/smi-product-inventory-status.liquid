@@ -1,0 +1,252 @@
+{% if block.type == 'product_inventory_status' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-inventory-status {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    id="inventory_status_container_{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+  {% liquid
+      assign target = product.selected_or_first_available_variant
+    %}
+    <input
+      type="hidden"
+      value="{{ block.settings.low_inventory_threshold }}"
+      id="inventory_status_low_{{ section.id }}"
+    >
+    <input type="hidden" value="{{ block.settings.show_inventory_count }}" id="inventory_status_show_{{ section.id }}">
+
+    {% assign final_color = 1 %}
+    {% comment %} ALWAYS INSTOCK {% endcomment %}
+    {% if target.inventory_management != 'shopify' %}
+      {% assign final_color = 1 %}
+    {% else %}
+      {% comment %} NOT ALWAYS INSTOCK {% endcomment %}
+      {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+        {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+        {% if block.settings.show_inventory_count %}
+          {% comment %} {{ target.inventory_quantity }} in Stock - 2 {% endcomment %}
+          {% assign final_color = 1 %}
+        {% else %}
+          {% assign final_color = 1 %}
+        {% endif %}
+      {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+        {% if target.inventory_policy == 'deny' %}
+          {% if target.inventory_quantity >= 0 and target.available == true %}
+            {% comment %} CONTINUTE {% endcomment %}
+            {% if target.inventory_quantity == 0 %}
+              {% assign final_color = 1 %}
+            {% else %}
+              {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+              {% if block.settings.show_inventory_count %}
+                {% comment %} {{ target.inventory_quantity }} low Stock - 3 {% endcomment %}
+                {% assign final_color = 2 %}
+              {% else %}
+                {% assign final_color = 2 %}
+              {% endif %}
+            {% else %}
+              {% assign final_color = 2 %}
+            {% endif %}
+          {% elsif target.inventory_quantity == 0 and target.available == false %}
+            {% assign final_color = 3 %}
+          {% endif %}
+        {% else %}
+          {% assign final_color = 1 %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    
+    <style>
+      @keyframes border-pulsate-1 {
+        0% {
+          border-color: rgba(84, 198, 58, 0.15);
+        }
+
+        50% {
+          border-color: rgba(84, 198, 58, 0.4);
+        }
+
+        100% {
+          border-color: rgba(84, 198, 58, 0.15);
+        }
+      }
+
+      @keyframes border-pulsate-2 {
+        0% {
+          border-color: rgba(238, 148, 65, 0.15);
+        }
+
+        50% {
+          border-color: rgba(238, 148, 65, 0.4);
+        }
+
+        100% {
+          border-color: rgba(238, 148, 65, 0.15);
+        }
+      }
+
+      @keyframes border-pulsate-3 {
+        0% {
+          border-color: rgba(200, 200, 200, 0.15);
+        }
+        50% {
+          border-color: rgba(200, 200, 200, 0.4);
+        }
+        100% {
+          border-color: rgba(200, 200, 200, 0.15);
+        }
+      }
+    </style>
+    <div class="inventory-in-stock smi-text-md" id="inventory_status_re_select_{{ section.id }}">
+      <div
+        class="green-dot"
+        style="
+
+          {% if final_color == 1 %}
+            animation: border-pulsate-1 2s infinite;
+            background: rgba(84, 198, 58, 0.15);
+              border: 3px solid rgba(84, 198, 58, 1);
+          {% elsif final_color == 2 %}
+          animation: border-pulsate-2 2s infinite;
+          background: rgba(238, 148, 65, 0.15);
+          border: 3px solid rgba(238, 148, 65, 1);
+          {% elsif final_color == 3 %}
+          animation: border-pulsate-3 2s infinite;
+          background: rgba(200, 200, 200, 0.15);
+              border: 3px solid rgba(200, 200, 200, 1);
+          {% endif %}
+        "
+      >
+        <svg
+          style="height: 10px; width: 10px;"
+          xmlns="http://www.w3.org/2000/svg"
+          width="11"
+          height="11"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <circle cx="5" cy="5" r="5"
+            fill="
+            {% if final_color == 1 %}
+              #54C63A
+            {% elsif final_color == 2 %}
+            #ee9441
+            {% elsif final_color == 3 %}
+            #c8c8c8
+            {% endif %}"/>
+        </svg>
+      </div>
+      {% if target.inventory_management != 'shopify' %}
+        <span style="opacity: 0.75">In stock</span>
+      {% else %}
+        {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+          {% if block.settings.show_inventory_count %}
+            <span style="opacity: 1">
+              {{- target.inventory_quantity }}&nbsp;<span style="opacity: 0.75">In stock</span></span
+            >
+
+          {% else %}
+            <span style="opacity: 0.75">In stock</span>
+          {% endif %}
+        {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+          {% if target.inventory_policy == 'deny' %}
+            {% if target.inventory_quantity >= 0 and target.available == true %}
+              {% if target.inventory_quantity == 0 %}
+                <span style="opacity: 0.75">In stock</span>
+              {% else %}
+                {% if block.settings.show_inventory_count %}
+                  <span style="opacity: 1"
+                    ><span style="opacity: 0.75">Low stock:</span>&nbsp
+                    {{- target.inventory_quantity -}}
+                    &nbsp;<span style="opacity: 0.75">left</span></span
+                  >
+                {% else %}
+                  <span style="opacity: 0.75">Low stock</span>
+                {% endif %}
+              {% else %}
+                <span style="opacity: 0.75">Low stock</span>
+              {% endif %}
+            {% elsif target.inventory_quantity == 0 and target.available == false %}
+              <span style="opacity: 0.75">Out of stock</span>
+            {% endif %}
+          {% else %}
+            <span style="opacity: 0.75">In stock</span>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% comment %}
+      target.inventory_management: {{ target.inventory_management }} - target.inventory_policy:
+      {{ target.inventory_policy }} - target.inventory_quantity: {{ target.inventory_quantity }} - target.available:
+      {{- target.available }}
+      - stock:
+    {% endcomment %}
+    {% comment %}
+      {% if target.inventory_quantity <= block.settings.low_inventory_threshold and target.inventory_quantity > 0 and target.inventory_policy == 'deny' %}
+        {% comment %} border-color: rgba(238, 148, 65, 0.4); {% endcomment %}
+        low stock
+      {% elsif target.inventory_quantity >= 0 and target.available == true %}
+      {% comment %} border-color: rgba(84, 198, 58, 0.4); {% endcomment %}
+        in stock
+      {% elsif target.inventory_quantity > block.settings.low_inventory_threshold and target.available == true %}
+      {% comment %} border-color: rgba(84, 198, 58, 0.4); {% endcomment %}
+      in stock
+      {% else %}
+      {% comment %} border-color: rgba(200, 200, 200, 0.4); {% endcomment %}
+      out of stock
+      {% endif %}
+    {% endcomment %}
+    {% comment %}
+      {% if target.inventory_quantity >= 0 and target.available == true and block.settings.low_inventory_threshold < target.inventory_quantity %}
+      {% if target.inventory_quantity == 0 %}
+        only in stock
+        {% else %}
+        {% if block.settings.show_inventory_count %} {{ target.inventory_quantity }} {% endif %} in Stock
+      {% endif %}
+
+
+      {% elsif target.inventory_quantity >= 0 and target.available == true and block.settings.low_inventory_threshold >= target.inventory_quantity %}
+        low stock
+      {%endif %}
+    {% endcomment %}
+
+    {% comment %}
+      {% comment %} ALWAYS INSTOCK {% endcomment %}
+      {% if target.inventory_management != 'shopify' %}
+        in Stock - 1
+      {% else %}
+        {% comment %} NOT ALWAYS INSTOCK {% endcomment %}
+        {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+          {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+          {% if block.settings.show_inventory_count %}
+            {{ target.inventory_quantity }} in Stock - 2
+          {% else %}
+            in stock - 2
+          {% endif %}
+        {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+          {% if target.inventory_policy == 'deny' %}
+            {% if target.inventory_quantity >= 0 and target.available == true %}
+              {% comment %} CONTINUTE {% endcomment %}
+              {% if target.inventory_quantity == 0 %}
+                only in stock - 3
+              {% else %}
+                {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+                {% if block.settings.show_inventory_count %}
+                  {{ target.inventory_quantity }} low Stock - 3
+                {% else %}
+                  low stock - 3
+                {% endif %}
+              {% else %}
+                lowstock
+              {% endif %}
+            {% elsif target.inventory_quantity == 0 and target.available == false %}
+              out of stock
+            {% endif %}
+          {% else %}
+            IN STOCK - 4
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endcomment %}
+  </div>
+{% endif %}

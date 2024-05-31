@@ -1,0 +1,41 @@
+{% if block.type == 'product_share' %}
+  <div class="smi-product-block-{{ section.id }} smi-product-share {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %}  smi-product-share-icon-{{ section.id }}" {{ block.shopify_attributes }}>
+    <style>
+      .smi-product-share-icon-{{ section.id }} .a-href-icon{
+        width: calc({{ block.settings.icon_size }}px + 16px);
+        height: calc({{ block.settings.icon_size }}px + 16px);
+      }
+
+      .smi-product-share-icon-{{ section.id }} svg{
+          width: {{ block.settings.icon_size }}px;
+          height: {{ block.settings.icon_size }}px;
+        
+      }
+    </style>
+    {% if template contains 'product' %}
+      {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+
+      {% unless settings.social_sharing_count %}
+        {% assign shareCountClass = 'no-count' %}
+      {% endunless %}
+    {% endif %}
+    <span>{{ block.settings.heading }}</span>
+    <a target="_blank" href="https://www.facebook.com/sharer.php?u={{ permalinkURL }}" class="share-facebook {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}">
+      {% render 'smi-icons', icon: 'facebook' %}
+    </a>
+    <a target="_blank" href="https://twitter.com/share?url={{ permalinkURL }}" class="share-twitter {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}">
+      {% render 'smi-icons', icon: 'twitter' %}
+    </a>
+    <a
+      target="_blank"
+      href="https://pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media={{ product.featured_image | product_img_url: 'original' }}&amp;description={{ product.title | escape }}"
+      class="share-pinterest {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}"
+    >
+      {% render 'smi-icons', icon: 'pinterest' %}
+    </a>
+    <span class="copy-product-link {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}" onclick="copyLinkProduct('{{ permalinkURL }}')">
+      <span class="tooltiptext" id="myTooltip_product_link">Copy product link</span>
+      {% render 'smi-icons', icon: 'copy' -%}
+    </span>
+  </div>
+{% endif %}

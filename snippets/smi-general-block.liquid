@@ -1,0 +1,691 @@
+{% comment %} BLOCK PRICE {% endcomment %}
+{% liquid
+    assign target = product.selected_or_first_available_variant
+    assign compare_at_price = target.compare_at_price
+    assign price = target.price | default: 1999
+    assign available = target.available | default: false
+    assign money_price = price | money
+    if settings.currency_code_enabled
+      assign money_price = price | money_with_currency
+    endif
+    if target == product and product.price_varies
+      assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+    endif
+  
+    assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+    if currency_code_enabled
+      assign currency_full = true
+    else
+      assign currency_full = false
+    endif
+  
+    assign sale_percent = compare_at_price | minus: target.price | times: 100.0 | divided_by: compare_at_price | round | append: '%'
+  
+    if currency_full
+      assign sale_amount = compare_at_price | minus: target.price | json | money_with_currency
+    else
+      assign sale_amount = compare_at_price | minus: target.price | json | money
+    endif
+  %}
+  {% if block.type == 'product_price' %}
+    <input
+      type="hidden"
+      value="{{ block.settings.show_sale_badge }}"
+      id="is_sale_badge_price_{{ section.id }}"
+      data-bagde="{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}"
+      data-bagde-text="{{ 'smind.product.saleText' | t }}"
+    >
+    <div style="width: 100%" {{ block.shopify_attributes }}>
+      <div
+        class="
+          smi-product-block-{{ section.id }}
+          smi-product-price {% if forloop.index != section.blocks.size %} smi-mb-sm {% endif %}
+  
+          {% if has_color_block == true %}
+            smi-custom-badge-color
+          {% endif %}
+        "
+  
+        id="product_price_{{ section.id }}"
+      >
+        <div id="product_price_content_{{ section.id }}">
+          {% if target.price < compare_at_price
+            and compare_at_price != ''
+            and compare_at_price != blank
+            and compare_at_price > 0
+          %}
+            {% if target.inventory_quantity <= 0 and target.available == false %}
+              <div class="price-sale">
+                <span
+                  class="
+                                smi-badges smi-badges--sold-out
+                    sale-content {% if has_color_block == true %}badge-sold-out{% else %}
+                    smi-color-{{ settings.smi_sold_out_badge_color_scheme }}{% endif %} smi-text-badge
+                  "
+                >
+                  <span>Sold out</span>
+                </span>
+              </div>
+            {% else %}
+              <div class="price-sale">
+                <span class="listed-price smi-text-price-lg">
+                  {%- if currency_full -%}
+                    {{- compare_at_price | json | money_with_currency -}}
+                  {%- else -%}
+                    {{- compare_at_price | json | money -}}
+                  {%- endif -%}
+                </span>
+                <span class="sale-price smi-text-price-xl">
+                  {%- if currency_full -%}
+                    {{- target.price | json | money_with_currency -}}
+                  {%- else -%}
+                    {{- target.price | json | money -}}
+                  {%- endif -%}
+                </span>
+                {% if block.settings.show_sale_badge %}
+                  <span
+                    class="
+                      sale-content smi-text-badge
+                      smi-badges
+                      {% if has_color_block == true %}
+                        badge-sale
+                        {% else %}
+                        smi-color-{{ settings.smi_sale_badge_color_scheme }}
+                      {% endif %}
+                    "
+                  >
+                    <span>{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}</span>
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+  
+          {% elsif target.price >= compare_at_price
+            or compare_at_price == blank
+            or compare_at_price == ''
+          %}
+            <div
+              class="
+                        price-sale {% if target.inventory_quantity <= 0 and target.available == false %}
+                  smi-text-badge
+                  {% else %}
+                  smi-text-price-xl
+                {% endif %}
+              "
+            >
+              {% if target.inventory_quantity <= 0 and target.available == false %}
+                <span
+                  class="
+                                smi-badges smi-badges--sold-out
+                    {% if has_color_block == true %}
+                      badge-sold-out
+                      {% else %}
+                      smi-color-{{ settings.smi_sold_out_badge_color_scheme }}
+                    {% endif %} sale-content
+                  "
+                >
+                  <span class="product-price-sold-out">Sold out</span>
+                </span>
+              {% else %}
+                {% if currency_full %}
+                  {{ target.price | json | money_with_currency }}
+                {% else %}
+                  {{ target.price | json | money }}
+                {% endif %}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        {% assign shipping_policy = shop.shipping_policy.body | strip_newlines | strip_html %}
+        {%- if shipping_policy != blank and shipping_policy != '' and block.settings.show_shipping_notice -%}
+          <a class="shipping-policy smi-mt-xs" href="{{ shop.shipping_policy.url }}">Shipping</a
+          >&nbsp;<span style="opacity: 0.75;">calculated at checkout.</span>
+        {%- endif -%}
+      </div>
+    </div>
+  {% endif %}
+  
+
+{% comment %} BLOCK SKU {% endcomment %}
+{% if block.type == "product_sku" %}
+    <div class="smi-product-block-{{ section.id }} {% if forloop.index != section.blocks.size and target.sku != blank and target.sku != "" %} smi-mb-lg {% endif %}" style="width: 100%;" id="product_sku_{{ section.id }}" {{ block.shopify_attributes }}>
+        {% if target.sku != blank or target.sku != ""%}
+            <div class="product-sku smi-text-sm">
+                <span style="opacity: 0.75">sku:</span>&nbsp;<span>{{ target.sku }}</span>
+            </div>
+        {% endif %}
+    </div>
+
+{% endif %}
+
+{% comment %} BLOCK TITLE {% endcomment %}
+{% if block.type == 'product_title' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-product-title {% if forloop.index != section.blocks.size %} smi-mb-sm {% endif %} "
+    {{ block.shopify_attributes }}
+  >
+    <h3
+      class="
+        product-title-content
+        {{ block.settings.heading_size }}
+      "
+    >
+      {{ product.title }}
+    </h3>
+  </div>
+{% endif %}
+
+{% comment %} BLOCK POP-UP BUTTON {% endcomment %}
+{% if block.type == 'product_popup_button' %}
+  {% liquid
+    assign button_label = block.settings.button_label
+    assign button_style = block.settings.button_style
+  %}
+  {% liquid
+    assign colorblock = section.blocks | where: 'type', 'product_color' | first
+    if colorblock
+      assign custom_color = 'smi-color-' | append: section.id
+    else
+      assign custom_color = 'smi-color-' | append: section.settings.color_scheme
+    endif
+  %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-product-popup-button smi-component-buttons smi-button-wrapper {% if block.settings.button_full_width == true %} smi-component-buttons-full-width {% endif %} {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    {{ block.shopify_attributes }}
+    onclick="smiLiteModal.open('#popup_content_{{ section.id }}')"
+  >
+    {{ colorblock.size }}
+    {% if button_label != blank %}
+      <a
+        href="#"
+        class="
+          smi-button smi-text-button smi-button--{{ button_style | split: '_' | first -}}
+          {%- if button_style contains 'arrow' %} smi-has-icon{% endif %}
+          {{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' | prepend: ' smi-hover-' -}}
+          {{- ' smi-border smi-shadow' -}}
+        "
+      >
+        <span>
+          {{- button_label | escape -}}
+        </span>
+        {% if button_style contains 'arrow' %}
+          <div>
+            {% render 'smi-icons', icon: 'arrow-right-2' %}
+          </div>
+        {% endif %}
+      </a>
+    {% endif %}
+    <div
+      class="smi-lite-modal smi-default-modal smi-section smi-dropdown-popup-wrapper smi-modal-lg smi-px-md smi-py-md smi-border smi-shadow {{ custom_color }}"
+      id="popup_content_{{ section.id }}"
+    >
+      <div class="popup-content-product-close-btn" onclick="smiLiteModal.close()">
+        {% render 'smi-icons', icon: 'close' %}
+      </div>
+      <div class="popup-content-product popup-content-detail smi-text-md">
+        {{ block.settings.popup_content }}
+        {% if block.settings.popup_content_page != blank %}
+          {{ block.settings.popup_content_page.content }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% comment %} BLOCK product guaranteed {% endcomment %}
+{% if block.type == 'product_guaranteed' %}
+  {% assign img_width = block.settings.image_width %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-guaranteed-checkout {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    style="       text-align: {{ block.settings.alignment }};"
+    {{ block.shopify_attributes }}
+  >
+    <p
+      class="smi-mb-xs smi-text-md smi-text-75"
+      style="
+        width: 100%;
+        text-align: {{ block.settings.alignment }};
+      "
+    >
+      {{ block.settings.heading }}
+    </p>
+    <style>
+      .smi-product-detail .smi-product-guaranteed-checkout {
+          width: {{ img_width }}px;
+          max-width: 100%
+
+      }
+      .smi-product-detail .smi-sample-guaranteed-checkout{
+          height: 100px;
+      }
+    </style>
+    {% liquid
+      assign class_guaranteed_img = 'smi-media-wrapper smi-media-settings smi-product-guaranteed-checkout '
+
+      if block.settings.apply_media_style == true
+        assign class_guaranteed_img = class_guaranteed_img | append: ' smi-border smi-shadow '
+      endif
+      assign class_guaranteed_img_sample = class_guaranteed_img | append: ' smi-sample-guaranteed-checkout'
+    %}
+    {%- if block.settings.upload_checkout != blank -%}
+      {{
+        block.settings.upload_checkout
+        | image_url: width: img_width
+        | image_tag: loading: 'lazy', class: class_guaranteed_img
+      }}
+    {%- else -%}
+      {{ 'blog-apparel-3' | placeholder_svg_tag: class_guaranteed_img_sample }}
+    {%- endif -%}
+  </div>
+{% endif %}
+
+{% if block.type == 'product_oganization' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-product-organization smi-text-sm {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    {{ block.shopify_attributes }}
+  >
+    {% if block.settings.show_product_type == true and product.type != '' and product.type != blank %}
+      <div class="product-organization">
+        <span class="product-organization-title smi-text-75"> {{ 'smind.product.product_type' | t }}:&nbsp;</span>
+        {{ product.type }}
+      </div>
+    {% endif %}
+    {% if block.settings.show_vendor == true and product.vendor != '' and product.vendor != blank %}
+      {%- capture vendor -%} {{ product.vendor | link_to_vendor }} {%- endcapture -%}
+      <div class="product-organization">
+        <span class="product-organization-title smi-text-75"> {{ 'smind.product.vendor' | t }}:&nbsp; </span>
+        {{ vendor }}
+      </div>
+    {% endif %}
+    {% if block.settings.show_collections == true and product.collections != blank %}
+      <div class="product-organization">
+        <span class="product-organization-title smi-text-75"> {{ 'smind.product.collections' | t }}:&nbsp;</span>
+        <div>
+          {% for collection in product.collections %}
+            {% assign collection_coll = '/collections/all/' | append: collection.title %}
+            {{ collection.title | capitalize | link_to: collection_coll -}}
+            {%- unless forloop.last %},{% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% if block.settings.show_tags == true and product.tags != blank %}
+      {% if product.tags.size > 0 %}
+        <div class="product-organization">
+          <span class="product-organization-title smi-text-75"> {{ 'smind.product.tags' | t }}:&nbsp;</span>
+          <div class="product-tag">
+            {% if block.settings.tag_style == 'text' %}
+              {% for tag in product.tags %}
+                {% assign tag_coll = '/collections/all/' | append: tag %}
+                {{ tag | link_to: tag_coll -}}
+                {%- unless forloop.last %},&nbsp;{% endunless %}
+              {% endfor %}
+            {% elsif block.settings.tag_style == 'highlight' %}
+              {% for tag in product.tags %}
+                <a class="tag-highlight smi-px-xs" href="{{ shop.url}}/collections/all/{{ tag }}">
+                  {{ tag }}
+                </a>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if block.type == 'product_divider' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-product-divider {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    {{ block.shopify_attributes }}
+  >
+    divider
+  </div>
+{% endif %}
+
+{% comment %} BLOCK product text{% endcomment %}
+{% if block.type == 'product_text' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-product-text smi-text-md smi-text-75 {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.text }}
+  </div>
+{% endif %}
+
+{% comment %} BLOCK product feature icon{% endcomment %}
+{% if block.type == 'product_feature_icon' %}
+    <div class="smi-product-block-{{ section.id }} smi-product-feature-icon smi-product-feature-icon-{{ section.id }} smi-product-feature-icon-{{ forloop.index }}
+      {% if block.settings.half_width_on_large_screen == true %}
+          smi-product-feature-icon-half-width-{{ section.settings.desktop_media_width }} {% endif %}
+          {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} " {{ block.shopify_attributes }}>
+        <div class="heading-feature-content">
+        <style>
+          .smi-product-feature-icon-{{ forloop.index }} img {
+            height: {{ block.settings.icon_size }}px;
+            width: {{ block.settings.icon_size }}px;
+        }
+        .smi-product-feature-icon-{{ forloop.index }} svg {
+          height: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+          width: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+      }
+        </style>
+        {%- if block.settings.upload_icon != blank -%}
+          {{
+            block.settings.upload_icon
+            | image_url: width: block.settings.icon_size , height: block.settings.icon_size
+            | image_tag: loading: 'lazy', class: 'heading-feature-icon smi-mr-xs'
+          }}
+          {% else %}
+          <span class="smi-product-feature-icon-span-icon {% if block.settings.icon != 'none' %} smi-mr-xs {% endif %}">{{ CUSTOM_ICON }}</span>
+        {%- endif -%}
+        <div class="heading-feature-heading">
+          <h5 class="{{ block.settings.heading_size }}">{{ block.settings.heading }}</h5>
+          <p class="smi-text-sm">{{ block.settings.content }}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% comment %} BLOCK product share{% endcomment %}
+  {% if block.type == 'product_share' %}
+    <div class="smi-product-block-{{ section.id }} smi-product-share {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %}  smi-product-share-icon-{{ section.id }}" {{ block.shopify_attributes }}>
+      <style>
+        .smi-product-share-icon-{{ section.id }} .a-href-icon{
+          width: calc({{ block.settings.icon_size }}px + 16px);
+          height: calc({{ block.settings.icon_size }}px + 16px);
+        }
+
+        .smi-product-share-icon-{{ section.id }} svg{
+            width: {{ block.settings.icon_size }}px;
+            height: {{ block.settings.icon_size }}px;
+
+        }
+      </style>
+      {% if template contains 'product' %}
+        {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+
+        {% unless settings.social_sharing_count %}
+          {% assign shareCountClass = 'no-count' %}
+        {% endunless %}
+      {% endif %}
+      <span>{{ block.settings.heading }}</span>
+      <a target="_blank" aria-label="{{ product.title }}" href="https://www.facebook.com/sharer.php?u={{ permalinkURL }}" class="share-facebook {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}">
+        {% render 'smi-icons', icon: 'facebook' %}
+      </a>
+      <a target="_blank" aria-label="{{ product.title }}" href="https://twitter.com/share?url={{ permalinkURL }}" class="share-twitter {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}">
+        {% render 'smi-icons', icon: 'twitter' %}
+      </a>
+      <a
+        target="_blank" aria-label="{{ product.title }}"
+        href="https://pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media={{ product.featured_image | product_img_url: 'original' }}&amp;description={{ product.title | escape }}"
+        class="share-pinterest {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}"
+      >
+        {% render 'smi-icons', icon: 'pinterest' %}
+      </a>
+      <span class="copy-product-link {% if block.settings.icon_style != "1" %} a-href-icon {% endif %} product-share-icon-{{ block.settings.icon_style }}" onclick="copyLinkProduct('{{ permalinkURL }}')">
+        <span class="tooltiptext" id="myTooltip_product_link">Copy product link</span>
+        {% render 'smi-icons', icon: 'copy' -%}
+      </span>
+    </div>
+  {% endif %}
+
+  {% comment %} BLOCK product button{% endcomment %}
+  {% if block.type == 'product_button' %}
+    <div class="smi-product-block-{{ section.id }} smi-product-popup-button {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} " {{ block.shopify_attributes }}>
+      {{ BUTTON }}
+    </div>
+  {% endif %}
+
+
+{% comment %} BLOCK product inventory status{% endcomment %}
+{% if block.type == 'product_inventory_status' %}
+  <div
+    class="smi-product-block-{{ section.id }} smi-inventory-status {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+    id="inventory_status_container_{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+    {% liquid
+      assign target = product.selected_or_first_available_variant
+    %}
+    <input
+      type="hidden"
+      value="{{ block.settings.low_inventory_threshold }}"
+      id="inventory_status_low_{{ section.id }}"
+    >
+    <input type="hidden" value="{{ block.settings.show_inventory_count }}" id="inventory_status_show_{{ section.id }}">
+
+    {% assign final_color = 1 %}
+    {% comment %} ALWAYS INSTOCK {% endcomment %}
+    {% if target.inventory_management != 'shopify' %}
+      {% assign final_color = 1 %}
+    {% else %}
+      {% comment %} NOT ALWAYS INSTOCK {% endcomment %}
+      {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+        {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+        {% if block.settings.show_inventory_count %}
+          {% comment %} {{ target.inventory_quantity }} in Stock - 2 {% endcomment %}
+          {% assign final_color = 1 %}
+        {% else %}
+          {% assign final_color = 1 %}
+        {% endif %}
+      {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+        {% if target.inventory_policy == 'deny' %}
+          {% if target.inventory_quantity >= 0 and target.available == true %}
+            {% comment %} CONTINUTE {% endcomment %}
+            {% if target.inventory_quantity == 0 %}
+              {% assign final_color = 1 %}
+            {% else %}
+              {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+              {% if block.settings.show_inventory_count %}
+                {% comment %} {{ target.inventory_quantity }} low Stock - 3 {% endcomment %}
+                {% assign final_color = 2 %}
+              {% else %}
+                {% assign final_color = 2 %}
+              {% endif %}
+            {% else %}
+              {% assign final_color = 2 %}
+            {% endif %}
+          {% elsif target.inventory_quantity == 0 and target.available == false %}
+            {% assign final_color = 3 %}
+          {% endif %}
+        {% else %}
+          {% assign final_color = 1 %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    <style>
+      @keyframes border-pulsate-1 {
+        0% {
+          border-color: rgba(84, 198, 58, 0.15);
+        }
+
+        50% {
+          border-color: rgba(84, 198, 58, 0.4);
+        }
+
+        100% {
+          border-color: rgba(84, 198, 58, 0.15);
+        }
+      }
+
+      @keyframes border-pulsate-2 {
+        0% {
+          border-color: rgba(238, 148, 65, 0.15);
+        }
+
+        50% {
+          border-color: rgba(238, 148, 65, 0.4);
+        }
+
+        100% {
+          border-color: rgba(238, 148, 65, 0.15);
+        }
+      }
+
+      @keyframes border-pulsate-3 {
+        0% {
+          border-color: rgba(200, 200, 200, 0.15);
+        }
+        50% {
+          border-color: rgba(200, 200, 200, 0.4);
+        }
+        100% {
+          border-color: rgba(200, 200, 200, 0.15);
+        }
+      }
+    </style>
+    <div class="inventory-in-stock smi-text-md" id="inventory_status_re_select_{{ section.id }}">
+      <div
+        class="green-dot"
+        style="
+
+          {% if final_color == 1 %}
+            animation: border-pulsate-1 2s infinite;
+            background: rgba(84, 198, 58, 0.15);
+              border: 3px solid rgba(84, 198, 58, 1);
+          {% elsif final_color == 2 %}
+          animation: border-pulsate-2 2s infinite;
+          background: rgba(238, 148, 65, 0.15);
+          border: 3px solid rgba(238, 148, 65, 1);
+          {% elsif final_color == 3 %}
+          animation: border-pulsate-3 2s infinite;
+          background: rgba(200, 200, 200, 0.15);
+              border: 3px solid rgba(200, 200, 200, 1);
+          {% endif %}
+        "
+      >
+        <svg
+          style="height: 10px; width: 10px;"
+          xmlns="http://www.w3.org/2000/svg"
+          width="11"
+          height="11"
+          viewBox="0 0 10 10"
+          fill="none"
+        >
+          <circle cx="5" cy="5" r="5"
+            fill="
+            {% if final_color == 1 %}
+              #54C63A
+            {% elsif final_color == 2 %}
+            #ee9441
+            {% elsif final_color == 3 %}
+            #c8c8c8
+            {% endif %}"/>
+        </svg>
+      </div>
+      {% if target.inventory_management != 'shopify' %}
+        <span style="opacity: 0.75">In stock</span>
+      {% else %}
+        {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+          {% if block.settings.show_inventory_count %}
+            <span style="opacity: 1">
+              {{- target.inventory_quantity }}&nbsp;<span style="opacity: 0.75">In stock</span></span
+            >
+
+          {% else %}
+            <span style="opacity: 0.75">In stock</span>
+          {% endif %}
+        {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+          {% if target.inventory_policy == 'deny' %}
+            {% if target.inventory_quantity >= 0 and target.available == true %}
+              {% if target.inventory_quantity == 0 %}
+                <span style="opacity: 0.75">In stock</span>
+              {% else %}
+                {% if block.settings.show_inventory_count %}
+                  <span style="opacity: 1"
+                    ><span style="opacity: 0.75">Low stock:</span>&nbsp
+                    {{- target.inventory_quantity -}}
+                    &nbsp;<span style="opacity: 0.75">left</span></span
+                  >
+                {% else %}
+                  <span style="opacity: 0.75">Low stock</span>
+                {% endif %}
+              {% else %}
+                <span style="opacity: 0.75">Low stock</span>
+              {% endif %}
+            {% elsif target.inventory_quantity == 0 and target.available == false %}
+              <span style="opacity: 0.75">Out of stock</span>
+            {% endif %}
+          {% else %}
+            <span style="opacity: 0.75">In stock</span>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% comment %}
+      target.inventory_management: {{ target.inventory_management }} - target.inventory_policy:
+      {{ target.inventory_policy }} - target.inventory_quantity: {{ target.inventory_quantity }} - target.available:
+      {{- target.available }}
+      - stock:
+    {% endcomment %}
+    {% comment %}
+      {% if target.inventory_quantity <= block.settings.low_inventory_threshold and target.inventory_quantity > 0 and target.inventory_policy == 'deny' %}
+        {% comment %} border-color: rgba(238, 148, 65, 0.4); {% endcomment %}
+        low stock
+      {% elsif target.inventory_quantity >= 0 and target.available == true %}
+      {% comment %} border-color: rgba(84, 198, 58, 0.4); {% endcomment %}
+        in stock
+      {% elsif target.inventory_quantity > block.settings.low_inventory_threshold and target.available == true %}
+      {% comment %} border-color: rgba(84, 198, 58, 0.4); {% endcomment %}
+      in stock
+      {% else %}
+      {% comment %} border-color: rgba(200, 200, 200, 0.4); {% endcomment %}
+      out of stock
+      {% endif %}
+    {% endcomment %}
+    {% comment %}
+      {% if target.inventory_quantity >= 0 and target.available == true and block.settings.low_inventory_threshold < target.inventory_quantity %}
+      {% if target.inventory_quantity == 0 %}
+        only in stock
+        {% else %}
+        {% if block.settings.show_inventory_count %} {{ target.inventory_quantity }} {% endif %} in Stock
+      {% endif %}
+
+
+      {% elsif target.inventory_quantity >= 0 and target.available == true and block.settings.low_inventory_threshold >= target.inventory_quantity %}
+        low stock
+      {%endif %}
+    {% endcomment %}
+
+    {% comment %}
+      {% comment %} ALWAYS INSTOCK {% endcomment %}
+      {% if target.inventory_management != 'shopify' %}
+        in Stock - 1
+      {% else %}
+        {% comment %} NOT ALWAYS INSTOCK {% endcomment %}
+        {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+          {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+          {% if block.settings.show_inventory_count %}
+            {{ target.inventory_quantity }} in Stock - 2
+          {% else %}
+            in stock - 2
+          {% endif %}
+        {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+          {% if target.inventory_policy == 'deny' %}
+            {% if target.inventory_quantity >= 0 and target.available == true %}
+              {% comment %} CONTINUTE {% endcomment %}
+              {% if target.inventory_quantity == 0 %}
+                only in stock - 3
+              {% else %}
+                {% comment %} IN STOCK AND DISPLAY QUANTITY OR NOT {% endcomment %}
+                {% if block.settings.show_inventory_count %}
+                  {{ target.inventory_quantity }} low Stock - 3
+                {% else %}
+                  low stock - 3
+                {% endif %}
+              {% else %}
+                lowstock
+              {% endif %}
+            {% elsif target.inventory_quantity == 0 and target.available == false %}
+              out of stock
+            {% endif %}
+          {% else %}
+            IN STOCK - 4
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endcomment %}
+  </div>
+{% endif %}

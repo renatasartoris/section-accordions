@@ -1,0 +1,180 @@
+{% if block.type == 'product_custom_buy' %}
+  <input type="hidden" id="position_product_custom_purchase_{{ section.id }}" value="{{ forloop.index }}">
+  <div
+    class="smi-product-block-{{ section.id }} smi-component-product-purchase {% if forloop.index != section.blocks.size %} smi-mb-xs {% endif %}"
+    id="smi_product_custom_buy_{{ section.id }}"
+    {{ block.shopify_attributes }}
+  >
+    {% assign title_pickup = target.title | replace: "/", "-" %}
+  <input id="msg_notice_sec_add_{{ section.id }}" type="hidden" value="{{ 'smind.product.cant_add_more' | t }}&nbsp;{{product.title}}:&nbsp;{{title_pickup}}&nbsp;{{ 'smind.product.to_the_cart' | t }}">
+  <product-form class="product-form">
+      {% if show_buy_quantity_btn == true and has_buy_group == false %}
+        <div class="smi-text-md smi-mb-xs"id="check_item_in_cart2_{{ section.id }}">
+          {%- assign cart_qty = cart
+            | item_count_for_variant: product.selected_or_first_available_variant.id
+          -%}
+          {{ 'smind.product.quantity' | t }} {% if cart_qty > 0 %}({{cart_qty}} {{ 'smind.product.in_cart' | t }}) {% endif %}
+          <input type="hidden" value={{ cart_qty }} id="cart_quantity_{{ section.id }}">
+        </div>
+      {% endif %}
+
+
+      <div
+        class="smi-notice-cart-item smi-text-xs smi-mb-xs hide-msg-noti-cart-item"
+        id="msg_notice_cart_item_added_all2_{{ section.id }}"
+        
+      >
+        {% render 'smi-icons', icon: 'error' %}&nbsp;{% if target.inventory_quantity == 1 %}{{ 'smind.product.all' | t }}&nbsp;{{target.inventory_quantity}}&nbsp;{{product.title}}:&nbsp;{{title_pickup}}&nbsp;{{ 'smind.product.one_item_al_added_cart' | t }}{% else %}{{ 'smind.product.all' | t }}&nbsp;{{target.inventory_quantity}}&nbsp;{{product.title}}:&nbsp;{{title_pickup}}&nbsp;{{ 'smind.product.many_items_al_added_cart' | t }}{% endif %}
+   
+      </div>
+
+      <div class="smi-notice-cart-item smi-text-xs smi-mb-xs hide-msg-noti-cart-item" id="msg_notice_cart_item2_{{ section.id }}"
+        
+      >
+        {% if target.inventory_policy == 'deny'
+        and target.inventory_quantity > 0
+        and cart_qty == target.inventory_quantity
+      %}
+        {% render 'smi-icons', icon: 'error' %}&nbsp;{% if cart_qty == 1 %}{{ 'smind.product.all' | t }}&nbsp;{{ cart_qty }}&nbsp;{{ 'smind.product.one_item_in_cart' | t }}{% else %}{{ 'smind.product.all' | t }}&nbsp;{{ cart_qty }}&nbsp;{{ 'smind.product.many_items_in_cart' | t }}{% endif %}
+      {% endif %}
+      </div>
+      <div class="smi-buy-quantity">
+        {% if show_buy_quantity_btn == true and has_buy_group == false %}
+          <div class="variant-quantity smi-inputs-wrapper smp-input-border-text-color smi-input">
+            <span 
+              class="disable-plus-minus-quantity plus-minus-icon"
+              id="btn_minus_quantity_{{ section.id }}2"
+              
+            >
+              <span onclick="plusMinusQuantityItem('{{ section.id }}','minus', 2)">
+                {% render 'smi-icons', icon: 'minus' %}
+              </span>
+            </span>
+            <input
+              class="number-item smi-text-md"
+              value="1"
+              id="product_quantity2_{{ section.id }}"
+              min="1"
+              type="number"
+              form="{{ target.id }}"
+              onchange="changeQuantityCustom('{{ section.id }}')"
+            >
+            <span
+              class="plus-minus-icon
+                      {% if target.available == false %}
+                      disable-plus-minus-quantity
+                      {% endif %}
+              "
+              id="btn_plus_quantity_{{ section.id }}2"
+              
+            >
+            <span onclick="plusMinusQuantityItem('{{ section.id }}','plus', 2)">
+              {% render 'smi-icons', icon: 'plus' %}
+            </span>
+              
+            </span>
+          </div>
+        {% endif %}
+
+        <div class="add-to-card {% if show_buy_quantity_btn == false or has_buy_group == true %} add-to-card-fw {% endif %}"
+          
+        {% if target.available == true %}
+            onclick="checkAddPurchaseNumberItem('{{ section.id }}')"
+        {% endif %}
+          
+  
+          style="width: 100%; 
+           {% if target.available == false %}
+            cursor: no-drop;
+            {% else %}
+            cursor: pointer;
+            {% endif %}
+          "
+          >
+          {% if block.settings.button_action == 'add' %}
+            <form
+              class="smi-product-form-add-to-cart smi-button-wrapper"
+              id="product_form_add_to_cart"
+              method="post"
+              enctype="multipart/form-data"
+              action="{% if block.settings.button_action == 'add'%}/cart/add{% else %}/checkout{% endif %}"
+            >
+              <input type="hidden" id="product_selected2_{{ section.id}}" name="id" value="{{ target.id }}">
+              <input min="1" type="hidden" id="product_quantity_item2_{{ section.id }}" name="quantity" value="1">
+              <input
+                type="hidden"
+                id="product_quantity_all2_{{ section.id }}"
+                name="quantityAll"
+                value="{{ target.inventory_quantity }}"
+              >
+
+
+              <button
+                type="submit"
+                onclick="resetValue('{{ section.id }}')"
+                {% comment %} class disable click down {% endcomment %}
+                class="smi-product-add-to-card-custom smi-product-add-to-card-custom-{{ section.id }} text-uppercase
+                        smi-text-button smi-shadow
+                  smi-button-wrapper smi-button smi-button--solid smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}
+                  {% if target.available == false %}
+                    disable-click
+                  {% endif %}
+                  {% if block.settings.button_animation != 'none' %}
+                    smi-animated-button
+                    smi-{{ block.settings.button_animation }}
+                  {% endif %}
+                  smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}
+                "
+                style="
+                {% if target.available == false %}
+                cursor: no-drop;
+                {% else %}
+                cursor: pointer;
+                {% endif %}
+            
+                {% if target.inventory_management != 'shopify' %}
+
+                {% else %}
+
+                {% if target.available == true and target.inventory_policy == 'deny' and cart_qty >= target.inventory_quantity %}
+                  pointer-events: none;
+                {% endif %}
+              {% endif %}
+                "
+              >
+                {{ block.settings.button_label }}
+              </button>
+            </form>
+          {% else %}
+            <div class="smi-product-form-add-to-cart smi-button-wrapper">
+              <a
+                onclick="buyItNow('{{ section.id }}','{{ target.id }}')"
+                class="smi-product-add-to-card-custom smi-product-add-to-card-custom-{{ section.id }} text-uppercase
+                        smi-text-button smi-shadow
+                  smi-button-wrapper smi-button smi-button--solid smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}
+                  {% if target.inventory_quantity <= 0 and target.available == false %}
+                    disable-click
+                  {% endif %}
+                  {% if block.settings.button_animation != 'none' %}
+                    smi-animated-button
+                    smi-{{ block.settings.button_animation }}
+                  {% endif %}
+                 
+                "
+                style="width: 100%;
+                 {% if target.available == false %}
+                  cursor: no-drop;
+                  {% else %}
+                  cursor: pointer;
+                  {% endif %}
+                "
+              >
+                {{ block.settings.button_label }}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </product-form>
+  </div>
+{% endif %}

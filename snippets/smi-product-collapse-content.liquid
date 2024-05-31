@@ -1,0 +1,50 @@
+<div
+    class="smi-product-block-{{ section.id }} smi-product-description smi-product-description-{{ section.id }} smi-py-sm {% if block.settings.show_desc_below == true %}sub_secription{% endif %}"
+    onclick="displayDesc('display_prod_collapse_content_{{ forloop.index }}_{{ section.id }}', 'collapse_collapse_down_arr_{{ forloop.index }}_{{ section.id }}',  'collapse_collapse_up_arr_{{ forloop.index }}_{{ section.id }}')"
+    {{ block.shopify_attributes }}>
+
+      {% if block.settings.collapse_heading != blank %}
+          <div class="smi-product-description-label product-collapse-heading collapse-content-{{ forloop.index }}-{{ section.id }}"
+              
+          >
+              <style>
+                  .collapse-content-{{ forloop.index }}-{{ section.id }} .smi-product-description-icon-sample {
+                      width: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+                      height: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+          
+                  }
+
+                  .collapse-content-{{ forloop.index }}-{{ section.id }} svg {
+                      width: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+                      height: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+                  }
+                  </style>
+                  {%- if block.settings.upload_icon != blank -%}
+                      {{ block.settings.upload_icon | image_url: width: block.settings.icon_size, height: block.settings.icon_size | image_tag: loading: 'lazy', class: "smi-mr-xs" }}
+                  {%- else -%}
+                      {% if block.settings.icon != "none" %}
+                          <span class="smi-product-description-label-span-icon smi-mr-xs">{{ CUSTOM_ICON }}</span>
+                          {% endif %}
+                  {%- endif -%}
+           <h5 class="smi-product-description-detail-heading {{ block.settings.heading_size }}">
+              {{ block.settings.collapse_heading }}
+           </h5>
+           <div class="collapse-description-arrow">
+              <span id="collapse_collapse_down_arr_{{ forloop.index }}_{{ section.id }}" class="collapse-desc-arr collapse-desc-arr-show">{% render 'smi-icons', icon: 'arrow-down' %}</span>
+              <span id="collapse_collapse_up_arr_{{ forloop.index }}_{{ section.id }}" class="collapse-desc-arr">{% render 'smi-icons', icon: 'arrow-up' %}</span>
+            </div>
+          </div>
+         {% endif %}
+    {% if block.settings.collapse_content != blank or block.settings.collapse_content_page != blank  %}
+       <div class="collapse-desc-content smi-mt-md smi-text-md smi-text-75" id="display_prod_collapse_content_{{ forloop.index }}_{{ section.id }}">
+        {{ block.settings.collapse_content }}
+          {% if block.settings.collapse_content != blank %}
+            <br/>
+         {%  endif %}
+        {% if block.settings.collapse_content_page != blank %}
+          
+            {{ block.settings.collapse_content_page.content }}
+        {% endif %}
+       </div>
+    {% endif %}
+  </div>

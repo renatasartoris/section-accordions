@@ -1,0 +1,43 @@
+{% if block.type == 'product_popup_button' %}
+  {% liquid
+    assign button_label = block.settings.button_label
+    assign button_style = block.settings.button_style
+%}
+  {% liquid
+    assign colorblock = section.blocks | where: 'type', 'product_color' | first
+    if colorblock
+      assign custom_color = 'smi-color-' | append: section.id
+    else
+      assign custom_color = 'smi-color-' | append: section.settings.color_scheme
+    endif
+  %}
+  <div class="smi-product-block-{{ section.id }} smi-product-popup-button smi-component-buttons smi-button-wrapper {% if block.settings.button_full_width == true %} smi-component-buttons-full-width {% endif %} {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} " {{ block.shopify_attributes }} onclick="smiLiteModal.open('#popup_content_{{ section.id }}')">
+  {{  colorblock.size }}
+      {% if button_label != blank %}
+        <a
+                
+                class="smi-button smi-text-button smi-button--{{ button_style | split: '_' | first -}}
+                    {%- if button_style contains 'arrow' %} smi-has-icon{% endif %}
+                    {{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' | prepend: ' smi-hover-' -}}
+                    {{- ' smi-border smi-shadow' -}}">
+                <span>
+                    {{- button_label | escape -}}
+                </span>
+            {% if button_style contains 'arrow' %}
+                <div>
+                    {% render 'smi-icons', icon: 'arrow-right-2' %}
+                </div>
+            {% endif %}
+        </a>
+    {% endif %}
+    <div class="smi-lite-modal smi-default-modal smi-section smi-dropdown-popup-wrapper smi-modal-lg smi-px-md smi-py-md smi-border smi-shadow {{ custom_color }}" id="popup_content_{{ section.id }}">
+      <div class="popup-content-product-close-btn" onclick="smiLiteModal.close()">{% render 'smi-icons', icon: 'close' %}</div>
+      <div class="popup-content-product popup-content-detail smi-text-md">
+        {{ block.settings.popup_content }}
+        {% if block.settings.popup_content_page != blank %}
+          {{ block.settings.popup_content_page.content }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

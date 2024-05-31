@@ -1,0 +1,38 @@
+{% if block.type == 'product_guaranteed' %}
+    {% assign img_width = block.settings.image_width %}
+   <div class="smi-product-block-{{ section.id }} smi-guaranteed-checkout {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} "
+       style="
+       text-align: {{ block.settings.alignment }};
+       "
+       {{ block.shopify_attributes }}
+   >
+      <p class="smi-mb-xs smi-text-md smi-text-75"
+       style="
+       width: 100%;
+       text-align: {{ block.settings.alignment }};
+       ">{{ block.settings.heading }}</p>
+       <style>
+           .smi-product-detail .smi-product-guaranteed-checkout {
+               width: {{ img_width }}px;
+               max-width: 100%
+               
+           }
+           .smi-product-detail .smi-sample-guaranteed-checkout{
+               height: 100px;
+           }
+       </style>
+       {% liquid
+           assign class_guaranteed_img = "smi-media-wrapper smi-media-settings smi-product-guaranteed-checkout "
+           
+           if block.settings.apply_media_style == true
+               assign class_guaranteed_img = class_guaranteed_img | append: " smi-border smi-shadow " 
+           endif
+           assign class_guaranteed_img_sample = class_guaranteed_img | append: " smi-sample-guaranteed-checkout"
+       %}
+       {%- if block.settings.upload_checkout != blank -%}
+           {{ block.settings.upload_checkout | image_url: width: img_width | image_tag: loading: 'lazy', class: class_guaranteed_img }}
+       {%- else -%}
+           {{ 'blog-apparel-3' | placeholder_svg_tag: class_guaranteed_img_sample }}
+       {%- endif -%}
+   </div>
+   {% endif %}

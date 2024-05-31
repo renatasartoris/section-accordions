@@ -1,0 +1,10 @@
+{% if block.type == "product_sku" %}
+    <div class="smi-product-block-{{ section.id }} {% if forloop.index != section.blocks.size and target.sku != blank and target.sku != "" %} smi-mb-lg {% endif %}" style="width: 100%;" id="product_sku_{{ section.id }}" {{ block.shopify_attributes }}>
+        {% if target.sku != blank or target.sku != ""%}
+            <div class="product-sku smi-text-sm">
+                <span style="opacity: 0.75">sku:</span>&nbsp;<span>{{ target.sku }}</span>
+            </div>
+        {% endif %}
+    </div>
+
+{% endif %}

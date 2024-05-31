@@ -1,0 +1,172 @@
+{% if block.type == 'complementary_products' %}
+  {% liquid
+    assign dot_style = block.settings.sticky_page_dot_style
+    assign number_product_per_page = block.settings.number_product_per_page
+  %}
+
+  <div class="smi-product-block-{{ section.id }} smi-complementary-products smi-complementary-products-swiper smi-py-lg smi-mb-lg
+    
+    {% if block.settings.use_content_container %}
+        smi-content-wrapper smi-border smi-shadow
+        {% else %}
+        complementary-bundle-products-border
+    {% endif %}
+    " id="complementary_product_{{ section.id }}">
+    {%-liquid
+      if settings.smi_animations_reveal_on_scroll != null
+          assign animation_scroll = settings.smi_animations_reveal_on_scroll
+      else
+          assign global_settings = shop.metafields.smind.settings.value
+          assign animation_scroll = global_settings.revealOnScroll
+      endif
+    -%}
+    <div class="smi-heading-component smi-px-lg smi-heading-component--align-{{block.settings.heading_alignment}} smi-link-wrapper" {{- block.shopify_attributes -}}    >
+      {% liquid
+        assign heading = block.settings.heading | strip
+        assign sub_heading = block.settings.sub_heading | strip
+        assign description = block.settings.description | strip
+      %}
+      <div class="smi-heading-inner
+        {%- if animation_scroll %} smi-scroll-trigger smi-animate--slide-in{% endif -%}
+        {%- if heading != blank or sub_heading != blank or description != blank %} smi-mb-xxl{% endif -%}
+        ">
+            {%- assign sub_heading = block.settings.sub_heading | strip -%}
+            {% if sub_heading != blank %}
+                <p class="smi-text-sub smi-mb-xxs smi-heading-component__subheading">{{- sub_heading -}}</p>
+            {% endif %}
+            {%- assign description = block.settings.description | strip -%}
+            {%- assign heading = block.settings.heading | strip -%}
+            {% if heading != blank %}
+                <h2 class="{{ block.settings.heading_size }} {% if description != blank %}smi-mb-sm{% endif %} smi-heading-component__heading">{{- heading -}}</h2>
+            {% endif %}
+            {%- assign description = block.settings.description | strip -%}
+            {% if description != blank %}
+                <div class="smi-text-md smi-heading-component__description">{{ description }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <smi-complementary-products
+      id="smi_complementary_products_{{ section.id }}"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&intent=complementary"
+    >
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {% assign products_count = recommendations.products_count | plus: 0 %}
+
+        {%- if products_count > 0 -%}
+          <div class="smi-items smi-items--overflow-false">
+            <div
+              class="swiper smi-swiper smi-product-detai-complementary-products-wrapper"
+              data-slider='
+                {
+                    "destopItems": 1,
+                    "tabletItems": 1,
+                    "mobileItems": 1,
+                    "autoPlay": false,
+                    "dotStyle": "{{ dot_style }}"
+                }
+              '
+              style="overflow-x: clip; overflow-y: visible !important; --media-ratio: {{ block.settings.media_ratio }}"
+            >
+
+                {% liquid
+                    assign complementary_class_media = "product-complementary-bundle-img"
+                    if block.settings.use_media_style
+
+                    assign complementary_class_media = complementary_class_media | append: " smi-media-wrapper smi-border smi-shadow"
+
+                    endif
+                %}
+                <div class="swiper-wrapper swiper-wrapper-{{ section.id }}">
+                    <div class="swiper-slide smi-px-lg detail-product-complementary" data-swiper-slide-index="{{ 1 }}" >
+                        <style>
+                            .smi-{{ section.id }} smi-complementary-product .product-complementary-bundle-img{
+                                aspect-ratio: {{ block.settings.media_ratio }};
+                            }
+                        </style>
+
+                        {% for product in recommendations.products %}
+                            {% assign num_modulo = forloop.index | minus: 1 | modulo: number_product_per_page %}
+                            {% if num_modulo == 0 and forloop.index > 1 %}
+                            </div>
+                            <div class="swiper-slide smi-px-lg detail-product-complementary" data-swiper-slide-index="{{ forloop.index0 | divided_by: number_product_per_page | plus: 1 }}">
+                            {% endif %}
+                            <div class="detail-product-complementary-in smi-mb-sm">
+                                {% comment %} product-title: {{ product.tit le }} {% endcomment %}
+                               
+                                {% if product.featured_image != null and product.featured_image != undefined %}
+                                {{
+                                    product.featured_image
+                                    | image_url: width: 100, height: 100
+                                    | image_tag: loading: 'lazy', class: complementary_class_media
+                                }}
+                                {% else %}
+                                  <span style="width: 70px" class={{ complementary_class_media }}>{{ 'collection-1' | placeholder_svg_tag }}</span>
+                                {% endif %}
+                                <div class="product-complementary-content product-complementary-bundle-content">
+                                    <a href="{{ product.url }}" class="smi-h6">
+                                        {{ product.title }}
+                                    </a>
+                                    <div class="detail-product-complementary-price">
+                                        {% if product.price_min == product.price_max %}
+                                            <span class="smi-text-md same-price">{{ product.price_max | json | money }}</span>
+                                            {% else %}
+                                            <span class="smi-text-md sale-price-min smi-text-75">{{ product.price_max | json | money }}</span>
+                                            <span class="smi-text-md sale-price">{{ product.price_min | json | money }}</span>
+                                        {% endif %}
+                                        {% comment %} cmin: {{ product.price_min }} - cmax: {{ product.price_max  }}<br/>
+                                        min: {{ product.price_min | json | money }} - max: {{ product.price_max | json | money }} {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+                
+                
+            </div>
+            
+          </div>
+          {% if products_count > number_product_per_page and dot_style != 'none' %}
+            
+            <div class="smi-mt-sm smi-px-lg">
+              {% if block.settings.sticky_page_dot_style != 'none' %}
+                <div class="smi-slider-dot-container">
+                  {% if block.settings.sticky_page_dot_style == 'text-style-1'
+                    or block.settings.sticky_page_dot_style == 'text-style-2'
+                    or block.settings.sticky_page_dot_style == 'text-style-3'
+                  %}
+                    <div class="smi-component-sticky-page-dot sticky-page-dot-complementary">
+                      <div class="smi-slider-action">
+                        <div class="smi-arrows {{ block.settings.sticky_page_dot_style }}">
+                          <div data-control="textPrevSlide" class="smi-arrow dot-arrow-slider smi-text-sm">{% render 'smi-icons', icon: 'arrow-left' %}</div>
+                          {% comment %} <div class="smi-slider-pagination smi-text-sm">1/3</div> {% endcomment %}
+                          <div class="text-pagination smi-pagination smi-slider-pagination smi-text-sm smi-arrow"></div>
+                          <div data-control="textNextSlide" class="smi-arrow dot-arrow-slider smi-text-sm">{% render 'smi-icons', icon: 'arrow-right' %}</div>
+                        </div>
+                      </div>
+                    </div>
+              
+                  {% else %}
+                    <div class="dot-container {{ block.settings.sticky_page_dot_style }}">
+                      <div
+                        class="swiper-pagination smi-pagination"
+                        {% if block.settings.sticky_page_dot_style == 'dot-style-4' %}
+                          style="display: flex;"
+                        {% endif %}
+                      ></div>
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+        
+            {%- endif -%}
+        {% endif %}
+      {% endif %}
+      {% comment %} complementary-products {% endcomment %}
+    </smi-complementary-products>
+  </div>
+{% endif %}

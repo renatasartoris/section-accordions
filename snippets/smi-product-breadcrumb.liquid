@@ -1,0 +1,5 @@
+<div class="smi-product-block-{{ section.id }} smi-product-breadcrumb {% if forloop.index != section.blocks.size %} smi-mb-sm {% endif %}" {{ block.shopify_attributes }}>
+  <a class="smi-heading-breadcrumb-text-underline smi-text-md" href="{{ shop.url }}">Home</a>
+  &nbsp;{% render 'smi-icons', icon: 'arrow-right' %} &nbsp;<a class="smi-heading-breadcrumb-text-underline smi-text-md"
+    href="{{ shop.url }}/products">Product</a>&nbsp;{% render 'smi-icons', icon: 'arrow-right' %}&nbsp;<span class="smi-heading-breadcrumb-text-content smi-text-md">{{ product.title }}</span>
+</div>

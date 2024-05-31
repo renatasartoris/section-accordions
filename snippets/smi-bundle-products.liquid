@@ -1,0 +1,430 @@
+{% if block.type == 'products_bundles' %}
+  {% liquid
+    assign dot_style = block.settings.sticky_page_dot_style
+    assign number_product_per_page = block.settings.number_product_per_page
+  %}
+
+  <div
+    class="smi-product-block-{{ section.id }}
+      smi-bundle-products smi-bundle-products-swiper smi-px-lg smi-py-lg smi-mb-lg
+
+      {% if block.settings.use_content_container %}
+          smi-content-wrapper smi-border smi-shadow
+          {% else %}
+          complementary-bundle-products-border
+      {% endif %}
+    "
+    id="bundle_product_{{ section.id }}"
+  >
+    {% liquid
+      assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+        if currency_code_enabled
+           assign currency_full = true
+         else
+          assign currency_full = false
+      endif
+    %}
+
+    {%-liquid
+      if settings.smi_animations_reveal_on_scroll != null
+          assign animation_scroll = settings.smi_animations_reveal_on_scroll
+      else
+          assign global_settings = shop.metafields.smind.settings.value
+          assign animation_scroll = global_settings.revealOnScroll
+      endif
+    -%}
+    <div class="smi-heading-component smi-heading-component--align-{{block.settings.heading_alignment}} smi-link-wrapper" {{- block.shopify_attributes -}}    >
+      {% liquid
+        assign heading = block.settings.heading | strip
+        assign sub_heading = block.settings.sub_heading | strip
+        assign description = block.settings.description | strip
+      %}
+      <div class="smi-heading-inner
+        {%- if animation_scroll %} smi-scroll-trigger smi-animate--slide-in{% endif -%}
+        {%- if heading != blank or sub_heading != blank or description != blank %} smi-mb-xxl{% endif -%}
+        ">
+            {%- assign sub_heading = block.settings.sub_heading | strip -%}
+            {% if sub_heading != blank %}
+                <p class="smi-text-sub smi-mb-xxs smi-heading-component__subheading">{{- sub_heading -}}</p>
+            {% endif %}
+            {%- assign description = block.settings.description | strip -%}
+            {%- assign heading = block.settings.heading | strip -%}
+            {% if heading != blank %}
+                <h2 class="{{ block.settings.heading_size }} {% if description != blank %}smi-mb-sm{% endif %} smi-heading-component__heading">{{- heading -}}</h2>
+            {% endif %}
+            {%- assign description = block.settings.description | strip -%}
+            {% if description != blank %}
+                <div class="smi-text-md smi-heading-component__description">{{ description }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <smi-bundle-products
+      id="smi_bundle_products_{{ section.id }}"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&intent=complementary"
+      data-bundle="{% if currency_full %}{{ shop.money_with_currency_format }}{% else %}{{ shop.money_format }}{% endif %}"
+      
+    >
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {% assign products_count = recommendations.products_count | plus: 0 %}
+            <div id="checking_size_bundle_{{ section.id }}" data-render-bundle="{{ recommendations.products | json | escape }}" total-recommendation="{{ recommendations.products.size }}">
+              <!-- recommendations.products-size: {{ recommendations.products.size }} -->
+            </div>
+        {%- if products_count > 0 -%}
+          <div class="smi-items smi-items--overflow-false">
+            <div
+              class="swiper smi-swiper smi-product-detai-bundle-products-wrapper"
+              data-slider='
+                {
+                    "destopItems": 1,
+                    "tabletItems": 1,
+                    "mobileItems": 1,
+                    "autoPlay": false,
+                    "dotStyle": "{{ dot_style }}"
+                }
+              '
+            style="overflow-x: clip; overflow-y: visible !important; --media-ratio: {{ block.settings.media_ratio }}"
+              >
+              {% liquid
+                assign bundle_class_media = 'product-complementary-bundle-img'
+                if block.settings.use_media_style
+                  assign bundle_class_media = bundle_class_media | append: ' smi-media-wrapper smi-border smi-shadow'
+                endif
+                assign current_product = product
+              %}
+              <div class="swiper-wrapper swiper-wrapper-{{ section.id }}" style="position: relative; z-index: 2;">
+                <div class="swiper-slide  detail-product-bundle" data-swiper-slide-index="{{ 1 }}">
+                  <style>
+                    .smi-{{ section.id }} smi-bundle-products .product-complementary-bundle-img{
+                        aspect-ratio: {{ block.settings.media_ratio }};
+                    }
+                  </style>
+
+                  {% for product in recommendations.products %}
+                    
+                    {% assign num_modulo = forloop.index | plus: 1 | minus: 1 | modulo: number_product_per_page %}
+                    {% if num_modulo == 0 and forloop.index > 1 %}
+                  
+                      </div>
+                      <div
+                        class="swiper-slide  detail-product-bundle"
+                        data-swiper-slide-index="{{ forloop.index0 | divided_by: number_product_per_page | plus: 1 }}"
+                      >
+                    {% endif %}
+                    {% comment %} START HERE {% endcomment %}
+                    {% if forloop.index == 1 %}
+                      <div class="detail-product-bundle-in smi-mb-sm">
+                        <div class="checked-bundle-container">
+                          <div class="checked-bundle-product">
+                            <label class="container">
+                              <input
+                                type="checkbox"
+                                id="checkbox_select_product_bundle_0_{{ section.id }}"
+                                checked="checked"
+                                disabled
+                              >
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                        </div>
+                        {% assign media_id = 'product_bundle_image_'
+                          | append: '0'
+                          | append: '_'
+                          | append: section.id
+                        %}
+
+                        {% if current_product.featured_image != null and current_product.featured_image != undefined %}
+                        {{
+                          current_product.featured_image
+                          | image_url: width: 500, height: 500
+                          | image_tag: loading: 'lazy', class: bundle_class_media, id: media_id
+                        }}
+                        {% else %}
+                          <span style="width: 70px" class={{ bundle_class_media }} id= {{ media_id }}>{{ 'collection-1' | placeholder_svg_tag }}</span>
+                        {% endif %}
+                        
+                        <div
+                          class="product-bundle-content product-complementary-bundle-content"
+                          id="product_bundle_content_0_{{ section.id }}"
+                        >
+                          <a href="{{ current_product.url }}" class="smi-h6">
+                           {{ 'smind.product.this_item' | t }}: {{ current_product.title }}
+                          </a>
+                          <div class="bundle-select-variant">
+
+                            <input
+                              type="hidden"
+                              id="selected_variant_bundle_0_{{ section.id }}"
+                              value="{{ current_product.selected_or_first_available_variant.price }}"
+                            >
+                            <input
+                            type="hidden"
+                            id="selected_variant_bundle_id_0_{{ section.id }}"
+                            value="{{ current_product.selected_or_first_available_variant.id }}"
+                            >
+
+                            {% if current_product.variants.size > 0 %}
+                            <button
+                              class="btn-select-variant smi-text-sm"
+                              id="bundle_product_variant_select_variant_0_{{ section.id }}"
+                            >
+                              <span style="margin-right: 10px;
+                                          overflow: hidden;
+                                          display: inline-block;
+                                          text-overflow: ellipsis;
+                                          white-space: nowrap;"
+                                id="bundle_product_variant_select_variant_title_0_{{ section.id }}">{{ current_product.selected_or_first_available_variant.title }}</span>
+  
+                              <span class="arr-icon arr-icon-down-bundle-0_{{ section.id }}" id="bundle_product_variant_select_variant_title_0_arr_down_{{ section.id }}">{% render 'smi-icons', icon: 'arrow-down' %}</span>
+                              <span class="arr-icon arr-icon-up-bundle-0_{{ section.id }} hide-arr-icon-bunde" id="bundle_product_variant_select_variant_title_0_arr_up_{{ section.id }}">{% render 'smi-icons', icon: 'arrow-up' %}</span>
+                            </button>
+                            <ul
+                              class="list-variant-bundle-product list-variant-bundle-product-{{ section.id }} hide-list-variant-bundle-product smi-dropdown-popup-wrapper smi-border smi-shadow"
+                              id="list_variant_bundle_0_{{ section.id }}"
+                            >
+                              {% for variant in current_product.variants %}
+                                <li
+                                  class="smi-text-sm {% if forloop.index != 1 %} smi-text-75{% endif %}"
+                                  id="li_list_variant_bundle_0_{{ forloop.index }}_{{ section.id }}"
+                                  variant-id="{{ variant.id }}"
+                                  price-with-currency="{{ variant.price | json | money_with_currency }}"
+                                  price-with-currency-max="{{ current_product.price_max | json | money_with_currency }}"
+                                  cal-price="{{ variant.price }}"
+                                  img-url="{{ variant.image | image_url }}"
+                                >
+                                  {{ variant.title }}
+                                  {% comment %} -{{ variant.price | json | money_with_currency }}-{{ variant.compare_at_price | json | money_with_currency }} {% endcomment %}
+                                </li>
+                              {% endfor %}
+                            </ul>
+                            {% endif %}
+                          </div>
+                          <div class="detail-product-bundle-price">
+                            <input type="hidden" value="{{ current_product.price_max }}" id="bundle_variant_max_price_0_{{ section.id }}" >
+                            {% if current_product.price_min == current_product.price_max or current_product.selected_or_first_available_variant.price == current_product.price_max %}
+                              <span class="smi-text-md same-price"
+                                id="span_variant_bundle_money_0_{{ section.id }}">{% if currency_full %}{{ current_product.price_min | json | money_with_currency }}{% else %}{{ current_product.price_min | json | money }}{% endif %}</span>
+                              
+                            {% else %}
+                              <span class="smi-text-sm sale-price-min smi-text-75"
+                                id="span_variant_bundle_money_max_0_{{ section.id }}">
+                                {% if currency_full %}
+                                {{- current_product.price_max | json | money_with_currency -}}
+                                {% else %}
+                                  {{- current_product.price_max | json | money -}}
+                                {% endif %}
+                              </span>
+                              <span
+                                class="smi-text-md sale-price"
+                                id="span_variant_bundle_money_0_{{ section.id }}"
+                              >
+                                 {% if currency_full %}
+                                  {{- current_product.selected_or_first_available_variant.price | json | money_with_currency -}}
+                                {% else %}
+                                  {{- current_product.selected_or_first_available_variant.price | json | money -}}
+                                {% endif %}
+                              </span>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                    {% comment %} END HERE {% endcomment %}
+                    <div class="detail-product-bundle-in smi-mb-sm">
+                      <div class="checked-bundle-container">
+                        <div class="checked-bundle-product">
+                          <label class="container">
+                            <input
+                              type="checkbox"
+                              id="checkbox_select_product_bundle_{{ forloop.index }}_{{ section.id }}"
+                              checked="checked"
+                            >
+                            <span class="checkmark"></span>
+                          </label>
+                        </div>
+                      </div>
+                      {% assign media_id = 'product_bundle_image_'
+                        | append: forloop.index
+                        | append: '_'
+                        | append: section.id
+                      %}
+
+                      {% if product.featured_image != null and product.featured_image != undefined %}
+                      {{
+                        product.featured_image
+                        | image_url: width: 500, height: 500
+                        | image_tag: loading: 'lazy', class: bundle_class_media, id: media_id
+                      }}
+                      {% else %}
+                        <span style="width: 70px" class={{ bundle_class_media }} id= {{ media_id }}>{{ 'collection-1' | placeholder_svg_tag }}</span>
+                      {% endif %}
+                      
+                      <div
+                        class="product-bundle-content product-complementary-bundle-content"
+                        id="product_bundle_content_{{ forloop.index }}_{{ section.id }}"
+                      >
+                        <a href="{{ product.url }}" class="smi-h6">
+                          {{ product.title }}
+                        </a>
+                        <div class="bundle-select-variant">
+                          <input
+                            type="hidden"
+                            id="selected_variant_bundle_{{ forloop.index }}_{{ section.id }}"
+                            value="{{ product.selected_or_first_available_variant.price }}"
+                          >
+                          <input
+                            type="hidden"
+                            id="selected_variant_bundle_id_{{ forloop.index }}_{{ section.id }}"
+                            value="{{ product.selected_or_first_available_variant.id }}"
+                          >
+                          {% if product.variants.size > 1 %}
+                          <button
+                            class="btn-select-variant smi-text-sm"
+                            id="bundle_product_variant_select_variant_{{  forloop.index}}_{{ section.id }}"
+                          >
+                            <span style="margin-right: 10px;
+                                          overflow: hidden;
+                                          display: inline-block;
+                                          text-overflow: ellipsis;
+                                          white-space: nowrap;"
+                              id="bundle_product_variant_select_variant_title_{{  forloop.index}}_{{ section.id }}">{{ product.selected_or_first_available_variant.title }}</span>
+
+                            <span class="arr-icon arr-icon-down-bundle-{{  forloop.index}}_{{ section.id }}" id="bundle_product_variant_select_variant_title_{{  forloop.index}}_arr_down_{{ section.id }}">{% render 'smi-icons', icon: 'arrow-down' %}</span>
+                              <span class="arr-icon arr-icon-up-bundle-{{  forloop.index}}_{{ section.id }} hide-arr-icon-bunde" id="bundle_product_variant_select_variant_title_{{  forloop.index}}_arr_up_{{ section.id }}">{% render 'smi-icons', icon: 'arrow-up' %}</span>
+                          </button>
+
+                          
+
+                          {% assign index_list_select = forloop.index %}
+                          
+                          <ul
+                            class="list-variant-bundle-product list-variant-bundle-product-{{ section.id }} hide-list-variant-bundle-product smi-dropdown-popup-wrapper smi-border smi-shadow"
+                            id="list_variant_bundle_{{ forloop.index }}_{{ section.id }}"
+                          >
+                            {% for variant in product.variants %}
+                              <li
+                                class="smi-text-sm {% if forloop.index != 1 %} smi-text-75{% endif %}"
+                                id="li_list_variant_bundle_{{ index_list_select }}_{{ forloop.index }}_{{ section.id }}"
+                                variant-id="{{ variant.id }}"
+                                price-with-currency="{{ variant.price | json | money_with_currency }}"
+                                price-with-currency-max="{{ product.price_max | json | money_with_currency }}"
+                                cal-price="{{ variant.price }}"
+                                img-url="{{ variant.image | image_url }}"
+                              >
+                                {{ variant.title }}
+                                {% comment %} -{{ variant.price | json | money_with_currency }}-{{ variant.compare_at_price | json | money_with_currency }} {% endcomment %}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                          {% endif %}
+                        </div>
+
+                          <div class="detail-product-bundle-price">
+                          <input type="hidden" value="{{ product.price_max }}" id="bundle_variant_max_price_{{ forloop.index }}_{{ section.id }}" >
+                          {% if product.price_min == product.price_max or product.selected_or_first_available_variant.price == product.price_max %}
+                         
+                            <span class="smi-text-sm sale-price-min smi-text-75"
+                              style="display: none;"
+                              id="span_variant_bundle_money_max_{{ forloop.index }}_{{ section.id }}">
+                              {% if currency_full %}
+                                {{- product.price_max | json | money_with_currency -}}
+                              {% else %}
+                                {{- product.price_max | json | money -}}
+                              {% endif %}
+                            </span>
+                            <span class="smi-text-md same-price" id="span_variant_bundle_money_{{ forloop.index }}_{{ section.id }}">{% if currency_full %}{{ product.price_min | json | money_with_currency }}{% else %}{{ product.price_min | json | money }}{% endif %}</span>
+                            
+                          {% else %}
+                            
+                            <span class="smi-text-sm sale-price-min smi-text-75"
+                              id="span_variant_bundle_money_max_{{ forloop.index }}_{{ section.id }}">
+                              {% if currency_full %}
+                                {{- product.price_max | json | money_with_currency -}}
+                              {% else %}
+                                {{- product.price_max | json | money -}}
+                              {% endif %}
+                            </span>
+                            <span
+                              class="smi-text-md sale-price"
+                              id="span_variant_bundle_money_{{ forloop.index }}_{{ section.id }}"
+                            >
+                              {% if currency_full %}
+                              {{- product.selected_or_first_available_variant.price | json | money_with_currency -}}
+                              {% else %}
+                                {{- product.selected_or_first_available_variant.price | json | money -}}
+                              {% endif %}
+                            </span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              {% assign products_count_plus = products_count | plus: 1 %}
+              {% if products_count_plus > number_product_per_page and dot_style != 'none' %}
+            <div class="smi-mb-md" style="position: relative; z-index: 1;">
+              <div class="smi-mt-xs  bundle-pagination-css">
+                {% if block.settings.sticky_page_dot_style != 'none' %}
+                  <div class="smi-slider-dot-container">
+                    {% if block.settings.sticky_page_dot_style == 'text-style-1'
+                      or block.settings.sticky_page_dot_style == 'text-style-2'
+                      or block.settings.sticky_page_dot_style == 'text-style-3'
+                    %}
+                      <div class="smi-component-sticky-page-dot sticky-page-dot-bundle">
+                        <div class="smi-slider-action">
+                          <div class="smi-arrows {{ block.settings.sticky_page_dot_style }}">
+                            <div data-control="textPrevSlide" class="smi-arrow dot-arrow-slider smi-text-sm">
+                              {% render 'smi-icons', icon: 'arrow-left' %}
+                            </div>
+
+                            <div
+                              class="text-pagination smi-pagination smi-slider-pagination smi-text-sm smi-arrow"
+                            ></div>
+                            <div data-control="textNextSlide" class="smi-arrow dot-arrow-slider smi-text-sm">
+                              {% render 'smi-icons', icon: 'arrow-right' %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    {% else %}
+                      <div class="dot-container {{ block.settings.sticky_page_dot_style }}">
+                        <div
+                          class="swiper-pagination smi-pagination"
+                          {% if block.settings.sticky_page_dot_style == 'dot-style-4' %}
+                            style="display: flex;"
+                          {% endif %}
+                        ></div>
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {%- endif -%}
+            </div>
+          </div>
+          
+
+          <div class="bundle-product-price smi-mt-md smi-mb-xs">
+            <span class="smi-text-md">Total price:</span> <span class="smi-text-price-lg sale-price-min unchecked-bundle-55" id="bundle_product_total_max_price_{{ section.id }}"> </span> <span class="smi-text-price-xl" id="bundle_product_total_price_{{ section.id }}"> </span>
+          </div>
+
+          <a class="button-purchase-bundle smi-button-wrapper smi-button smi-cursor-pointer smi-button-full-width-true smi-text-button smi-button--solid
+            smi-border smi-shadow {{- ' smi-hover-' | append: settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' -}}"
+            id="btn_add_to_cart_bundle_{{ section.id }}">
+            <!-- Add&nbsp;<span id="purchase_buddle_{{ section.id }}"></span>&nbsp;items to cart -->
+            <span id="purchase_buddle_all_{{ section.id }}">
+                {{ "smind.product.add_all_item_to_cart_product_bundle_html" | t }}
+            </span>
+            <span id="purchase_buddle_{{ section.id }}" style="display: none;">
+                {{ "smind.product.add_item_to_cart_product_bundle_html" | t }}
+            </span>
+            
+          </a>
+        {% endif %}
+      {% endif %}
+      {% comment %} bundle-products {% endcomment %}
+    </smi-bundle-products>
+  </div>
+{% endif %}

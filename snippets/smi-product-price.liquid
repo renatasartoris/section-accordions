@@ -1,0 +1,145 @@
+{% liquid
+  assign target = product.selected_or_first_available_variant
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price | default: 1999
+  assign available = target.available | default: false
+  assign money_price = price | money
+  if settings.currency_code_enabled
+    assign money_price = price | money_with_currency
+  endif
+  if target == product and product.price_varies
+    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+  endif
+
+  assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+  if currency_code_enabled
+    assign currency_full = true
+  else
+    assign currency_full = false
+  endif
+
+  assign sale_percent = compare_at_price | minus: target.price | times: 100.0 | divided_by: compare_at_price | round | append: '%'
+
+  if currency_full
+    assign sale_amount = compare_at_price | minus: target.price | json | money_with_currency
+  else
+    assign sale_amount = compare_at_price | minus: target.price | json | money
+  endif
+%}
+{% if block.type == 'product_price' %}
+  <input
+    type="hidden"
+    value="{{ block.settings.show_sale_badge }}"
+    id="is_sale_badge_price_{{ section.id }}"
+    data-bagde="{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}"
+    data-bagde-text="{{ 'smind.product.saleText' | t }}"
+  >
+  <div style="width: 100%" {{ block.shopify_attributes }}>
+    <div
+      class="
+        smi-product-block-{{ section.id }}
+        smi-product-price {% if forloop.index != section.blocks.size %} smi-mb-sm {% endif %}
+
+        {% if has_color_block == true %}
+          smi-custom-badge-color
+        {% endif %}
+      "
+
+      id="product_price_{{ section.id }}"
+    >
+      <div id="product_price_content_{{ section.id }}">
+        {% if target.price < compare_at_price
+          and compare_at_price != ''
+          and compare_at_price != blank
+          and compare_at_price > 0
+        %}
+          {% if target.inventory_quantity <= 0 and target.available == false %}
+            <div class="price-sale">
+              <span
+                class="
+                              smi-badges smi-badges--sold-out
+                  sale-content {% if has_color_block == true %}badge-sold-out{% else %}
+                  smi-color-{{ settings.smi_sold_out_badge_color_scheme }}{% endif %} smi-text-badge
+                "
+              >
+                <span>Sold out</span>
+              </span>
+            </div>
+          {% else %}
+            <div class="price-sale">
+              <span class="listed-price smi-text-price-lg">
+                {%- if currency_full -%}
+                  {{- compare_at_price | json | money_with_currency -}}
+                {%- else -%}
+                  {{- compare_at_price | json | money -}}
+                {%- endif -%}
+              </span>
+              <span class="sale-price smi-text-price-xl">
+                {%- if currency_full -%}
+                  {{- target.price | json | money_with_currency -}}
+                {%- else -%}
+                  {{- target.price | json | money -}}
+                {%- endif -%}
+              </span>
+              {% if block.settings.show_sale_badge %}
+                <span
+                  class="
+                    sale-content smi-text-badge
+                    smi-badges
+                    {% if has_color_block == true %}
+                      badge-sale
+                      {% else %}
+                      smi-color-{{ settings.smi_sale_badge_color_scheme }}
+                    {% endif %}
+                  "
+                >
+                  <span>{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}</span>
+                </span>
+              {% endif %}
+            </div>
+          {% endif %}
+
+        {% elsif target.price >= compare_at_price
+          or compare_at_price == blank
+          or compare_at_price == ''
+        %}
+          <div
+            class="
+                      price-sale {% if target.inventory_quantity <= 0 and target.available == false %}
+                smi-text-badge
+                {% else %}
+                smi-text-price-xl
+              {% endif %}
+            "
+          >
+            {% if target.inventory_quantity <= 0 and target.available == false %}
+              <span
+                class="
+                              smi-badges smi-badges--sold-out
+                  {% if has_color_block == true %}
+                    badge-sold-out
+                    {% else %}
+                    smi-color-{{ settings.smi_sold_out_badge_color_scheme }}
+                  {% endif %} sale-content
+                "
+              >
+                <span class="product-price-sold-out">Sold out</span>
+              </span>
+            {% else %}
+              {% if currency_full %}
+                {{ target.price | json | money_with_currency }}
+              {% else %}
+                {{ target.price | json | money }}
+              {% endif %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      {% assign shipping_policy = shop.shipping_policy.body | strip_newlines | strip_html %}
+      {%- if shipping_policy != blank and shipping_policy != '' and block.settings.show_shipping_notice -%}
+        <a class="shipping-policy smi-mt-xs" href="{{ shop.shipping_policy.url }}">Shipping</a
+        >&nbsp;<span style="opacity: 0.75;">calculated at checkout.</span>
+      {%- endif -%}
+    </div>
+  </div>
+{% endif %}

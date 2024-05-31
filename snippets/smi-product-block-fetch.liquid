@@ -1,0 +1,1683 @@
+<div>
+  
+  {%- for target in product.variants -%}
+
+    
+    {%liquid
+    assign fetchPrice = section.blocks | where: 'type', 'product_price' | first 
+     
+    assign fetchBuyButton = section.blocks | where: 'type', 'product_purchase' | first 
+    
+    assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+    assign compare_at_price = target.compare_at_price
+    assign price = target.price | default: 1999
+    assign available = target.available | default: false
+    assign money_price = price | money
+    if currency_code_enabled
+    assign money_price = price | money_with_currency
+    endif
+    if product.price_varies
+    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+    endif
+    assign currency_code_enabled = settings.smi_currency_code_enabled | default: shop.metafields.smind.settings.value.showCurrencyCode | default: false
+          if currency_code_enabled
+             assign currency_full = true
+           else
+            assign currency_full = false
+        endif
+    assign sale_percent = compare_at_price | minus: target.price | times: 100.0 | divided_by: compare_at_price | round | append: '%'
+      if currency_full
+      assign sale_amount = compare_at_price | minus: target.price | json | money_with_currency
+    else
+      assign sale_amount = compare_at_price | minus: target.price | json | money
+    endif
+
+    %}
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT PRICE {% endcomment %}
+    {% for block in section.blocks %}
+    {% if block.type == "product_price" %}
+     <div style="display: none !important;" id="product_price_fetch_{{ target.id }}_{{ section.id }}">{% if target.price < compare_at_price and compare_at_price != '' and compare_at_price != blank and compare_at_price > 0 and block.settings.show_sale_badge == true %}{% if target.inventory_quantity <= 0 and target.available == false %} <div class="price-sale"><span class="smi-badges smi-badges--sold-out sale-content {% if has_color_block == true %} badge-sold-out {% else %} smi-color-{{ settings.smi_sold_out_badge_color_scheme }} {% endif %} smi-text-badge"><span>Sold out</span></span></div> {% else %}<div class="price-sale"><span class="listed-price smi-text-price-lg">{% if currency_full %}{{ compare_at_price | json | money_with_currency }}{% else %}{{ compare_at_price | json | money }}{% endif %}</span><span class="sale-price smi-text-price-xl">{% if currency_full %}{{ target.price | json | money_with_currency }}{% else %}{{ target.price | json | money }}{% endif %}</span><span class="sale-content smi-text-badge smi-badges {% if has_color_block == true %} badge-sale {% else %} smi-color-{{ settings.smi_sale_badge_color_scheme }} {% endif %} " ><span>{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}</span></span> </div>{% endif %}{% elsif target.price < compare_at_price and compare_at_price != '' and compare_at_price != blank and compare_at_price > 0 and block.settings.show_sale_badge == false %} <div class=" price-sale {% if target.inventory_quantity <= 0 and target.available == false %} smi-text-badge {% else %} smi-text-price-xl {% endif %} " > {% if target.inventory_quantity <= 0 and target.available == false %} <span class=" smi-badges smi-badges--sold-out {% if has_color_block == true %} badge-sold-out {% else %} smi-color-{{ settings.smi_sold_out_badge_color_scheme }}{% endif %} sale-content " > <span class="product-price-sold-out">Sold out</span></span> {% else %} {% if currency_full %}{{ target.price | json | money_with_currency }}{% else %}{{ target.price | json | money }} {% endif %} {% endif %}<span style="margin-left: 10px;" class=" sale-content smi-text-badge smi-badges {% if has_color_block == true %} badge-sale {% else %} smi-color-{{ settings.smi_sale_badge_color_scheme }} {% endif %} " > <span>{{ 'smind.product.sale' | t: sale_percent: sale_percent, sale_amount: sale_amount }}</span></span></div> {% elsif compare_at_price == 0 or compare_at_price == blank or compare_at_price == "" %} <div class=" price-sale {% if target.inventory_quantity <= 0 and target.available == false %} smi-text-badge{% else %} smi-text-price-xl {% endif %}">{% if target.inventory_quantity <= 0 and target.available == false %} <span class=" smi-badges smi-badges--sold-out {% if has_color_block == true %} badge-sold-out {% else %} smi-color-{{ settings.smi_sold_out_badge_color_scheme }} {% endif %} sale-content " > <span class="product-price-sold-out">Sold out</span></span> {% else %}{% if currency_full %}{{ price | json | money_with_currency }}{% else %}{{ price | json | money }}{% endif %}{% endif %}</div>{% endif %}{% assign shipping_policy = shop.shipping_policy.body | strip_newlines | strip_html%}{%- if shipping_policy != blank and shipping_policy != "" -%}<a class='shipping-policy smi-mt-xs' href='{{ shop.shipping_policy.url }}'>Shipping</a>&nbsp;<span style="opacity: 0.75;">calculated at checkout.</span>{%- endif -%}</div>
+    {% endif %}
+    
+    
+    
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT INVENTORY STATUS {% endcomment %}
+    {% if block.type == "product_inventory_status" %}
+     <div style="display: none !important;" id="inventory_status_container_fetch_{{ target.id }}_{{ section.id }}">
+    {% assign final_color = 1 %}
+    {% if target.inventory_management != 'shopify' %}
+    {% assign final_color = 1 %}
+    {% else %}
+    {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+    {% if block.settings.show_inventory_count %}
+    {% assign final_color = 1 %}
+    {% else %}
+    {% assign final_color = 1 %}
+    {% endif %}
+    {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+    {% if target.inventory_policy == 'deny' %}
+    {% if target.inventory_quantity >= 0 and target.available == true %}
+    {% if target.inventory_quantity == 0 %}
+    {% assign final_color = 1 %}
+    {% else %}
+    {% if block.settings.show_inventory_count %}
+    {% assign final_color = 2 %}
+    {% else %}
+    {% assign final_color = 2 %}
+    {% endif %}
+    {% else %}
+    {% assign final_color = 2 %}
+    {% endif %}
+    {% elsif target.inventory_quantity == 0 and target.available == false %}
+    {% assign final_color = 3 %}
+    {% endif %}
+    {% else %}
+    {% assign final_color = 1 %}
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    
+    {% liquid
+    assign target = target
+    %}
+    <style>
+    @keyframes border-pulsate-1 {
+    0%{
+    border-color: rgba(84, 198, 58, 0.15);
+    }
+    
+    50% {
+    border-color: rgba(84, 198, 58, 0.4);
+    }
+    
+    100%{
+    border-color: rgba(84, 198, 58, 0.15);
+    }
+    }
+    
+    @keyframes border-pulsate-2 {
+    0% {
+    border-color: rgba(238, 148, 65, 0.15);
+    }
+    
+    50% {
+    border-color: rgba(238, 148, 65, 0.4);
+    }
+    
+    100% {
+    border-color: rgba(238, 148, 65, 0.15);
+    }
+    
+    }
+    
+    @keyframes border-pulsate-3 {
+    0% {
+    
+    border-color: rgba(200, 200, 200, 0.15);
+    
+    }
+    50% {
+    
+    border-color: rgba(200, 200, 200, 0.4);
+    
+    }
+    100% {
+     
+    border-color: rgba(200, 200, 200, 0.15);
+    
+    }
+    }
+    </style>
+    <div class="inventory-in-stock smi-text-md">
+    <div
+    class="green-dot"
+    style="
+    
+    {% if final_color == 1 %}
+    animation: border-pulsate-1 2s infinite;
+    background: rgba(84, 198, 58, 0.15);
+    border: 3px solid rgba(84, 198, 58, 1);
+    {% elsif final_color == 2 %}
+    animation: border-pulsate-2 2s infinite;
+    background: rgba(238, 148, 65, 0.15);
+    border: 3px solid rgba(238, 148, 65, 1);
+    {% elsif final_color == 3 %}
+    animation: border-pulsate-3 2s infinite;
+    background: rgba(200, 200, 200, 0.15);
+    border: 3px solid rgba(200, 200, 200, 1);
+    {% endif %}
+    "
+    >
+    <svg style="height: 10px; width: 10px;" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 10 10" fill="none">
+    <circle cx="5" cy="5" r="5"
+    fill="
+    {% if final_color == 1 %}
+    #54C63A
+    {% elsif final_color == 2 %}
+    #ee9441
+    {% elsif final_color == 3 %}
+    #c8c8c8
+    {% endif %}"/>
+    </svg>
+    </div>
+    {% if target.inventory_management != 'shopify' %}
+    <span style="opacity: 0.75">In stock</span>
+    {% else %}
+    {% if block.settings.low_inventory_threshold < target.inventory_quantity and target.inventory_quantity > 0 %}
+    {% if block.settings.show_inventory_count %}
+    <span style="opacity: 1">{{ target.inventory_quantity }}&nbsp;<span style="opacity: 0.75">In stock</span></span>
+    
+    {% else %}
+    <span style="opacity: 0.75">In stock</span>
+    {% endif %}
+    {% elsif block.settings.low_inventory_threshold >= target.inventory_quantity %}
+    {% if target.inventory_policy == 'deny' %}
+    {% if target.inventory_quantity >= 0 and target.available == true %}
+    {% if target.inventory_quantity == 0 %}
+    <span style="opacity: 0.75">In stock</span>
+    {% else %}
+    {% if block.settings.show_inventory_count %}
+    <span style="opacity: 1"><span style="opacity: 0.75">Low stock:</span>&nbsp{{ target.inventory_quantity }}&nbsp;<span style="opacity: 0.75">left</span></span>
+    {% else %}
+    <span style="opacity: 0.75">Low stock</span>
+    {% endif %}
+    {% else %}
+    <span style="opacity: 0.75">Low stock</span>
+    {% endif %}
+    {% elsif target.inventory_quantity == 0 and target.available == false %}
+    <span style="opacity: 0.75">Out of stock</span>
+    {% endif %}
+    {% else %}
+    <span style="opacity: 0.75">In stock</span>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    </div>
+    </div>
+    {% endif %}
+    
+    
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT SKU {% endcomment %}
+    {% if block.type == "product_sku" %}
+    <div style="display: none !important;" id="product_sku_fetch_{{ target.id }}_{{ section.id }}">
+    {% if target.sku != blank or target.sku != ""%}
+    <div class="product-sku smi-text-sm smi-mb-lg">
+    <span style="opacity: 0.75">sku:</span>&nbsp;<span>{{ target.sku }}</span>
+    </div>
+    {% endif %}
+    </div>
+    {% endif %}
+    
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT CHECK ITEM IN CART {% endcomment %}
+    <div style="display: none !important;" id="check_item_in_cart_fetch_{{ target.id }}_{{ section.id }}">{%- assign cart_qty = cart | item_count_for_variant: target.id -%}Quantity {% if cart_qty > 0 %}({{ cart_qty }} in cart) {% endif %}</div>
+    <div style="display: none !important;" id="check_item_in_cart2_fetch_{{ target.id }}_{{ section.id }}">{%- assign cart_qty = cart | item_count_for_variant: target.id -%}Quantity {% if cart_qty > 0 %}({{ cart_qty }} in cart) {% endif %}</div>
+    
+    <div style="display: none !important;" id="msg_notice_cart_item_added_all_fetch_{{ target.id }}_{{ section.id }}" >{% if target.available == true and target.inventory_policy != 'deny' %} {% render 'smi-icons', icon: 'error' %}&nbsp;All {{ target.inventory_quantity }} {% if target.inventory_quantity == 1 %}item is{% else %}items are{% endif %} already added to cart! {% endif %}</div>
+    <div style="display: none !important;" id="msg_notice_cart_item_added_all2_fetch_{{ target.id }}_{{ section.id }}" >{% if target.available == true and target.inventory_policy != 'deny' %} {% render 'smi-icons', icon: 'error' %}&nbsp;All {{ target.inventory_quantit }} {% if target.inventory_quantity == 1 %}item is{% else %}items are{% endif %} already added to cart! {% endif %}</div>
+    {%- assign cart_qty = cart | item_count_for_variant: target.id -%}
+    <div style="display: none !important;" id="msg_notice_cart_item_fetch_{{ target.id }}_{{ section.id }}">{% if target.inventory_policy == 'deny' and target.inventory_quantity > 0 and cart_qty == target.inventory_quantity %}{% render 'smi-icons', icon: 'error' %}&nbsp;All {{ cart_qty }}{% if cart_qty == 1 %}item is{% else %}items are{% endif %} in cart{% endif %}</div>
+    <div style="display: none !important;" id="msg_notice_cart_item2_fetch_{{ target.id }}_{{ section.id }}">{% if target.inventory_policy == 'deny' and target.inventory_quantity > 0 and cart_qty == target.inventory_quantity %}{% render 'smi-icons', icon: 'error' %}&nbsp;All {{ cart_qty }}{% if cart_qty == 1 %}item is{% else %}items are{% endif %} in cart{% endif %}</div>
+    
+   
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT VARIANT {% endcomment %}
+    {% if block.type == "product_variant" %}
+      {% comment %} target.id: {{ target.id }} {% endcomment %}
+    <div
+      style="display: none !important;"
+      class="smi-component-settings-product-variant"
+      id="smi_block_variant_fetch_{{ target.id }}_{{ section.id }}"
+      {{ block.shopify_attributes }}
+    >
+      {% liquid
+        assign list_option = ''
+        for option in product.options_with_values
+        assign optionNDC = option.name | strip | downcase | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", ""
+        assign list_option = list_option | append: ',' | append: optionNDC
+        endfor
+        assign list_option = list_option | remove_first: ','
+        if settings.smi_color_variant_name
+            assign smi_color_variant_name_dc = settings.smi_color_variant_name | strip | downcase
+        else
+            assign global_settings = shop.metafields.smind.settings.value
+            assign smi_color_variant_name_dc = global_settings.variantName | strip | downcase
+        endif
+      %}
+      <input class="smi-data-options-list smi-data-options-list-{{ section.id }}" type="hidden" value="{{ smi_color_variant_name_dc }}" id="setting_variant_color_{{ section.id }}"
+      data-variant-option='{"options": "{{ list_option }}"}'
+      >
+      <input
+        type="hidden"
+        value="{{ settings.smi_size_chart_variant_name }}"
+        id="setting_size_chart_variant_name{{ section.id }}"
+      >
+      {%- liquid
+        
+        assign variants_available_arr = product.variants | map: 'available'
+        assign variants_option1_arr = product.variants | map: 'option1'
+        assign variants_option2_arr = product.variants | map: 'option2'
+        assign variants_option3_arr = product.variants | map: 'option3'
+        assign product_form_id = 'product-form-' | append: section.id
+        assign displayVa = true
+        assign color_variant_group = ''
+        assign color_variant_selected = ''
+        assign size_variant_group = ''
+        assign size_variant_selected = ''
+        assign material_variant_group = ''
+        assign material_variant_selected = ''
+        assign style_variant_group = ''
+        assign style_variant_selected = ''
+        assign Size = ' '
+        assign Material = ' '
+        assign Style = ' '
+        assign hide_sold_out = block.settings.hide_sold_out_variant
+        assign firstValueV = ''
+        assign secValueV = ''
+      -%}
+    
+      
+      {% for option in product.options_with_values %}
+        {% assign optionNDC = option.name | strip | downcase | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" %}
+        <input type="hidden" id="option_{{ forloop.index }}_variant" value="{{ optionNDC }}">
+        {% liquid
+          if forloop.index == 1
+            for value in option.values
+        if target.option1 == value or target.option2 == value or target.option3 == value
+          assign firstValueV = value
+        endif
+            endfor
+    
+          elsif forloop.index == 2
+            for value in option.values
+        if target.option1 == value or target.option2 == value or target.option3 == value
+          assign secValueV = value
+        endif
+            endfor
+    
+          elsif forloop.index == 3
+            for value in option.values
+        if target.option1 == value or target.option2 == value or target.option3 == value
+          assign thirdValueV = value
+        endif
+            endfor
+          endif
+    
+          for value in option.values
+            if optionNDC == smi_color_variant_name_dc
+              assign color_variant_group = option.values | join: ', '
+              if target.option1 == value or target.option2 == value or target.option3 == value
+                assign color_variant_selected = value
+              endif
+            elsif optionNDC == "Size"
+              assign size_variant_group = option.values | join: ', '
+              if target.option1 == value or target.option2 == value or target.option3 == value
+                assign size_variant_selected = value
+              endif
+            elsif optionNDC == 'Material'
+                assign material_variant_group = option.values | join: ', '
+              if target.option1 == value or target.option2 == value or target.option3 == value
+                assign material_variant_selected = value
+              endif
+            elsif optionNDC == 'Style'
+              assign style_variant_group = option.values | join: ', '
+              if target.option1 == value or target.option2 == value or target.option3 == value
+                assign style_variant_selected = value
+              endif
+            endif
+    
+            if forloop.index == 1
+              if optionNDC == "size"
+                assign Size = value
+              elsif optionNDC == 'material'
+                assign Material = value
+              elsif optionNDC == 'style'
+                assign Style = value
+              endif
+            endif
+          endfor
+        %}
+      {% endfor %}
+      <div class="smi-all-option-variant">
+        {% for option in product.options_with_values %}
+          {% assign optionNDC = option.name | strip | downcase | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" %}
+          {% liquid
+            assign indexFilterVa = forloop.index
+            assign selectedValue = ''
+            for value in option.values
+              if target.option1 == value or target.option2 == value or target.option3 == value
+                assign selectedValue = value
+              endif
+            endfor
+          %}
+    
+          <div
+            class="smi-option-variant-container smi-data-product-variant smi-data-product-variant-{{ section.id }}"
+            data-variant='
+        {
+          "section_id": "{{ section.id }}",
+          "product_url": "{{ product.url }}",
+          "first_variant_value": "{{ firstValueV }}",
+          "sec_variant_value": "{{ secValueV }}",
+          "third_variant_value": "{{ thirdValueV }}",
+          "button_type": "{{ settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}"
+        }
+            '
+          >
+            <div class="product-option smi-mb-xxs">
+        <span class="product-option-name smi-text-md">
+          <span class="smi-text-75">{{ option.name }}</span>
+          {%- if block.settings.color_selector_type == 'variant_image' and optionNDC == smi_color_variant_name_dc
+          -%}
+            <span class="smi-text-75">: </span> {{ selectedValue }}
+    
+            {% elsif block.settings.color_selector_type == 'color_swatch' and optionNDC == smi_color_variant_name_dc %}
+            <span class="smi-text-75">: </span> {{ selectedValue }}
+          {% endif %}
+        </span>
+        
+        {% assign sizeOptionName = optionNDC | downcase %}
+        {% if sizeOptionName == "size" and size_chart_append_to_variant_block != "" and size_chart_append_to_variant_block != blank
+          and product.metafields.smind.size_chart.value.title != blank
+          and product.metafields.smind.size_chart.value.title != ''
+        %}
+          <span
+            id="btn_open_size_chart_{{ section.id }}"
+            class="product-option-size-chart smi-text-md"
+            
+            onclick="smiLiteModal.open('#size_chart_popup_{{ section.id }}')"
+            >
+              {% if show_icon_size_chart == true %}
+                {{ ICON_SIZE_CHART }}
+              {% endif %}
+              <p class="smi-text-sm">{{ size_chart_append_to_variant_block }}</p></span
+          >
+        {% endif %}
+            </div>
+             {% assign optionNDC = optionNDC | strip | downcase | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" %}
+             {% comment %} CHECK VARIANT COLOR HAS NAME AS "COLOR" or "COLOUR" or SETTING IN [SMI] VARIANT {% endcomment %}
+      {% if optionNDC == smi_color_variant_name_dc or optionNDC contains "color" or optionNDC contains "colour" %}
+        {% if block.settings.color_selector_type == 'dropdown' %}
+          <button
+            id="btn_dd_{{ optionNDC }}"
+            class="smi-variant-wrapper smi-border smi-shadow product-select-dropdown__button smi-text-md 
+            {% if forloop.index != product.options_with_values.size %} smi-mb-md {% endif %} smi-vairiant-cursor"
+          >
+            <span class="dropdown__buttonselected-value">{{ selectedValue }}</span>
+            {% if option.values.size > 1 %}
+              <span id="arr_list_{{ optionNDC }}_down" class="dropdown-list-item dropdown-list-item-show">
+                {% render 'smi-icons', icon: 'arrow-down' %}
+              </span>
+    
+              <span id="arr_list_{{ optionNDC }}_up" class="dropdown-list-item">
+                {%- render 'smi-icons', icon: 'arrow-up' -%}
+              </span>
+            {% endif %}
+          </button>
+          <div class="product-variant-item-list">
+            {% if option.values.size > 1 %}
+              <ul
+                id="list_{{ optionNDC }}"
+                class="smi-dropdown-popup-wrapper smi-border smi-shadow product-select-dropdown__list list_{{ optionNDC }}-clos list-dd-close-container
+                {% if forloop.index == product.options_with_values.size %} dd-mt-end {% endif %}"
+              >
+                {% for value in option.values %}
+            {%- liquid
+    assign option_disabled = true
+    assign hideva = "not_available"
+    assign titlev = ''
+    assign firstValueVT = firstValueV | replace : "xx", "extra" | replace : "xxx", "eextra"
+    assign secValueVT = secValueV | replace : "xx", "extra"| replace : "xxx", "eextra"
+    assign valueT = value | replace : "xx", "extra"| replace : "xxx", "eextra" 
+  
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == target.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  
+    if option_disabled == true
+      assign option_enable = false
+    else
+      assign option_enable = true
+    endif
+  -%}
+  {% for variant in product.variants %}
+    {% liquid
+      assign current_variant = ""
+      assign var1 = variant.option1
+      assign var2 = variant.option2
+      assign var3 = variant.option3
+      if var1 and var1 != ""
+        assign current_variant = current_variant | append: variant.option1
+      endif
+      if var2 and var2 != ""
+        assign current_variant = current_variant | append: " _t_ " | append: var2
+      endif
+      if var3 and var3 != ""
+      assign current_variant = current_variant | append: " _t_ " | append: var3
+      endif
+    %}
+    {% assign vairiantT = current_variant | replace : "xx", "extra" %}
+  
+    {% if vairiantT  contains firstValueVT and vairiantT contains secValueVT and vairiantT contains valueT %}
+      
+      {% assign titlev = vairiantT | strip %}
+      {% assign hideva = 'all' %}
+    {% else %}
+      {% if vairiantT contains firstValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'fav' %}
+      {% elsif vairiantT contains secValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'sav' %}
+      {% else %}
+        
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if target.option1 == value
+    or target.option2 == value
+    or target.option3 == value
+  %}
+    {% assign selectedvalue = true %}
+    <input type="hidden" id="slected_{{ optionNDC }}_value" value="{{ value }}">
+  {% else %}
+    {% assign selectedvalue = false %}
+  {% endif %}
+  
+            {% if hide_sold_out == true and option_enable == false %}
+            {% else %}
+              {% capture COLOR_DROPDOWN %}
+              <li
+                class="
+                  product-select-dropdown__list-item smi-text-md {% if selectedValue == value %} product-dropdown-selected-item {% endif %}
+                  {% if option_enable == false %}smi-variant-out-of-stock-dd{% endif %} t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                "
+                
+              >
+                <span style="width: 50%">{{ value }}</span>
+                {% if option_enable == false %}
+                  <span class="product-variant-dropdown-out-of-stock">Sold out</span>
+                {% endif %}
+              </li>
+            {% endcapture %}
+              {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ COLOR_DROPDOWN }}
+                  {% endif %}
+                {% else %}
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {%- if hideva == 'all' and titlev != '' -%}
+                {{ COLOR_DROPDOWN }}
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                {{ COLOR_DROPDOWN }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+    
+              {% else %}
+                {{ COLOR_DROPDOWN }}
+              {% endif %}
+            {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+    
+        {% else %}
+          <div class="product-variant-image-swatch {% if forloop.index != product.options_with_values.size %} smi-mb-md {% endif %}">
+            {% liquid
+                if settings.smi_color_configuration
+                    assign color_configuration_br = settings.smi_color_configuration | split: '<br />' | json
+                    assign color_configuration_text = settings.smi_color_configuration 
+                else
+                    assign global_settings = shop.metafields.smind.settings.value
+                    assign color_configuration_br = global_settings.variantValue | split: '<br />' | json
+                    assign color_configuration_text = global_settings.variantValue 
+                endif
+
+              for color in color_configuration_br
+                if forloop.index == 1
+              assign color_replace = color | remove: '"' | remove: '[' | remove: ']' | split: '\n'
+                endif
+              endfor
+              
+              assign value_option1 = ''
+            %}
+            {% for value in option.values %}
+              {%- liquid
+    assign option_disabled = true
+    assign hideva = "not_available"
+    assign titlev = ''
+    assign firstValueVT = firstValueV | replace : "xx", "extra" | replace : "xxx", "eextra"
+    assign secValueVT = secValueV | replace : "xx", "extra"| replace : "xxx", "eextra"
+    assign valueT = value | replace : "xx", "extra"| replace : "xxx", "eextra" 
+  
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == target.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  
+    if option_disabled == true
+      assign option_enable = false
+    else
+      assign option_enable = true
+    endif
+  -%}
+  {% for variant in product.variants %}
+    {% liquid
+      assign current_variant = ""
+      assign var1 = variant.option1
+      assign var2 = variant.option2
+      assign var3 = variant.option3
+      if var1 and var1 != ""
+        assign current_variant = current_variant | append: variant.option1
+      endif
+      if var2 and var2 != ""
+        assign current_variant = current_variant | append: " _t_ " | append: var2
+      endif
+      if var3 and var3 != ""
+      assign current_variant = current_variant | append: " _t_ " | append: var3
+      endif
+    %}
+    {% assign vairiantT = current_variant| replace : "xx", "extra" %}
+  
+    {% if vairiantT  contains firstValueVT and vairiantT contains secValueVT and vairiantT contains valueT %}
+      
+      {% assign titlev = vairiantT | strip %}
+      {% assign hideva = 'all' %}
+    {% else %}
+      {% if vairiantT contains firstValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'fav' %}
+      {% elsif vairiantT contains secValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'sav' %}
+      {% else %}
+        
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if target.option1 == value
+    or target.option2 == value
+    or target.option3 == value
+  %}
+    {% assign selectedvalue = true %}
+    <input type="hidden" id="slected_{{ optionNDC }}_value" value="{{ value }}">
+  {% else %}
+    {% assign selectedvalue = false %}
+  {% endif %}
+  
+              {% capture LINE_SVG_2 %}
+              <svg
+                id="{{ optionNDC }}_id_{{ forloop.index }}"
+                class="svg-class all-ele-material-svg {% if option_enable == false %} line-svg {% endif %}"
+              >
+                <line x1="0" y1="100%" x2="100%" y2="0"
+              style="stroke:rgb(209,209,209);stroke-width:1"/>
+              </svg>
+              {% endcapture %}
+              {% liquid
+                if hideva == true
+            assign displayVa = false
+                endif
+              %}
+              
+              {% if block.settings.color_selector_type == 'variant_image' %}
+                {%- for variant in product.variants -%}
+            {% assign variant_check = variant.option1 | append: " " | append: variant.option2 | append: " " | append: variant.option3 %}
+            {%- if current_variant contains value
+              and current_variant contains Size
+              and current_variant contains Material
+              and current_variant contains Style
+            -%}
+            
+             
+              {% if hide_sold_out == true and option_enable == false %}
+              {% else %}
+                {% capture COLOR_IMAGE %}
+                <div class="product-color-swatch-bg-border-ele">
+                  <div
+                    class="
+                    smi-variant-wrapper smi-border smi-shadow
+                product-variant-item-image
+                smi-variant-border-20
+                {% if selectedValue == value %} product-color-selected-variant{% endif %}
+                product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                    "
+                    id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                    
+                  >
+                    {% if variant.image != "" and variant.image != blank %}
+                <img class="variant-color-image-selector" src="{{ variant.image | img_url }}" alt="">
+                
+                    {%- else -%}
+                    <span class="variant-color-image-selector">
+                    {% render 'smi-icons', icon: 'empty_imgage_variant' %}
+                    
+                    </span>
+                    {%- endif -%}
+                    {{ LINE_SVG_2 }}
+                  </div>
+                  <span class="tooltiptext" style="margin-top: -35px;" id="myTooltip_color_swatch_{{ value }}">{{ value }}</span>
+                </div>
+                {% endcapture %}
+                {% if indexFilterVa > 1 %}
+                  {% if indexFilterVa > 2 %}
+                    {% if titlev != '' %}
+                {{ COLOR_IMAGE }}
+                    {% endif %}
+                  {% else %}
+                    {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                {% if hideva == 'all' and titlev != '' %}
+                  {{ COLOR_IMAGE }}
+                {% elsif hideva == 'sav' or hideva == 'fav' %}
+                  {{ COLOR_IMAGE }}
+                {% endif %}
+                    {% endif %}
+                  {% endif %}
+    
+                {% else %}
+                  {{ COLOR_IMAGE }}
+                {% endif %}
+              {% endif %}
+              {%break %}
+            {% else %}
+            
+            
+              {% if variant_check contains value %}
+                {% if hide_sold_out == true and option_enable == false %}
+                  {% else %}
+                    {% capture COLOR_IMAGE2 %}
+                    <div class="product-color-swatch-bg-border-ele">
+                <div
+                  class="
+                  smi-variant-wrapper smi-border smi-shadow
+                    product-variant-item-image
+                    smi-variant-border-20
+                    {% if selectedValue == value %} product-color-selected-variant{% endif %}
+                    product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                    t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                  "
+                  id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                  
+                >
+                  {% if variant.image != "" and variant.image != blank %}
+                    <img class="variant-color-image-selector" src="{{ variant.image | img_url }}" alt="">
+                    
+                  {%- else -%}
+                  <span class="variant-color-image-selector">
+                    {% render 'smi-icons', icon: 'empty_imgage_variant' %}
+                    
+                    </span>
+                  
+                  {%- endif -%}
+                  {{ LINE_SVG_2 }}
+                </div>
+                <span class="tooltiptext" style="margin-top: -35px;" id="myTooltip_color_swatch_{{ value }}">{{ value }}</span>
+                    </div>
+                    {% endcapture %}
+                    {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ COLOR_IMAGE2 }}
+                  {% endif %}
+                {% else %}
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {% if hideva == 'all' and titlev != '' %}
+                      {{ COLOR_IMAGE2 }}
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                      {{ COLOR_IMAGE2 }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+        
+                    {% else %}
+                {{ COLOR_IMAGE2 }}
+                    {% endif %}
+                  {% endif %}
+                {% break %}
+                {% else %}
+               
+              {% endif %}
+            {% endif %}
+                {% endfor %}
+    
+              {% elsif block.settings.color_selector_type == 'color_swatch'
+                or block.settings.color_selector_type == 'color_swatch_text'
+                or block.settings.color_selector_type == 'button'
+              %}
+                {% if block.settings.color_selector_type == 'color_swatch' %}
+            {% assign  value_color_downcase = value | downcase | strip %}
+            {% assign color_configuration_text_dc = color_configuration_text | downcase %}
+            {% if color_configuration_text_dc contains value_color_downcase %}
+              {% for color in color_replace %}
+                {% assign colorDC = color | downcase | strip %}
+                {% comment %} colorDC: {{ colorDC }} - value_color_downcase: {{ value_color_downcase }} {% endcomment %}
+                {% if colorDC contains value_color_downcase %}
+                  {% assign value_downcase = value | downcase | strip %}
+                  {% if hide_sold_out == true and option_enable == false %}
+                  {% else %}
+                  
+                    {% capture COLOR_SWATCH %}
+                    <div class="product-color-swatch-bg-border-ele">
+                <div
+                  class="product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-variant-wrapper smi-border smi-shadow product-color-swatch-bg-border smi-variant-border-20  {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %} 
+                  t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                  id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                >
+                  
+                  {%liquid
+                    assign color_replace_value_arr = color | split: ':'
+                    assign color_replace_value = color_replace_value_arr[1] | strip
+                    if color_replace_value == ""
+                      assign color_replace_value = value_downcase
+                    endif
+                    if color_replace_value contains '.jpg' or color_replace_value contains '.png' or color_replace_value contains '.jpeg'
+                        assign is_img_color = true
+                    endif
+                  %}
+                  
+                  {% if is_img_color %}
+                    {% comment %} color_replace_value: {{ color_replace_value }} {% endcomment %}
+                    <span class="smi-d-block smi-wh-color-img smi-p-relative smi-overflow-hidden">
+                      <img src="{{ color_replace_value | file_img_url: 'thumb' }}" alt="" class="smi-wh-100 smi-object-fit-cover smi-p-absolute">
+                    </span>
+                    {% else %}
+                    <div
+                      style="background: {{ color_replace_value }}"
+                      class="
+                        product-color-swatch-bg
+                        product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                      "
+                    >
+                    </div>
+                  {% endif %}
+                  {{ LINE_SVG_2 }}
+                </div>
+                <span class="tooltiptext" id="myTooltip_color_swatch_{{ value }}">{{ value }}</span>
+                    </div>
+                  {% endcapture %}
+                    {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ COLOR_SWATCH }}
+                  {% endif %}
+                {% else %}
+                  
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {% if hideva == 'all' and titlev != '' %}
+                      {{ COLOR_SWATCH }}
+    
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                      {{ COLOR_SWATCH }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+    
+                    {% else %}
+                {{ COLOR_SWATCH }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {% if hide_sold_out == true and option_enable == false %}
+              {% else %}
+                {% capture COLOR_SWATCH_NOT_CONTAINS_VALUE %}
+                
+                  <div class="product-color-swatch-bg-border-ele">
+                    <div
+                class="product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }}  smi-variant-wrapper smi-border smi-shadow product-color-swatch-bg-border smi-variant-border-20 {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %}
+                t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                
+                    >
+                <div
+                  style="background: {{ value }}"
+                  class="
+                    product-color-swatch-bg
+                    product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                  "
+                >
+                </div>
+                {{ LINE_SVG_2 }}
+                    </div>
+                    <span class="tooltiptext" id="myTooltip_color_swatch_{{ value }}">{{ value }}</span>
+                  </div>
+                
+              {% endcapture %}
+                {% if indexFilterVa > 1 %}
+                  {% if indexFilterVa > 2 %}
+                    {% if titlev != '' %}
+                {{ COLOR_SWATCH_NOT_CONTAINS_VALUE }}
+                    {% endif %}
+                  {% else %}
+                    
+                    {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                {%- if hideva == 'all' and titlev != '' -%}
+                  {{ COLOR_SWATCH_NOT_CONTAINS_VALUE }}
+                {% elsif hideva == 'sav' or hideva == 'fav' %}
+                  {{ COLOR_SWATCH_NOT_CONTAINS_VALUE }}
+                {% endif %}
+                    {% endif %}
+                  {% endif %}
+    
+                {% else %}
+                  {{ COLOR_SWATCH_NOT_CONTAINS_VALUE }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+                {% elsif block.settings.color_selector_type == 'button' %}
+            
+            
+            {% if color_configuration_text contains value %}
+              {% for color in color_replace %}
+                {% if color contains value %}
+                  {% assign value_downcase = value | downcase %}
+                  {% if hide_sold_out == true and option_enable == false %}
+                    
+                  {% else %}
+                    {% capture PILL_COLOR_VALUE %}
+                <div
+                  class="smi-variant-wrapper smi-border smi-shadow
+                    product-variant-item-button smi-px-sm smi-variant-border-20 {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %}
+                    product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                    t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                  "
+                  id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                  
+                >
+                  <span class="product-color-swatch-text-content smi-text-md">
+                    {{ value }}
+                   {{ LINE_SVG_2 }}
+                  </span>
+                </div>
+                {% endcapture %}
+                    {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ PILL_COLOR_VALUE }}
+                  {% endif %}
+                {% else %}
+                  
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {%- if hideva == 'all' and titlev != '' -%}
+                      {{ PILL_COLOR_VALUE }}
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                      {{ PILL_COLOR_VALUE }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+    
+                    {% else %}
+                {{ PILL_COLOR_VALUE }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {% if hide_sold_out == true and option_enable == false %}
+              {% else %}
+                {% capture PILL_COLOR_NOT_CONTAINS_VALUE %}
+                <div
+                  class="smi-variant-wrapper smi-border smi-shadow
+                    product-color-swatch-text smi-px-sm smi-variant-border-20 {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %}
+                    product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                    t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                  "
+                  
+                  id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                >
+                  <span class="product-color-swatch-text-content smi-text-md">{{ value }}</span>
+                 {{ LINE_SVG_2 }}
+                </div>
+              {% endcapture %}
+    
+                {% if indexFilterVa > 1 %}
+                  {% if indexFilterVa > 2 %}
+                    {% if titlev != '' %}
+                {{ PILL_COLOR_NOT_CONTAINS_VALUE }}
+                    {% endif %}
+                  {% else %}
+                    
+                    {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                {%- if hideva == 'all' and titlev != '' -%}
+                  {{ PILL_COLOR_NOT_CONTAINS_VALUE }}
+                {% elsif hideva == 'sav' or hideva == 'fav' %}
+                  {{ PILL_COLOR_NOT_CONTAINS_VALUE }}
+                {% endif %}
+                    {% endif %}
+                  {% endif %}
+    
+                {% else %}
+                  {{ PILL_COLOR_NOT_CONTAINS_VALUE }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+                {% else %}
+            
+                {% assign  value_color_downcase = value | downcase | strip %}
+            {% assign color_configuration_text_dc = color_configuration_text | downcase %}
+            {% if color_configuration_text_dc contains value_color_downcase %}
+              {% for color in color_replace %}
+                {% assign colorDC = color | downcase | strip %}
+                {% comment %} colorDC: {{ colorDC }} - value_color_downcase: {{ value_color_downcase }} {% endcomment %}
+                {% if colorDC contains value_color_downcase %}
+                  {% assign value_downcase = value | downcase | strip %}
+                  {% if hide_sold_out == true and option_enable == false %}
+                  {% else %}
+                    {% capture COLOR_SWATCH_WITH_TEXT_VALUE %}
+                    <div
+                class="smi-variant-wrapper smi-border smi-shadow
+                  product-color-swatch-text smi-px-sm smi-variant-border-20 {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %}
+                  product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                  t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                "
+                
+                id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                    >
+                      {%liquid
+                        assign color_replace_value_arr = color | split: ':'
+                        assign color_replace_value = color_replace_value_arr[1] | strip
+                        if color_replace_value == ""
+                          assign color_replace_value = value_downcase
+                        endif
+                        if color_replace_value contains '.jpg' or color_replace_value contains '.png' or color_replace_value contains '.jpeg'
+                            assign is_img_color = true
+                        endif
+                      %}
+    
+                {% if is_img_color %}
+                  <span class="smi-d-block smi-wh-color-img-text smi-mr-sm smi-p-relative smi-overflow-hidden">
+                    <img src="{{ color_replace_value | file_img_url: 'thumb' }}" alt="" class="smi-wh-100 smi-object-fit-cover smi-p-absolute">
+                  </span>
+                  {% else %}
+                <div
+                  style="background: {{ color_replace_value }}"
+                  class="product-color-swatch-text-color smi-mr-sm"
+                ></div>
+                    {% endif %}
+                <span class="product-color-swatch-text-content smi-text-md">{{ value }}</span>
+                {{ LINE_SVG_2 }}
+                    </div>
+                    {% endcapture %}
+                    {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ COLOR_SWATCH_WITH_TEXT_VALUE }}
+                  {% endif %}
+                {% else %}
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {%- if hideva == 'all' and titlev != '' -%}
+                      {{ COLOR_SWATCH_WITH_TEXT_VALUE }}
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                      {{ COLOR_SWATCH_WITH_TEXT_VALUE }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+    
+                    {% else %}
+                {{ COLOR_SWATCH_WITH_TEXT_VALUE }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {% if hide_sold_out == true and option_enable == false %}
+              {% else %}
+                {% capture COLOR_SWATCH_WITH_TEXT_NOT_CONTAINS_VALUE %}
+                <div
+                  class="smi-variant-wrapper smi-border smi-shadow
+                    product-color-swatch-text smi-px-sm smi-variant-border-20 {% if selectedValue == value %} product-color-selected-variant {% else %} {% endif %}
+                    product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+                    t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                  "
+                  
+                  id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+                >
+                  <div
+                    style="background: {{ value }}"
+                    class="product-color-swatch-text-color smi-mr-sm"
+                  ></div>
+                  <span class="product-color-swatch-text-content smi-text-md">{{ value }}</span>
+                  {{ LINE_SVG_2 }}
+                </div>
+              {% endcapture %}
+                {% if indexFilterVa > 1 %}
+                  {% if indexFilterVa > 2 %}
+                    {% if titlev != '' %}
+                {{ COLOR_SWATCH_WITH_TEXT_NOT_CONTAINS_VALUE }}
+                    {% endif %}
+                  {% else %}
+                    {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                {%- if hideva == 'all' and titlev != '' -%}
+                  {{ COLOR_SWATCH_WITH_TEXT_NOT_CONTAINS_VALUE }}
+                {% elsif hideva == 'sav' or hideva == 'fav' %}
+                  {{ COLOR_SWATCH_WITH_TEXT_NOT_CONTAINS_VALUE }}
+                {% endif %}
+                    {% endif %}
+                  {% endif %}
+    
+                {% else %}
+                  {{ COLOR_SWATCH_WITH_TEXT_NOT_CONTAINS_VALUE }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+            {% else %}
+        {% if block.settings.selector_type == 'dropdown' %}
+          <button
+            class="smi-variant-wrapper smi-border smi-shadow product-select-dropdown__button smi-text-md 
+            {% if forloop.index != product.options_with_values.size %} smi-mb-md  {% endif %}"
+            id="btn_dd_{{ optionNDC }}"
+          >
+            <span class="dropdown__buttonselected-value">{{ selectedValue }}</span>
+            {% if option.values.size > 1 %}
+              <span id="arr_list_{{ optionNDC }}_down" class="dropdown-list-item dropdown-list-item-show">
+                {% render 'smi-icons', icon: 'arrow-down' %}
+              </span>
+    
+              <span id="arr_list_{{ optionNDC }}_up" class="dropdown-list-item">
+                {%- render 'smi-icons', icon: 'arrow-up' -%}
+              </span>
+            {% endif %}
+          </button>
+          <div class="product-variant-item-list">
+            {% if option.values.size > 1 %}
+              <ul
+                id="list_{{ optionNDC }}"
+                class="smi-dropdown-popup-wrapper smi-border smi-shadow product-select-dropdown__list list_{{ optionNDC }}-close list-dd-close-container
+                {% if forloop.index == product.options_with_values.size %} dd-mt-end {% endif %}"
+              >
+                {% for value in option.values %}
+            {%- liquid
+    assign option_disabled = true
+    assign hideva = "not_available"
+    assign titlev = ''
+    assign firstValueVT = firstValueV | replace : "xx", "extra" | replace : "xxx", "eextra"
+    assign secValueVT = secValueV | replace : "xx", "extra"| replace : "xxx", "eextra"
+    assign valueT = value | replace : "xx", "extra"| replace : "xxx", "eextra" 
+  
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == target.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  
+    if option_disabled == true
+      assign option_enable = false
+    else
+      assign option_enable = true
+    endif
+  -%}
+  {% for variant in product.variants %}
+    {% liquid
+      assign current_variant = ""
+      assign var1 = variant.option1
+      assign var2 = variant.option2
+      assign var3 = variant.option3
+      if var1 and var1 != ""
+        assign current_variant = current_variant | append: variant.option1
+      endif
+      if var2 and var2 != ""
+        assign current_variant = current_variant | append: " _t_ " | append: var2
+      endif
+      if var3 and var3 != ""
+      assign current_variant = current_variant | append: " _t_ " | append: var3
+      endif
+    %}
+    {% assign vairiantT = current_variant | replace : "xx", "extra" %}
+  
+    {% if vairiantT  contains firstValueVT and vairiantT contains secValueVT and vairiantT contains valueT %}
+      
+      {% assign titlev = vairiantT | strip %}
+      {% assign hideva = 'all' %}
+    {% else %}
+      {% if vairiantT contains firstValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'fav' %}
+      {% elsif vairiantT contains secValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'sav' %}
+      {% else %}
+        
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if target.option1 == value
+    or target.option2 == value
+    or target.option3 == value
+  %}
+    {% assign selectedvalue = true %}
+    <input type="hidden" id="slected_{{ optionNDC }}_value" value="{{ value }}">
+  {% else %}
+    {% assign selectedvalue = false %}
+  {% endif %}
+  
+            
+            {% if hide_sold_out == true and option_enable == false %}
+            {% else %}
+              {% capture VARIANT_DROPDOWN %}
+              <li
+                class="
+                  product-select-dropdown__list-item smi-text-md {% if selectedValue == value %} product-dropdown-selected-item {% else %} {% endif %}
+                  {% if option_enable == false %}smi-variant-out-of-stock-dd{% endif %} t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+                "
+                
+              >
+                <span style="width: 50%">{{ value }}</span>
+                {% if option_enable == false %}
+                  <span class="product-variant-dropdown-out-of-stock">Sold out</span>
+                {% endif %}
+              </li>
+            {% endcapture %}
+    
+              {% if indexFilterVa > 1 %}
+                {% if indexFilterVa > 2 %}
+                  {% if titlev != '' %}
+                    {{ VARIANT_DROPDOWN }}
+                  {% endif %}
+                {% else %}
+                  {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                    {%- if hideva == 'all' and titlev != '' -%}
+                {{ VARIANT_DROPDOWN }}
+                    {% elsif hideva == 'sav' or hideva == 'fav' %}
+                {{ VARIANT_DROPDOWN }}
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+    
+              {% else %}
+                {{ VARIANT_DROPDOWN }}
+              {% endif %}
+            {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+    
+        {% elsif block.settings.selector_type == 'button' %}
+          <div class="product-select-button {% if forloop.index != product.options_with_values.size %} smi-mb-md {% endif %}">
+            {% for value in option.values %}
+              {%- liquid
+    assign option_disabled = true
+    assign hideva = "not_available"
+    assign titlev = ''
+    assign firstValueVT = firstValueV | replace : "xx", "extra" | replace : "xxx", "eextra"
+    assign secValueVT = secValueV | replace : "xx", "extra"| replace : "xxx", "eextra"
+    assign valueT = value | replace : "xx", "extra"| replace : "xxx", "eextra" 
+  
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == target.option1 and variants_option2_arr[forloop.index0] == target.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  
+    if option_disabled == true
+      assign option_enable = false
+    else
+      assign option_enable = true
+    endif
+  -%}
+  {% for variant in product.variants %}
+    {% liquid
+      assign current_variant = ""
+      assign var1 = variant.option1
+      assign var2 = variant.option2
+      assign var3 = variant.option3
+      if var1 and var1 != ""
+        assign current_variant = current_variant | append: variant.option1
+      endif
+      if var2 and var2 != ""
+        assign current_variant = current_variant | append: " _t_ " | append: var2
+      endif
+      if var3 and var3 != ""
+      assign current_variant = current_variant | append: " _t_ " | append: var3
+      endif
+    %}
+    {% assign vairiantT = current_variant | replace : "xx", "extra" %}
+  
+    {% if vairiantT  contains firstValueVT and vairiantT contains secValueVT and vairiantT contains valueT %}
+      
+      {% assign titlev = vairiantT | strip %}
+      {% assign hideva = 'all' %}
+    {% else %}
+      {% if vairiantT contains firstValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'fav' %}
+      {% elsif vairiantT contains secValueVT and vairiantT contains valueT %}
+        {% assign hideva = 'sav' %}
+      {% else %}
+        
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if target.option1 == value
+    or target.option2 == value
+    or target.option3 == value
+  %}
+    {% assign selectedvalue = true %}
+    <input type="hidden" id="slected_{{ optionNDC }}_value" value="{{ value }}">
+  {% else %}
+    {% assign selectedvalue = false %}
+  {% endif %}
+  
+              {% capture LINE_SVG_3 %}
+              <svg
+                id="{{ optionNDC }}_id_{{ forloop.index }}"
+                class="svg-class all-ele-material-svg {% if option_enable == false %} line-svg {% endif %}"
+              >
+                <line x1="0" y1="100%" x2="100%" y2="0"
+              style="stroke:rgb(209,209,209);stroke-width:1"/>
+              </svg>
+              {% endcapture %}
+              {% liquid
+                if hideva == true
+            assign displayVa = false
+                endif
+              %}
+    
+              {% if hide_sold_out == true and option_enable == false %}
+              {% else %}
+                {% capture VARIANT_PILL %}
+                <button
+            class="smi-variant-wrapper smi-border smi-shadow 
+              product-variant-item-button smi-text-md smi-variant-border-20 {% if selectedValue == value %} product-button-selected-item {% else %} {% endif %}
+              {% if option_enable == false %} smi-variant-out-of-stock {% endif %}
+              product_variant_select_{{ optionNDC }} product_variant_select_{{ optionNDC }}-{{ section.id }} smi-vairiant-cursor
+              t_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}
+            "
+            id="product_variant_select_{{ value | replace: " ", "" | replace: ")", "" | replace: "(", "" | replace: ".", "" | replace: "/", "" | replace: "+", "" | replace: ":", "" }}_{{ section.id }}"
+            
+                >
+            {{ value }}
+                 {{ LINE_SVG_3 }}
+                </button>
+              {% endcapture %}
+    
+                {% if indexFilterVa > 1 %}
+            {% if indexFilterVa > 2 %}
+              {% if titlev != '' %}
+                {{ VARIANT_PILL }}
+              {% endif %}
+            {% else %}
+              {% if hideva == 'all' or hideva == 'sav' or hideva == 'fav' %}
+                {%- if hideva == 'all' and titlev != '' -%}
+                  {{ VARIANT_PILL }}
+                {% elsif hideva == 'sav' or hideva == 'fav' %}
+                  {{ VARIANT_PILL }}
+                {% endif %}
+              {% endif %}
+            {% endif %}
+    
+                {% else %}
+            {{ VARIANT_PILL }}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    
+    </div>
+    
+    
+    
+    {% endif %}
+    
+    {% comment %} IMPORTANT FAKE FETCH PRODUCT VARIANT {% endcomment %}
+    
+    
+    {% comment %} END IMPORTANT FAKE FETCH PRODUCT PURCHASE {% endcomment %}
+    {% liquid
+      assign buy_button_index_check = 0
+      assign guaranteed_index_check = 0
+      assign guaranteed_down_buy_button = false
+      for block_item in section.blocks
+        if block_item.type == 'product_purchase'
+        assign buy_button_index_check = forloop.index
+        endif
+        if block_item.type == 'product_guaranteed'
+        assign guaranteed_index_check = forloop.index
+        endif
+      endfor
+    
+      assign minus_index_buy_guaranteed = guaranteed_index_check | minus: buy_button_index_check
+      if buy_button_index_check > 0
+        if minus_index_buy_guaranteed == 1
+        assign guaranteed_down_buy_button = true
+        else
+        assign guaranteed_down_buy_button = false
+       endif
+      endif
+    %}
+    {% comment %} target.inventory_policy: {{ target.inventory_policy }} - target.inventory_quantity: {{ target.inventory_quantity }} {% endcomment %}
+    <input type="hidden" id="target_inventory_policy_fetch_{{ target.id }}_{{ section.id }}" value="{{ target.inventory_policy }}">
+    <input type="hidden" id="target_inventory_quantity_fetch_{{ target.id }}_{{ section.id }}" value="{{ target.inventory_quantity }}">
+
+    <input type="hidden" id="target_available_fetch_{{ target.id }}_{{ section.id }}" value="{{ target.available }}">
+    <div
+      style="display: none !important;"
+      class="smi-component-product-purchase {% if guaranteed_down_buy_button == true %} smi-mb-sm {% else %} smi-mb-lg {% endif %}"
+      id="smi_pruduct_purchase_fetch_{{ target.id }}_{{ section.id }}"
+      {{ block.shopify_attributes }}
+    >
+    
+      {% comment %} target.available: {{ target.available }} - target.inventory_policy: {{ target.inventory_policy }} -  target.inventory_quantity: {{  target.inventory_quantity }} {% endcomment %}
+      {% capture error_icon %}
+        {% render 'smi-icons', icon: 'error' %}
+    {% endcapture %}
+      {% if block.settings.show_recipient_information == true and product.gift_card? == true %}
+        <div class="gift-card">
+          <label class="container-checkbox smi-mb-sm">
+            <input type="checkbox" id="send_as_gift_{{ section.id }}" onchange="checkedSendAsGift()">
+            <span class="checkmark"></span>
+            <span class="sp-text-md">I want to send this as a gift</span>
+          </label>
+    
+          <div id="gift_card_form_input_{{ section.id }}" class="hide-gift_card_form_input">
+            <div class="line-hide-gift_card_form_input smi-mb-sm">line</div>
+            <input
+              id="recipient_email"
+              class="smi-inputs-wrapper smi-input smi-border smi-shadow gift-card-input smi-mb-sm gift-card-input smi-mb-sm"
+              required
+              type="email"
+              maxlength="50"
+              placeholder="Recipient email"
+              name="properties[Recipient email]"
+              onchange="setValueGiftCard('recipient_email_add_card', this.value)"
+              form="{{ target.id }}"
+            >
+            <div class="msg-validate-email-gift" style="display: none" id="msg_validate_email_gift_{{ section.id }}">
+              <span style="display: flex; align-items: center" class="smi-text-sm">
+                {% render 'smi-icons', icon: 'error' %}&ensp;<span
+                  id="mgs_detail_validate_email_gift_{{ section.id }}"
+                ></span>
+              </span>
+            </div>
+    
+            <input
+              type="text"
+              class="smi-inputs-wrapper smi-input smi-border smi-shadow gift-card-input smi-mb-sm gift-card-input smi-mb-sm"
+              id="recipient_name"
+              maxlength="50"
+              name="properties[Recipient name]"
+              placeholder="Recipient name (optional)"
+              onchange="setValueGiftCard('recipient_name_add_card', this.value)"
+              form="{{ target.id }}"
+            >
+    
+            <textarea
+              rows="5"
+              class="smi-inputs-wrapper smi-input smi-border smi-shadow gift-card-input gift-card-input"
+              name="properties[Message]"
+              maxlength="200"
+              placeholder="Message (optional)"
+              onchange="setValueGiftCard('recipient_message_add_card', this.value)"
+              form="{{ target.id }}"
+            ></textarea>
+            <div class="text-200-character smi-mb-sm smi-text-xs">200 characters max</div>
+    
+            <div class="gift-card-send-on smi-inputs-wrapper smi-input smi-border smi-shadow smi-mb-sm">
+              <div class="placeholder smi-px-sm smi-py-xxs smi-text-xs" style="line-height:12px;">Send on(optional)</div>
+              <input
+                id="gift_card_send_on"
+                class="smi-inputs-wrapper smi-px-sm smi-py-xxs smi-input smi-border smi-shadow gift-card-send-on-input"
+                onchange="setValueGiftCard('recipient_date_add_card', this.value)"
+                name="dategiftcart"
+                type="date"
+              >
+              {% render 'smi-icons', icon: 'calendar' %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      <product-form class="product-form">
+        {% if show_buy_quantity_btn == true %}
+          <div class="smi-text-md smi-mb-xs smi-text-75" id="check_item_in_cart_{{ section.id }}">
+            {%- assign cart_qty = cart | item_count_for_variant: target.id -%}
+            Quantity {% if cart_qty > 0 %}({{ cart_qty }} in cart) {% endif %}
+            <input type="hidden" value="{{ cart_qty }}" id="cart_quantity_{{ section.id }}">
+          </div>
+        {% endif %}
+        <div
+          class="smi-notice-cart-item smi-notice-cart-item-all-{{ section.id }} smi-text-xs hide-msg-noti-cart-item"
+          id="msg_notice_cart_item_added_all_{{ section.id }}"
+        >
+          {% if target.available == true and target.inventory_policy == 'deny' and cart_qty >= target.inventory_quantity %}
+            {% render 'smi-icons', icon: 'error' %}&nbsp;All {{ target.inventory_quantity }}
+            {% if target.inventory_quantity == 1 %}item is{% else %}items are{% endif %} already added to cart!
+          {% endif %}
+        </div>
+        <div
+          class="smi-notice-cart-item smi-notice-cart-item-{{ section.id }} smi-text-xs hide-msg-noti-cart-item"
+          id="msg_notice_cart_item_{{ section.id }}"
+        >
+          {% if target.inventory_policy == 'deny'
+            and target.inventory_quantity > 0
+            and cart_qty == target.inventory_quantity
+          %}
+            {% render 'smi-icons', icon: 'error' %}&nbsp;All {{ cart_qty }}
+            {% if cart_qty == 1 %}item is{% else %}items are{% endif %} in cart
+          {% endif %}
+        </div>
+    
+        <div class="smi-buy-quantity {% if block.settings.show_dynamic_checkout == true %} smi-mb-sm {% endif %}">
+          {% if show_buy_quantity_btn == true %}
+            <div class="smi-inputs-wrapper smi-input smi-border smi-shadow smp-input-border-text-color" style="width: 140px; margin-right: 12px; display: flex;">
+              <div class="variant-quantity" style="padding: 0px; margin-right: 0px; width: 100%">
+                <span
+                  class="disable-plus-minus-quantity plus-minus-icon disable-plus-minus-quantity"
+                  id="btn_minus_quantity_{{ section.id }}"
+                  onclick="plusMinusQuantityItem('{{ section.id }}','minus')"
+                >
+                  {% render 'smi-icons', icon: 'minus' %}
+                </span>
+                <input
+                  class="number-item smi-text-md"
+                  value="1"
+                  id="product_quantity_fetch_{{ section.id }}"
+                  min="1"
+                  type="number"
+                  form="{{ target.id }}"
+                  onchange="changeQuantityMain('{{ section.id }}')"
+                >
+                <span class="plus-minus-icon" id="btn_plus_quantity_{{ section.id }}" onclick="plusMinusQuantityItem('{{ section.id }}','plus')">
+                  {% render 'smi-icons', icon: 'plus' %}
+                </span>
+              </div>
+            </div>
+          {% endif %}
+    
+          <div
+            id="product_add_to_cart_{{ section.id }}"
+            class="add-to-card {% if show_buy_quantity_btn == false %} add-to-card-fw {% endif %} {% if target.available == false %} {% else %} cursor-none-buy-gr {% endif %}"
+            {% if target.available == true and target.inventory_policy == 'deny' and cart_qty == target.inventory_quantity %}
+            onclick="checkAddPurchaseNumberItem('{{ section.id }}')"
+            {% endif %}
+          >
+            <form
+              class="smi-product-form-add-to-cart smi-button-wrapper"
+              id="product_form_add_to_cart_{{ section.id }}"
+              method="post"
+              action="/cart/add"
+              enctype="multipart/form-data"
+              onclick="checkreEmail()"
+            >
+              <input type="hidden" id="product_selected_{{ section.id }}" name="id" value="{{ product.variants.first.id }}">
+              <input min="1" type="hidden" id="product_quantity_item_{{ section.id }}" name="quantity" value="1">
+    
+              <input
+                id="recipient_email_add_card"
+                type="hidden"
+                name="properties[Recipient email]"
+              >
+              <input id="recipient_name_add_card" type="hidden" name="properties[Recipient name]">
+              <input id="recipient_message_add_card" type="hidden" name="properties[Message]">
+              <input type="hidden" id="recipient_date_add_card" name="properties[Send on]" pattern="\d{4}-\d{2}-\d{2}">
+              <div id="buy_group_add_to_cart_container_{{ section.id }}" style="cursor: pointer;"
+              
+              onclick="checkCartQuantityBeforeAdd('{{ section.id }}')">
+                <button
+                  onclick="addToCartFunc()"
+                  value="Add to cart"
+                  id="buy_group_add_to_cart_{{ section.id }}"
+                  style="width: 100%;
+                  {% if target.available == true and target.inventory_policy == 'deny' and cart_qty >= target.inventory_quantity %}
+                    pointer-events: none;
+                  {% endif %}
+                  
+                  "
+                  class="
+                    {% comment %} {% if settings.smi_buttons_shadow == "0,0,0" %} smi-product-add-to-card-no-shadow {% endif %} {% endcomment %}
+                    smi-button-wrapper smi-button smi-cursor-pointer
+                     {% comment %} smi-border-purchase {% endcomment %}
+                     smi-border smi-shadow
+    
+                    {% comment %} smi-product-add-to-card  {% endcomment %}
+                    smi-product-add-to-card-{{ section.id }} 
+                    {% comment %} smi-product-add-to-card-{% if block.settings.show_dynamic_checkout == true %}outline{% else %}solid{% endif %} {% endcomment %}
+                    {% comment %} text-uppercase  {% endcomment %}
+                    smi-text-button smi-button--{% if block.settings.show_dynamic_checkout == true %}outline{% else %}solid{% endif %}
+                    smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}
+                  "
+                >
+                  <span>
+                    {%- if target.available == false %}{{ 'smind.product.sold_out' | t }}{% else %}{{ 'smind.product.add_to_cart' | t }}{% endif -%}
+                  </span>
+                  <span class="smi-loader smi-p-absolute smi-d-none"></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    
+        {% if block.settings.show_dynamic_checkout == true %}
+          <div
+            class="smi-buy-btn 
+            {% comment %} text-uppercase  {% endcomment %}
+            smi-text-button {% if target.available == false %} {% else %} cursor-none-buy-gr {% endif %}"
+            id="product_checkout_{{ section.id }}"
+          >
+            {%- form 'product',
+              product,
+              id: target.id,
+              class: 'form',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            -%}
+              <input
+                type="hidden"
+                name="id"
+                id="product_checkout_id_{{ section.id }}"
+                value="{{ target.id }}"
+                disabled
+                class="product-variant-id"
+              >
+              <input type="hidden" name="quantity" id="quantity_checkout_group_{{ section.id }}" min="1" value="1">
+    
+              
+              {{ form | payment_terms }}
+              <div
+                class="
+                  product-form__buttons
+                  product-form__buttons-purchase-{{ section.id }}
+                  smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}
+                "
+                id="group_buy_btn"
+                onclick="resetValue('{{ section.id }}')"
+              >
+                {%- liquid
+                  assign check_against_inventory = true
+                  if target.inventory_management != 'shopify' or target.inventory_policy == 'continue'
+                    assign check_against_inventory = false
+                  endif
+                  if target.quantity_rule.min > target.inventory_quantity and check_against_inventory
+                    assign quantity_rule_soldout = true
+                  endif
+                -%}
+                {% comment %} {{ form | payment_button }} {% endcomment %}
+    
+                <div
+                  data-shopify="payment-button" data-has-selling-plan="true" data-has-fixed-selling-plan="false" class="shopify-payment-button"
+                >
+                  <button
+                    class="shopify-payment-button__button shopify-payment-button__button-{{ section.id }} shopify-payment-button__button--unbranded smi-button-wrapper smi-button smi-shadow smi-hover-{{- settings.smi_animations_hover_elements | default: shop.metafields.smind.settings.value.buttonHoverEffect | default: 'none' }}" data-testid="Checkout-button"
+                  >
+                    {{ 'smind.product.buy_now' | t }}
+                  </button>
+                  <button
+                    class="shopify-payment-button__more-options"
+                    disabled="disabled"
+                    aria-hidden="true"
+                  ></button>
+                </div>
+                <input type="hidden" name="product-id" value="{{ target.id }}" />
+              </div>
+            {%- endform -%}
+          </div>
+        {% endif %}
+      </product-form>
+    </div>
+    
+
+
+    {% comment %} END IMPORTANT FAKE FETCH PRODUCT PURCHASE {% endcomment %}
+    
+    
+    
+    
+    
+    
+    
+    
+    {% endfor %}
+    {% endfor %}
+</div>

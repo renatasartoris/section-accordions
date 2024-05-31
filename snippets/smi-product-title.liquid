@@ -1,0 +1,7 @@
+{% if block.type == 'product_title' %}
+  <div class="smi-product-block-{{ section.id }} smi-product-title {% if forloop.index != section.blocks.size %} smi-mb-sm {% endif %} " {{ block.shopify_attributes }}>
+    <h3 class="product-title-content
+      {{ block.settings.heading_size }}
+      ">{{ product.title }}</h3>
+  </div>
+{% endif %}

@@ -1,0 +1,32 @@
+{% if block.type == 'product_feature_icon' %}
+  <div class="smi-product-block-{{ section.id }} smi-product-feature-icon smi-product-feature-icon-{{ section.id }} smi-product-feature-icon-{{ forloop.index }}
+    {% if block.settings.half_width_on_large_screen == true %}
+        smi-product-feature-icon-half-width-{{ section.settings.desktop_media_width }} {% endif %}
+        {% if forloop.index != section.blocks.size %} smi-mb-lg {% endif %} " {{ block.shopify_attributes }}>
+      <div class="heading-feature-content">
+      <style>
+        .smi-product-feature-icon-{{ forloop.index }} img {
+          height: {{ block.settings.icon_size }}px;
+          width: {{ block.settings.icon_size }}px;
+      }
+      .smi-product-feature-icon-{{ forloop.index }} svg {
+        height: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+        width: calc({{ block.settings.icon_size }}px * var(--icon-scale));
+    }
+      </style>
+      {%- if block.settings.upload_icon != blank -%}
+        {{
+          block.settings.upload_icon
+          | image_url: width: block.settings.icon_size , height: block.settings.icon_size 
+          | image_tag: loading: 'lazy', class: 'heading-feature-icon smi-mr-xs'
+        }}
+        {% else %}
+        <span class="smi-product-feature-icon-span-icon {% if block.settings.icon != 'none' %} smi-mr-xs {% endif %}">{{ CUSTOM_ICON }}</span>
+      {%- endif -%}
+      <div class="heading-feature-heading">
+        <h5 class="{{ block.settings.heading_size }}">{{ block.settings.heading }}</h5>
+        <p class="smi-text-sm">{{ block.settings.content }}</p>
+      </div>
+    </div>
+  </div>
+{% endif %}
