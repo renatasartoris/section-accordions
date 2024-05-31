@@ -1,12 +1,16 @@
 {
   "engine": "shopify",
   "files": {
-    "settings": "",
-    "locales": "",
-    "sections": [],
-    "snippets": []
+    "settings": "settings_schema.json",
+    "locales": "en.default.json",
+    "sections": [
+      "/workspaces/section-accordions/section"
+    ],
+    "snippets": [
+      "/workspace/section-accordions/snippets"
+    ]
   },
-  
+
   "format": {
     "ignore": [],
     "wrap": 80,
